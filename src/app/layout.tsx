@@ -47,10 +47,11 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${notoDevanagari.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${notoDevanagari.variable} ${jetbrainsMono.variable} h-full antialiased light`}
+      style={{ colorScheme: 'light' }}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col font-sans bg-background text-foreground" style={{ colorScheme: 'light' }} suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider>
             <div className="flex flex-col min-h-full">

@@ -47,11 +47,11 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col border-r border-[#eeeeee] bg-white transition-all duration-200 ${
+      className={`flex flex-col border-r border-accent bg-white transition-all duration-200 ${
         collapsed ? 'w-16' : 'w-56'
       }`}
     >
-      <div className="flex h-14 items-center border-b border-[#eeeeee] px-4">
+      <div className="flex h-14 items-center border-b border-accent px-4">
         {!collapsed && (
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#8b9a6e] text-white shadow-sm">
@@ -67,7 +67,7 @@ export function Sidebar() {
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto flex h-6 w-6 items-center justify-center rounded-md text-stone-400 hover:bg-[#f7f2eb] hover:text-stone-700 transition-colors"
+          className="ml-auto flex h-6 w-6 items-center justify-center rounded-md text-stone-400 hover:bg-background hover:text-stone-700 transition-colors"
         >
           {collapsed ? (
             <ChevronRight className="h-4 w-4" />
@@ -93,7 +93,7 @@ export function Sidebar() {
                 } ${
                   isActive(item.href)
                     ? 'bg-[#8b9a6e] text-white'
-                    : 'text-stone-700 hover:bg-[#f7f2eb]'
+                    : 'text-stone-700 hover:bg-background'
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0" />
@@ -118,7 +118,7 @@ export function Sidebar() {
                 } ${
                   isActive(item.href)
                     ? 'bg-[#8b9a6e] text-white'
-                    : 'text-stone-700 hover:bg-[#f7f2eb]'
+                    : 'text-stone-700 hover:bg-background'
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0" />
@@ -143,7 +143,7 @@ export function Sidebar() {
                 } ${
                   isActive(item.href)
                     ? 'bg-[#8b9a6e] text-white'
-                    : 'text-stone-700 hover:bg-[#f7f2eb]'
+                    : 'text-stone-700 hover:bg-background'
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0" />

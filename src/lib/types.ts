@@ -318,6 +318,56 @@ export interface DemoPersona {
 }
 
 // ============================================================================
+// ADMIN INTELLIGENCE TYPES
+// ============================================================================
+
+export interface SurveyScrutinyDataPoint {
+  id: string;
+  departmentCode: string; // e.g. "FOD-UP-E", "FOD-KL"
+  departmentName: string; // e.g. "FOD Uttar Pradesh East", "FOD Kerala"
+  competencyLevel: number; // 1 to 5 (L1 - L5)
+  errorRatePercent: number; // e.g. 18.4, 4.2
+  sampleSize: number; // e.g. 450 schedules audited
+}
+
+export interface OutcomeCorrelationSeries {
+  id: string;
+  metricName: string;
+  metricNameHi: string;
+  competencyId: string;
+  competencyName: string;
+  yAxisLabel: string;
+  yAxisLabelHi: string;
+  xAxisLabel: string;
+  xAxisLabelHi: string;
+  regressionSlope: number; // e.g. -3.2 (% error reduction per competency level)
+  pValue: number; // e.g. 0.008
+  rSquared: number; // e.g. 0.89
+  narrativeInsight: string;
+  narrativeInsightHi: string;
+  methodologyNote: string;
+  provenance: ProvenanceType; // strictly 'SYNTHETIC_DEMO_DATA'
+  dataPoints: SurveyScrutinyDataPoint[];
+}
+
+export interface DepartmentSummary {
+  department: string;
+  officialCount: number;
+  avgReadiness: number; // 0 - 100
+  criticalGapCount: number;
+  trendDirection: 'up' | 'down' | 'stable';
+  isPriorityFlagged: boolean;
+}
+
+export interface WorkforceOverview {
+  totalOfficials: number;
+  avgReadiness: number;
+  criticalGaps: number;
+  trendDirection: 'up' | 'down' | 'stable';
+  activePrioritiesCount: number;
+}
+
+// ============================================================================
 // API REQUEST/RESPONSE TYPES
 // ============================================================================
 

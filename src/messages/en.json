@@ -22,12 +22,111 @@
     "pendingSync": "Pending Sync"
   },
   "home": {
+    "badge": "StatVidya National Skill Assessment Portal",
     "hero": {
-      "title": "Empowering India's Official Statistical Workforce",
-      "subtitle": "Role-based competency mapping, localized training recommendations, and continuous proficiency tracking for ISS Officers, SSS personnel, and Field Investigators under Mission Karmayogi."
+      "title": "Adaptive Competency Framework for India's Statistical Workforce",
+      "subtitle": "A unified platform for assessing, tracking, and enhancing the professional competencies of government statistical personnel from Field Investigators to Senior Directors, grounded strictly in the National Statistical Commission's guidelines and Mission Karmayogi's FRAC model."
     },
-    "explore": "Explore Modules",
-    "phaseActive": "Phase 1 Core Engine Active"
+    "nav": {
+      "framework": "FRAC Framework",
+      "capabilities": "Capabilities",
+      "cadres": "Cadres & Roles",
+      "about": "About & Governance",
+      "officialLogin": "Official Login",
+      "goToDashboard": "Go to Dashboard"
+    },
+    "cta": {
+      "enterPortal": "Enter Portal →",
+      "exploreFramework": "Explore Framework",
+      "continueAs": "Continue as {name} →",
+      "demoPersonas": "Explore Demo Personas",
+      "viewDocumentation": "View Architecture & Governance"
+    },
+    "stats": {
+      "cadres": "6 Statistical Cadres",
+      "cadresDesc": "ISS, SSS, NSSO FOD, NSSTA & MoSPI HQ",
+      "competencies": "24 FRAC Competencies",
+      "competenciesDesc": "Behavioural, Functional & Domain verified",
+      "coverage": "4,000+ Personnel",
+      "coverageDesc": "Field investigators to senior leadership",
+      "offline": "Offline-First",
+      "offlineDesc": "IndexedDB caching for remote census blocks"
+    },
+    "pillars": {
+      "title": "Institutional Capabilities",
+      "subtitle": "Engineered for institutional trust, regulatory compliance, and field-first statistical operations.",
+      "frac": {
+        "title": "Mission Karmayogi FRAC Alignment",
+        "description": "Grounded in the government's official Framework of Roles, Activities and Competencies with granular L1–L5 proficiency standards."
+      },
+      "igot": {
+        "title": "iGOT Karmayogi Integration",
+        "description": "Dynamic multi-signal course recommendation engine linking diagnosed competency gaps directly to verified national learning pathways."
+      },
+      "mcq": {
+        "title": "Multi-AI Consensus Question Pipeline",
+        "description": "Automated generation and multi-model consensus audit of bilingual assessment items from official survey manuals and training documents."
+      },
+      "offline": {
+        "title": "Field-First Offline Capability",
+        "description": "Progressive Web App with client-side IndexedDB persistence ensures field investigators in remote blocks can complete assessments without internet."
+      },
+      "provenance": {
+        "title": "Auditable Data Provenance",
+        "description": "Every competency record, question, and recommendation is permanently tagged with institutional provenance badges for total transparency."
+      }
+    },
+    "framework": {
+      "title": "The FRAC Competency Architecture",
+      "subtitle": "Adopted by MoSPI under Mission Karmayogi to move from rule-based to role-based statistical administration.",
+      "domain": {
+        "title": "Domain Competencies",
+        "desc": "Sampling theory, survey design, national accounts, price indices, data collection methods, and statistical computing."
+      },
+      "functional": {
+        "title": "Functional Competencies",
+        "desc": "Field investigation, CAPI tablet operations, quality scrutiny, report writing, data scrutiny, and project management."
+      },
+      "behavioural": {
+        "title": "Behavioural Competencies",
+        "desc": "Integrity, public service orientation, analytical thinking, teamwork, conflict resolution, and communication."
+      },
+      "levels": {
+        "title": "L1 to L5 Proficiency Scale",
+        "l1": "L1: Awareness (Basic familiarity with concept)",
+        "l2": "L2: Basic Understanding (Routine supervised application)",
+        "l3": "L3: Working Knowledge (Autonomous execution of standard tasks)",
+        "l4": "L4: Advanced Application (Complex problem solving and mentoring)",
+        "l5": "L5: Expert Mastery (Methodology design and strategic leadership)"
+      }
+    },
+    "cadres": {
+      "title": "Designed for India's Statistical Hierarchy",
+      "subtitle": "Tailored interfaces, bilingual support, and assessment criteria calibrated to official service rules.",
+      "iss": {
+        "title": "Indian Statistical Service (ISS)",
+        "desc": "Senior leadership, survey planning, national macroeconomic aggregation, and institutional policymaking."
+      },
+      "sss": {
+        "title": "Subordinate Statistical Service (SSS)",
+        "desc": "Junior Statistical Officers (JSO) and Senior Statistical Officers (SSO) conducting data supervision and analysis."
+      },
+      "nsso": {
+        "title": "NSSO Field Operations Division",
+        "desc": "Field Investigators executing household, agricultural, and socio-economic survey schedules on ground."
+      },
+      "nssta": {
+        "title": "NSSTA Training Academy",
+        "desc": "Faculty and training administrators managing curriculum, document ingestion, and question validation."
+      }
+    },
+    "about": {
+      "title": "About StatVidya & Governance",
+      "body": "StatVidya is developed to empower the Ministry of Statistics and Programme Implementation (MoSPI) and the National Statistical Systems Training Academy (NSSTA). Aligned with the recommendations of the National Statistical Commission and Mission Karmayogi, StatVidya bridges the gap between training delivery and measurable statistical survey quality across India.",
+      "contactTitle": "Official Contact & Support",
+      "contactAddress": "National Statistical Systems Training Academy (NSSTA), Plot No. 22, Knowledge Park-II, Greater Noida, Uttar Pradesh 201310",
+      "contactEmail": "nssta-training@mospi.gov.in"
+    }
   },
   "auth": {
     "email": "Email",

@@ -39,6 +39,7 @@ export interface RankedRecommendation {
   matchingGaps: {
     competencyId: string;
     competencyName: string;
+    competencyNameHi?: string;
     currentLevel: number;
     targetLevel: number;
     gap: number;
@@ -169,6 +170,7 @@ export function rankCoursesForGaps(
         matchingGaps.push({
           competencyId: gap.competencyId,
           competencyName: gap.competency.name,
+          competencyNameHi: gap.competency.name_hi,
           currentLevel: gap.currentLevel,
           targetLevel: gap.targetLevel,
           gap: gap.gap,
@@ -184,9 +186,9 @@ export function rankCoursesForGaps(
       // Generate transparent explainability strings
       const primaryGap = matchingGaps[0];
       const enName = primaryGap.competencyName;
-      const hiName = (primaryGap as any).name_hi || enName; // If available use Hindi name for hi explanation
+      const hiName = primaryGap.competencyNameHi || enName;
       const whyRecommended = `Directly bridges your ${primaryGap.gap}-level gap in ${enName} (L${primaryGap.currentLevel} → L${primaryGap.targetLevel}) required for official duties.`;
-      const whyRecommended_hi = `आधिकारिक कर्तव्यों के लिए आवश्यक ${enName} में आपके ${primaryGap.gap}-स्तर के अंतर (L${primaryGap.currentLevel} → L${primaryGap.targetLevel}) को सीधे पूरा करता है।`;
+      const whyRecommended_hi = `आधिकारिक कर्तव्यों के लिए आवश्यक ${hiName} में आपके ${primaryGap.gap}-स्तर के अंतर (L${primaryGap.currentLevel} → L${primaryGap.targetLevel}) को सीधे पूरा करता है।`;
 
       recommendations.push({
         course,

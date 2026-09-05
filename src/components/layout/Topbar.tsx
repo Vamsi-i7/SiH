@@ -23,7 +23,7 @@ export function Topbar() {
   }, []);
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-[#eeeeee] bg-white px-6">
+    <header className="flex h-16 items-center justify-between border-b border-accent bg-white px-6">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold text-[#1a1a1a]">
           {t('dashboard')}
@@ -31,7 +31,7 @@ export function Topbar() {
       </div>
 
       <div className="flex items-center gap-4">
-        <button className="relative flex items-center gap-2 rounded-lg hover:bg-[#f7f2eb] px-2 py-1.5 text-stone-600 transition-colors">
+        <button className="relative flex items-center gap-2 rounded-lg hover:bg-background px-2 py-1.5 text-stone-600 transition-colors">
           <Bell className="h-5 w-5" />
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-600 text-[10px] font-bold text-white">
             3
@@ -41,7 +41,7 @@ export function Topbar() {
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center gap-2 rounded-lg hover:bg-[#f7f2eb] px-2 py-1.5 text-stone-600 transition-colors"
+            className="flex items-center gap-2 rounded-lg hover:bg-background px-2 py-1.5 text-stone-600 transition-colors"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#eae2d6] text-[#8b9a6e] font-bold">
               <User className="h-4 w-4 text-[#8b9a6e]" />
@@ -53,8 +53,8 @@ export function Topbar() {
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 rounded-lg border border-[#eeeeee] bg-white py-1 shadow-lg z-50">
-              <div className="px-4 py-2 border-b border-[#eeeeee]">
+            <div className="absolute right-0 mt-2 w-48 rounded-lg border border-accent bg-white py-1 shadow-lg z-50">
+              <div className="px-4 py-2 border-b border-accent">
                 <p className="text-sm font-medium text-[#1a1a1a]">
                   Amit Sharma
                 </p>
@@ -65,7 +65,7 @@ export function Topbar() {
 
               <a
                 href="/profile"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-stone-700 hover:bg-[#f7f2eb]"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-stone-700 hover:bg-background"
               >
                 <User className="h-4 w-4 text-[#8b9a6e]" />
                 {t('profile')}
@@ -73,7 +73,7 @@ export function Topbar() {
 
               <a
                 href="/settings"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-stone-700 hover:bg-[#f7f2eb]"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-stone-700 hover:bg-background"
               >
                 <Settings className="h-4 w-4 text-[#8b9a6e]" />
                 Settings
@@ -83,7 +83,7 @@ export function Topbar() {
                 onClick={() => {
                   router.push('/auth/login');
                 }}
-                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-rose-600 hover:bg-[#f7f2eb]"
+                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-rose-600 hover:bg-background"
               >
                 <LogOut className="h-4 w-4" />
                 {t('logout')}

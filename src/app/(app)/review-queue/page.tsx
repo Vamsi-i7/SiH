@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
-import { CheckCircle, XCircle, AlertTriangle, BookOpen, Layers, Check } from 'lucide-react';
+import { CheckCircle, XCircle, BookOpen, Check } from 'lucide-react';
 
 interface ReviewItem {
   id: string;

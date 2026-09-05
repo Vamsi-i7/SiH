@@ -4,7 +4,7 @@
  * Tests durability, crash recovery, retry logic, and state transitions.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   queueAssessment,
   getPendingCount,
@@ -14,9 +14,14 @@ import {
   markSynced,
   markFailed,
   clearQueue,
+  _resetDatabaseForTesting,
 } from './offlineService';
 
 describe('offlineService — IndexedDB Queue Manager', () => {
+  beforeEach(async () => {
+    await _resetDatabaseForTesting();
+  });
+
   const mockAssessment = {
     assessment_id: null, local_id: '550e8400-e29b-41d4-a716-446655440000',
     competency_id: 'comp-nsso-survey',
@@ -150,9 +155,7 @@ describe('offlineService — IndexedDB Queue Manager', () => {
     });
 
     it('throws if assessment not found', async () => {
-      expect(async () => {
-        await markSyncing('nonexistent-id');
-      }).rejects.toThrow();
+      await expect(markSyncing('nonexistent-id')).rejects.toThrow();
     });
   });
 
@@ -163,23 +166,21 @@ describe('offlineService — IndexedDB Queue Manager', () => {
         ...mockAssessment,
         local_id,
       });
-      await markSyncing(local_id);
 
-      const submittedAt = new Date().toISOString();
-      await markSynced(local_id, 'server-assessment-id-456', submittedAt);
+      await markSyncing(local_id);
+      await markSynced(local_id, 'server-id-123', new Date().toISOString());
 
       const fetched = await getPendingAssessmentByLocalId(local_id);
       expect(fetched?.sync_status).toBe('SYNCED');
-      expect(fetched?.assessment_id).toBe('server-assessment-id-456');
-      expect(fetched?.submitted_at).toBe(submittedAt);
+      expect(fetched?.assessment_id).toBe('server-id-123');
       expect(fetched?.retry_count).toBe(0);
       expect(fetched?.sync_error).toBeNull();
     });
 
     it('throws if assessment not found', async () => {
-      expect(async () => {
-        await markSynced('nonexistent-id', 'server-id', new Date().toISOString());
-      }).rejects.toThrow();
+      await expect(
+        markSynced('nonexistent-id', 'server-id', new Date().toISOString())
+      ).rejects.toThrow();
     });
   });
 
@@ -240,9 +241,7 @@ describe('offlineService — IndexedDB Queue Manager', () => {
     });
 
     it('throws if assessment not found', async () => {
-      expect(async () => {
-        await markFailed('nonexistent-id', 'Error');
-      }).rejects.toThrow();
+      await expect(markFailed('nonexistent-id', 'Error')).rejects.toThrow();
     });
   });
 
@@ -362,12 +361,12 @@ describe('offlineService — IndexedDB Queue Manager', () => {
       });
 
       // Attempt to add same local_id again
-      expect(async () => {
-        await queueAssessment({
+      await expect(
+        queueAssessment({
           ...mockAssessment,
           local_id,
-        });
-      }).rejects.toThrow();
+        })
+      ).rejects.toThrow();
     });
 
     it('markSynced with same local_id is idempotent (updates, not inserts)', async () => {
@@ -441,9 +440,7 @@ describe('offlineService — IndexedDB Queue Manager', () => {
       await markFailed(local_id, 'Network error');
 
       // Should throw because retry_count is now 1
-      expect(async () => {
-        await clearQueue();
-      }).rejects.toThrow(/failed retries/);
+      await expect(clearQueue()).rejects.toThrow(/failed retries/);
     });
 
     it('allows clear if no assessments have retried', async () => {

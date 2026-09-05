@@ -83,6 +83,11 @@ async function openDatabase(): Promise<IDBPDatabase<StatvidyaDB>> {
   return dbInstance;
 }
 
+export async function _resetDatabaseForTesting(): Promise<void> {
+  const db = await openDatabase();
+  await db.clear(STORE_NAME);
+}
+
 // =========================================================================
 // QUEUE MANAGER INTERFACE
 // =========================================================================
