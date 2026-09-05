@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { rankCoursesForGaps, OFFICIAL_COURSE_CATALOG } from './recommendationService';
+import { rankCoursesForGaps } from './recommendationService';
 import type { CompetencyGap } from '@/lib/types';
 
 describe('recommendationService - Course Ranking Algorithm', () => {
@@ -75,7 +75,7 @@ describe('recommendationService - Course Ranking Algorithm', () => {
     expect(results[0].priority).toBe('HIGH');
     expect(results[0].score).toBeGreaterThan(results[results.length - 1].score);
     expect(results[0].whyRecommended).toContain('CAPI Tablet Operation');
-    expect(results[0].whyRecommended_hi).toContain('CAPI Tablet Operation');
+    expect(results[0].whyRecommended_hi).toContain('कैपी टैबलेट संचालन');
   });
 
   it('generates transparent explainability metadata for every matched gap', () => {

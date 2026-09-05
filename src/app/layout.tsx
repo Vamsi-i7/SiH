@@ -51,7 +51,7 @@ export default async function RootLayout({
       style={{ colorScheme: 'light' }}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans bg-[#f7f2eb] text-[#1a1a1a]" style={{ colorScheme: 'light' }} suppressHydrationWarning>
+      <body className="min-h-full flex flex-col font-sans bg-background text-foreground" style={{ colorScheme: 'light' }} suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider>
             <div className="flex flex-col min-h-full">

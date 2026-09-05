@@ -40,13 +40,26 @@ export default async function AssessmentPage({ params }: PageProps) {
     ]);
   };
 
+  interface CompetencyRecord {
+    name: string;
+    name_hi?: string;
+  }
+
+  interface QuestionRecord {
+    id: string;
+    stem: string;
+    stem_hi?: string;
+    options?: { en?: string[]; hi?: string[] };
+    difficulty: 'easy' | 'medium' | 'hard';
+  }
+
   try {
-    const res = await fastQuery(
+    const res = await fastQuery<{ data: CompetencyRecord | null }>(
       supabase.from('competencies').select('*').eq('id', competencyId).single()
     );
 
-    if (res && (res as any).data) {
-      const competency = (res as any).data;
+    if (res?.data) {
+      const competency = res.data;
       competencyName = competency.name;
       competencyNameHi = competency.name_hi || competency.name;
     }
@@ -58,7 +71,7 @@ export default async function AssessmentPage({ params }: PageProps) {
   let firstQuestion = null;
 
   try {
-    const res = await fastQuery(
+    const res = await fastQuery<{ data: QuestionRecord[] | null }>(
       supabase
         .from('questions')
         .select('*')
@@ -67,8 +80,8 @@ export default async function AssessmentPage({ params }: PageProps) {
         .limit(1)
     );
 
-    if (res && (res as any).data && (res as any).data.length > 0) {
-      const q = (res as any).data[0];
+    if (res?.data && res.data.length > 0) {
+      const q = res.data[0];
       const optionsEn = Array.isArray(q.options?.en) ? q.options.en : ['Option A', 'Option B', 'Option C', 'Option D'];
       const optionsHi = Array.isArray(q.options?.hi) ? q.options.hi : optionsEn;
 
@@ -78,7 +91,7 @@ export default async function AssessmentPage({ params }: PageProps) {
         question_text_hi: q.stem_hi || q.stem,
         answer_choices: optionsEn,
         answer_choices_hi: optionsHi,
-        difficulty: q.difficulty as 'easy' | 'medium' | 'hard',
+        difficulty: q.difficulty,
         stage: 1,
       };
     }

@@ -80,7 +80,7 @@ export default function MCQGeneratorPage() {
               <label className="block text-xs font-semibold text-slate-600 mb-1">Calibration Difficulty</label>
               <select
                 value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value as any)}
+                onChange={(e) => setDifficulty(e.target.value as 'easy' | 'medium' | 'hard')}
                 className="w-full text-sm border border-slate-300 rounded-md p-2 bg-white text-slate-800"
               >
                 <option value="medium">Medium (Stage 1 Calibration)</option>

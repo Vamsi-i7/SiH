@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "check:i18n": "node scripts/check-i18n.ts",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",

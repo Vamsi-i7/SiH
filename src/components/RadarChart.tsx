@@ -179,8 +179,8 @@ export function RadarChart({
               textAnchor={textAnchor}
               className={`text-xs font-medium cursor-pointer transition-colors ${
                 isHovered
-                  ? 'fill-[#728056] font-semibold'
-                  : 'fill-[#5a5a5a]'
+                  ? 'fill-primary-dark font-semibold'
+                  : 'fill-muted-foreground'
               }`}
               onMouseEnter={() => setHoveredIndex(idx)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -203,7 +203,7 @@ export function RadarChart({
 
       {/* Legend */}
       {showLegend && (
-        <div className="mt-4 flex items-center justify-center gap-6 text-xs text-[#5a5a5a]">
+        <div className="mt-4 flex items-center justify-center gap-6 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full bg-[#8b9a6e]"></span>
             <span>Current Proficiency</span>

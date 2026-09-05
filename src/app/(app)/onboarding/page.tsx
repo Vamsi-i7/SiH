@@ -24,7 +24,7 @@ export default async function OnboardingPage() {
            <h1 className="text-2xl font-bold text-[#1a1a1a]">
              {t('title')}
            </h1>
-           <p className="mt-2 text-sm text-[#5a5a5a]">
+           <p className="mt-2 text-sm text-muted-foreground">
              Let&apos;s build your official FRAC competency profile
            </p>
         </div>
