@@ -13,7 +13,7 @@ interface PageProps {
 
 export default async function DepartmentDrilldownPage({ params }: PageProps) {
   const user = await getAuthenticatedUser();
-  if (!user || user.role !== 'admin') {
+  if (!user || user.app_metadata?.role !== 'admin') {
     redirect('/dashboard');
   }
 

@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export default async function AdminAnalyticsPage() {
   const user = await getAuthenticatedUser();
 
-  if (!user || user.role !== 'admin') {
+  if (!user || user.app_metadata?.role !== 'admin') {
     redirect('/dashboard');
   }
 
@@ -59,7 +59,7 @@ export default async function AdminAnalyticsPage() {
   const demoPriorities: TrainingPriority[] = [
     {
       id: 'tp-1',
-      organization_id: user.organization_id,
+      organization_id: user.user_metadata?.organization_id || 'org-mospi',
       department: 'NSSO FOD UP East',
       reason: '15.4% listing error rate in Schedule 0.0 scrutiny audit.',
       flagged_by: user.id,
@@ -68,7 +68,7 @@ export default async function AdminAnalyticsPage() {
     },
     {
       id: 'tp-2',
-      organization_id: user.organization_id,
+      organization_id: user.user_metadata?.organization_id || 'org-mospi',
       department: 'NSSO FOD Bihar Regional',
       reason: 'Urgent refresh needed for CAPI tablet synchronization protocol.',
       flagged_by: user.id,

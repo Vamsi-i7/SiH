@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export default async function OutcomeCorrelationPage() {
   const user = await getAuthenticatedUser();
 
-  if (!user || user.role !== 'admin') {
+  if (!user || user.app_metadata?.role !== 'admin') {
     redirect('/');
   }
 

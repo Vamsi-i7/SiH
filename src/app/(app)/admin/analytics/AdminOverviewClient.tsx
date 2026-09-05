@@ -32,9 +32,9 @@ export function AdminOverviewClient({
     const channel = supabase
       .channel('training_priorities_realtime')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'INSERT', schema: 'public', table: 'training_priorities' },
-        (payload) => {
+        (payload: { new: unknown }) => {
           const newPriority = payload.new as TrainingPriority;
           setPriorities((prev) => [newPriority, ...prev]);
         }

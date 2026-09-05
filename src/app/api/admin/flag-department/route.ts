@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    if (user.role !== 'admin') {
+    if (user.app_metadata?.role !== 'admin') {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required for priority training write-backs' },
         { status: 403 }
@@ -48,10 +48,11 @@ export async function POST(req: NextRequest) {
     );
 
     // Tenant isolation: organization_id strictly derived from session
+    const orgId = user.user_metadata?.organization_id || 'org-mospi';
     const { data, error } = await supabase
       .from('training_priorities')
       .insert({
-        organization_id: user.organization_id,
+        organization_id: orgId,
         department,
         role_id: roleId || null,
         reason: reason || 'Flagged for urgent workforce capability intervention',
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
       // Fallback for demo when table is unpopulated or in mock session
       const fallbackPriority = {
         id: `tp-${Date.now()}`,
-        organization_id: user.organization_id,
+        organization_id: orgId,
         department,
         role_id: roleId || null,
         reason: reason || 'Flagged for urgent workforce capability intervention',
