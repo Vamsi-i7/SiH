@@ -22,25 +22,7 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options: Record<string, unknown>) {
-          response.cookies.set({ name, value, ...options });
-        },
-        remove(name: string, options: Record<string, unknown>) {
-          response.cookies.set({ name, value: '', ...options });
-        },
-      },
-    }
-  );
-
-  let user = null;
+  let user: any = null;
 
   // 1. Check demo_user cookie FIRST to ensure instant routing in local dev
   const demoCookie = request.cookies.get('demo_user')?.value;
@@ -66,11 +48,33 @@ export async function middleware(request: NextRequest) {
 
   // 2. Only hit Supabase if we don't have a valid demo cookie
   if (!user) {
-    try {
-      const { data } = await supabase.auth.getUser();
-      user = data.user;
-    } catch {
-      // Supabase unreachable
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && supabaseAnonKey) {
+      try {
+        const supabase = createServerClient(
+          supabaseUrl,
+          supabaseAnonKey,
+          {
+            cookies: {
+              get(name: string) {
+                return request.cookies.get(name)?.value;
+              },
+              set(name: string, value: string, options: Record<string, unknown>) {
+                response.cookies.set({ name, value, ...options });
+              },
+              remove(name: string, options: Record<string, unknown>) {
+                response.cookies.set({ name, value: '', ...options });
+              },
+            },
+          }
+        );
+        const { data } = await supabase.auth.getUser();
+        user = data.user;
+      } catch {
+        // Supabase unreachable or initialization error
+      }
     }
   }
 

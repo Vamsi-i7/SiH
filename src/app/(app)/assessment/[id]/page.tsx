@@ -14,7 +14,6 @@ interface PageProps {
 
 export default async function AssessmentPage({ params }: PageProps) {
   const { id: competencyId } = await params;
-
   // Get user session
   const user = await getAuthenticatedUser();
   const supabase = await getSupabaseServerClient();

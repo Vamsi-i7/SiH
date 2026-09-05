@@ -3,12 +3,27 @@
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { Breadcrumb } from './Breadcrumb';
+import { CopilotFAB } from '@/components/copilot/CopilotFAB';
 
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
+  // Default demo context — will be replaced with live user data from Supabase
+  const userContext = {
+    name: 'Amit Sharma',
+    role: 'learner',
+    cadre: 'Indian Statistical Service (ISS)',
+    designation: 'Junior Statistical Officer',
+    readinessIndex: 42,
+    topGaps: [
+      { competency: 'Big Data Analytics', levelDelta: 2, priority: 'critical' },
+      { competency: 'Machine Learning Fundamentals', levelDelta: 2, priority: 'critical' },
+      { competency: 'GIS & Spatial Analysis', levelDelta: 1, priority: 'important' },
+    ],
+  };
+
   return (
     <div className="flex h-full">
       <Sidebar />
@@ -23,6 +38,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </div>
       </div>
+      <CopilotFAB userContext={userContext} />
     </div>
   );
 }

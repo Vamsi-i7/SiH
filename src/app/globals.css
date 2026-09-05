@@ -398,3 +398,47 @@
   }
 }
 
+/* ════════════════════════════════════════════════════════════════
+   COPILOT ANIMATIONS
+   ════════════════════════════════════════════════════════════════ */
+
+@keyframes copilot-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes copilot-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.copilot-fab-pulse {
+  animation: copilot-fab-glow 2s ease-in-out infinite;
+}
+
+@keyframes copilot-fab-glow {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(139, 154, 110, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(139, 154, 110, 0.55), 0 0 40px rgba(139, 154, 110, 0.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copilot-fab-pulse {
+    animation: none;
+  }
+}
