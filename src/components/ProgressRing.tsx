@@ -31,9 +31,9 @@ export function ProgressRing({
   // Determine color based on value if not provided
   const getRingColor = (val: number) => {
     if (color) return color;
-    if (val >= 80) return 'text-emerald-600';
-    if (val >= 50) return 'text-amber-500';
-    return 'text-rose-600';
+    if (val >= 80) return 'text-[#8b9a6e]';
+    if (val >= 50) return 'text-[#c9963a]';
+    return 'text-[#c0574a]';
   };
 
   return (
@@ -55,7 +55,7 @@ export function ProgressRing({
           strokeWidth={strokeWidth}
           stroke="currentColor"
           fill="transparent"
-          className="text-slate-100"
+          className="text-[#eae2d6]"
         />
         {/* Progress stroke */}
         <circle
@@ -80,14 +80,14 @@ export function ProgressRing({
           </span>
         )}
         {label && (
-          <span className="text-xs font-medium text-stone-500 mt-0.5">
+          <span className="text-xs font-medium text-[#5a5a5a] mt-0.5">
             {label}
           </span>
         )}
       </div>
 
       {sublabel && (
-        <span className="mt-2 text-xs text-stone-500 text-center">
+        <span className="mt-2 text-xs text-[#5a5a5a] text-center">
           {sublabel}
         </span>
       )}

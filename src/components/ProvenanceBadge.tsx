@@ -85,10 +85,10 @@ export function ProvenanceBadge({
   };
 
   return (
-    <div className="relative inline-block">
-      <div
+    <span className="relative inline-block align-middle">
+      <span
         className={`
-          flex items-center rounded-md border
+          inline-flex items-center rounded-md border
           ${config.bgColor} ${config.borderColor} ${config.textColor}
           ${sizeClasses[size]}
           font-medium transition-colors duration-200
@@ -100,30 +100,30 @@ export function ProvenanceBadge({
       >
         <span className={iconSizes[size]}>{config.icon}</span>
         {showLabel && <span>{config.label}</span>}
-      </div>
+      </span>
 
       {/* Tooltip */}
       {showTooltipContent && showTooltip && (
-        <div
+        <span
           className={`
             absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50
             bg-gray-900 text-white
             rounded-md px-3 py-2 text-xs font-normal whitespace-nowrap
-            pointer-events-none shadow-lg
+            pointer-events-none shadow-lg block
           `}
         >
           {config.description}
           {/* Tooltip arrow */}
-          <div
+          <span
             className={`
               absolute top-full left-1/2 -translate-x-1/2
               border-4 border-transparent
-              border-t-gray-900
+              border-t-gray-900 block
             `}
           />
-        </div>
+        </span>
       )}
-    </div>
+    </span>
   );
 }
 
