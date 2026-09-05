@@ -117,8 +117,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(dashboardUrl);
   }
 
-  const locale = user.user_metadata?.preferred_language || 'en';
+  const requestLocale = request.cookies.get('locale')?.value;
+  const validLocale = (requestLocale === 'en' || requestLocale === 'hi') ? requestLocale : null;
+  const locale = validLocale || user.user_metadata?.preferred_language || 'en';
+
   request.cookies.set('locale', locale);
+  response.cookies.set('locale', locale, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365,
+  });
 
   response.headers.set('x-user-role', String(userRole));
   response.headers.set('x-user-org-id', userOrgId || '');
