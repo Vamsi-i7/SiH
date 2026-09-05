@@ -252,7 +252,7 @@ export default function AssessmentClient({
       {/* Error Message */}
       {error && (
         <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-lg flex gap-2">
-          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <AlertCircle className="w-5 h-5 shrink-0" />
           <p>{error}</p>
         </div>
       )}

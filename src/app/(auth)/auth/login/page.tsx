@@ -11,29 +11,29 @@ export default async function LoginPage() {
   return (
     <div className="flex-1 flex flex-col">
       {/* Institutional Header */}
-      <header className="border-b border-slate-200 border-gray-200 bg-white bg-white sticky top-0 z-30 shadow-xs">
+      <header className="border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-30 shadow-xs">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3.5">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-700 bg-blue-700 text-white shadow-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-700 text-white shadow-sm">
               <BarChart3 className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-tight text-lg text-slate-900 text-gray-900">
+                <span className="font-bold tracking-tight text-lg text-slate-900 dark:text-zinc-100">
                   StatVidya
                 </span>
-                <span className="rounded-md bg-blue-50 bg-blue-50 border border-blue-200 border-blue-200 px-2 py-0.5 text-xs font-semibold text-blue-800 text-blue-700">
+                <span className="rounded-md bg-blue-50 border border-blue-200 px-2 py-0.5 text-xs font-semibold text-blue-700 dark:bg-blue-950/40 dark:border-blue-900 dark:text-blue-300">
                   MoSPI • NSSTA
                 </span>
               </div>
-              <p className="text-xs text-slate-500 text-gray-500 hidden sm:block">
+              <p className="text-xs text-slate-500 dark:text-zinc-400 hidden sm:block">
                 National Statistical Systems Training Academy
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-600 text-gray-500 bg-slate-100 bg-white px-3 py-1.5 rounded-full">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 text-emerald-600" />
+            <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-600 dark:text-zinc-400 bg-slate-100 dark:bg-zinc-800 px-3 py-1.5 rounded-full">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Mission Karmayogi FRAC Aligned</span>
             </div>
           </div>
@@ -45,14 +45,14 @@ export default async function LoginPage() {
         <div className="w-full max-w-6xl mx-auto space-y-8">
           {/* Hero Heading */}
           <div className="text-center space-y-2.5 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 bg-blue-50 border border-blue-200 border-blue-200 text-xs font-semibold text-blue-800 text-blue-700">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-semibold text-blue-700 dark:bg-blue-950/40 dark:border-blue-900 dark:text-blue-300">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Official Statistical Workforce Competency Platform</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 text-gray-900">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-zinc-100">
               StatVidya Portal Login
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 text-gray-500 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed">
               Role-based competency mapping, localized training recommendations, and continuous assessment for ISS Officers, SSS personnel, and Field Investigators.
             </p>
           </div>
@@ -60,12 +60,12 @@ export default async function LoginPage() {
           {/* 2-Column Responsive Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Column: Official Login Form */}
-            <div className="lg:col-span-5 bg-white bg-white rounded-2xl border border-slate-200 border-gray-200 p-6 sm:p-7 shadow-sm">
+            <div className="lg:col-span-5 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-200 dark:border-zinc-800 p-6 sm:p-7 shadow-sm">
               <div className="mb-5">
-                <h2 className="text-lg font-bold text-slate-900 text-gray-900">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-zinc-100">
                   {t('login')}
                 </h2>
-                <p className="text-xs text-slate-500 text-gray-500 mt-1">
+                <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
                   Sign in with your official government email address or Parichay SSO.
                 </p>
               </div>
@@ -75,17 +75,17 @@ export default async function LoginPage() {
             </div>
 
             {/* Right Column: Demo Persona Evaluation Grid */}
-            <div className="lg:col-span-7 bg-white bg-white rounded-2xl border border-slate-200 border-gray-200 p-6 sm:p-7 shadow-sm space-y-4">
+            <div className="lg:col-span-7 bg-white dark:bg-zinc-900 rounded-2xl border border-slate-200 dark:border-zinc-800 p-6 sm:p-7 shadow-sm space-y-4">
               <div>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-bold text-slate-900 text-gray-900">
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-zinc-100">
                     {t('demoPersona')}
                   </h2>
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 bg-amber-50/60 text-amber-700 text-amber-600 border border-amber-200 border-amber-200">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900">
                     1-Click Simulation
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 text-gray-500 mt-1">
+                <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
                   Click any official cadre persona to evaluate role-specific competencies, adaptive assessments, and learning pathways:
                 </p>
               </div>
@@ -133,8 +133,8 @@ export default async function LoginPage() {
                 />
               </div>
 
-              <div className="pt-2 text-xs text-slate-500 text-gray-500 flex items-center gap-1.5 border-t border-slate-100 border-gray-200/80">
-                <ShieldCheck className="h-3.5 w-3.5 text-blue-600 text-blue-600 shrink-0" />
+              <div className="pt-2 text-xs text-slate-500 dark:text-zinc-400 flex items-center gap-1.5 border-t border-slate-100 dark:border-zinc-800">
+                <ShieldCheck className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <span>Simulated sessions load realistic FRAC competency records and assessment histories.</span>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default async function LoginPage() {
       </main>
 
       {/* Institutional Footer */}
-      <footer className="border-t border-slate-200 border-gray-200 bg-white bg-white py-4 text-center text-xs text-slate-500 text-gray-500">
+      <footer className="border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-4 text-center text-xs text-slate-500 dark:text-zinc-400">
         <p>Ministry of Statistics and Programme Implementation (MoSPI) • National Statistical Systems Training Academy (NSSTA)</p>
       </footer>
     </div>
@@ -170,23 +170,23 @@ function DemoPersonaCard({
   lang: 'en' | 'hi';
 }) {
   const badgeStyles = {
-    blue: 'bg-blue-50 bg-blue-50 text-blue-700 text-blue-700 border-blue-200 border-blue-200',
-    emerald: 'bg-emerald-50 bg-emerald-50/60 text-emerald-700 text-emerald-700 border-emerald-200 border-emerald-200',
-    purple: 'bg-purple-50 bg-purple-50 text-purple-700 text-purple-700 border-purple-200 border-purple-300',
-    amber: 'bg-amber-50 bg-amber-50/60 text-amber-700 text-amber-700 border-amber-200 border-amber-200',
+    blue: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900',
+    emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900',
+    purple: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-900',
+    amber: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900',
   };
 
   const iconStyles = {
-    blue: 'bg-blue-100 text-blue-700 bg-blue-50 text-blue-700',
-    emerald: 'bg-emerald-100 text-emerald-700 bg-emerald-50/80 text-emerald-700',
-    purple: 'bg-purple-100 text-purple-700 bg-purple-100 text-purple-700',
-    amber: 'bg-amber-100 text-amber-700 bg-amber-50/80 text-amber-700',
+    blue: 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300',
+    emerald: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
+    purple: 'bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300',
+    amber: 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300',
   };
 
   return (
     <a
       href={`/api/sso/demo-persona?email=${encodeURIComponent(email)}&lang=${lang}`}
-      className="group flex flex-col justify-between p-4 rounded-xl border border-slate-200 border-gray-200 bg-slate-50/50 bg-white/40 hover:bg-blue-50/60 hover:bg-gray-100 hover:border-blue-300 hover:border-blue-400 transition-all text-left"
+      className="group flex flex-col justify-between p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-blue-50/60 hover:border-blue-300 dark:border-zinc-800 dark:bg-zinc-800/40 dark:hover:bg-zinc-800 dark:hover:border-blue-500 transition-all text-left"
     >
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-2">
@@ -202,20 +202,20 @@ function DemoPersonaCard({
         </div>
 
         <div>
-          <p className="font-semibold text-slate-900 text-gray-900 group-hover:text-blue-700 group-hover:text-blue-700 transition-colors text-sm">
+          <p className="font-semibold text-slate-900 dark:text-zinc-100 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors text-sm">
             {name}
           </p>
-          <p className="text-xs font-medium text-slate-700 text-gray-700 mt-0.5 line-clamp-1">
+          <p className="text-xs font-medium text-slate-700 dark:text-zinc-300 mt-0.5 line-clamp-1">
             {role}
           </p>
-          <p className="text-[11px] text-slate-500 text-gray-500 mt-0.5 line-clamp-1">
+          <p className="text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5 line-clamp-1">
             {dept}
           </p>
         </div>
       </div>
 
-      <div className="pt-3 mt-3 border-t border-slate-200/60 border-gray-200/60 flex items-center justify-between text-xs text-blue-700 text-blue-600 font-medium">
-        <span className="text-[11px] font-mono text-slate-400 text-gray-400 truncate max-w-32.5">
+      <div className="pt-3 mt-3 border-t border-slate-200/60 dark:border-zinc-800 flex items-center justify-between text-xs text-blue-700 dark:text-blue-400 font-medium">
+        <span className="text-[11px] font-mono text-slate-400 dark:text-zinc-500 truncate max-w-32.5">
           {email}
         </span>
         <span className="flex items-center gap-1 group-hover:translate-x-0.5 transition-transform shrink-0">

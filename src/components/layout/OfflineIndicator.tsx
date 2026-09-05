@@ -192,7 +192,7 @@ export function OfflineIndicator() {
         <span
           className="
             flex items-center justify-center px-2 py-0.5 text-xs font-bold
-            bg-amber-200 text-amber-800 rounded-full min-w-[1.5rem]
+            bg-amber-200 text-amber-800 rounded-full min-w-6
           "
           aria-label={`${pendingCount} assessments will sync when online`}
         >
