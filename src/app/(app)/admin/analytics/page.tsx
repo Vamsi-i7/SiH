@@ -5,7 +5,7 @@ import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminAnalyticsPage() {
-  const user = await getAuthenticatedUser();
+  await getAuthenticatedUser();
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto py-6">

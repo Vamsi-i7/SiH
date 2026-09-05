@@ -153,7 +153,7 @@ export default function DashboardPage({ user }: DashboardProps) {
       <div className="flex items-center justify-center h-64">
         <div className="text-center space-y-4">
           <div className="w-8 h-8 border-3 border-[#8b9a6e]/30 border-t-[#8b9a6e] rounded-full animate-spin mx-auto"></div>
-          <p className="text-sm text-[#5a5a5a]">{t('common.loading')}</p>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -166,7 +166,7 @@ export default function DashboardPage({ user }: DashboardProps) {
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a]">
           {t('dashboard.readinessIndex')}
         </h1>
-        <p className="text-sm text-[#5a5a5a]">
+        <p className="text-sm text-muted-foreground">
           Welcome back, {user.user_metadata?.name || user.email}. {userRole && `Role: ${userRole}`}
         </p>
       </div>
@@ -214,7 +214,7 @@ export default function DashboardPage({ user }: DashboardProps) {
           </h2>
           <a
             href="/skill-gap"
-            className="text-sm font-medium text-[#8b9a6e] hover:text-[#728056]"
+            className="text-sm font-medium text-[#8b9a6e] hover:text-primary-dark"
           >
             {t('dashboard.viewAllGaps')} →
           </a>
@@ -246,7 +246,7 @@ export default function DashboardPage({ user }: DashboardProps) {
                     <span>{gap.gap} {gap.gap === 1 ? 'level' : 'levels'}</span>
                     <Link
                       href={`/assessment/${gap.competencyId}`}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#8b9a6e] bg-white border border-[#e3dbcf] px-2.5 py-1 rounded-md hover:bg-[#f7f2eb]"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#8b9a6e] bg-white border border-[#e3dbcf] px-2.5 py-1 rounded-md hover:bg-background"
                     >
                       <PlayCircle className="h-3 w-3" />
                       Assess
@@ -257,7 +257,7 @@ export default function DashboardPage({ user }: DashboardProps) {
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-[#5a5a5a]">
+          <div className="text-center py-8 text-muted-foreground">
             <p className="text-sm">🎉 All competencies are at or above target levels!</p>
           </div>
         )}
@@ -271,42 +271,42 @@ export default function DashboardPage({ user }: DashboardProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <a
             href="/pathways"
-            className="rounded-lg border border-[#e3dbcf] bg-[#f7f2eb]/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
+            className="rounded-lg border border-[#e3dbcf] bg-background/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
           >
             <h3 className="font-semibold text-[#1a1a1a] mb-1.5">📚 {t('dashboard.viewPathways')}</h3>
-            <p className="text-xs text-[#5a5a5a]">Discover recommended courses</p>
+            <p className="text-xs text-muted-foreground">Discover recommended courses</p>
           </a>
 
           <a
             href="/skill-gap"
-            className="rounded-lg border border-[#e3dbcf] bg-[#f7f2eb]/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
+            className="rounded-lg border border-[#e3dbcf] bg-background/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
           >
             <h3 className="font-semibold text-[#1a1a1a] mb-1.5">📊 {t('skillGap.title')}</h3>
-            <p className="text-xs text-[#5a5a5a]">View detailed gap analysis</p>
+            <p className="text-xs text-muted-foreground">View detailed gap analysis</p>
           </a>
 
           <a
             href="/profile"
-            className="rounded-lg border border-[#e3dbcf] bg-[#f7f2eb]/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
+            className="rounded-lg border border-[#e3dbcf] bg-background/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
           >
             <h3 className="font-semibold text-[#1a1a1a] mb-1.5">👤 {t('profile.title')}</h3>
-            <p className="text-xs text-[#5a5a5a]">View your progress</p>
+            <p className="text-xs text-muted-foreground">View your progress</p>
           </a>
 
           <Link
             href="/assessment/comp-capi"
-            className="rounded-lg border border-[#e3dbcf] bg-[#f7f2eb]/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
+            className="rounded-lg border border-[#e3dbcf] bg-background/60 p-4 transition-colors hover:bg-[#eae2d6]/40"
           >
             <h3 className="font-semibold text-[#1a1a1a] mb-1.5">🎯 {t('nav.assessment')}</h3>
-            <p className="text-xs text-[#5a5a5a]">Take a new assessment</p>
+            <p className="text-xs text-muted-foreground">Take a new assessment</p>
           </Link>
         </div>
       </div>
 
       {/* Data Provenance Footer */}
-      <div className="rounded-lg bg-[#f7f2eb]/70 border border-[#e3dbcf] p-4 flex items-start gap-3">
+      <div className="rounded-lg bg-background/70 border border-[#e3dbcf] p-4 flex items-start gap-3">
         <span className="text-lg">ℹ️</span>
-        <div className="text-xs text-[#5a5a5a] space-y-1">
+        <div className="text-xs text-muted-foreground space-y-1">
           <p>
             <strong>Demo Data:</strong> This dashboard displays synthetic competency records for demonstration.
             In production, data is tied to real assessment results and marked with{' '}
