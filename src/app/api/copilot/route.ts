@@ -58,9 +58,9 @@ export async function POST(request: NextRequest) {
       },
       contents: geminiContents,
       generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 2048,
-        topP: 0.95,
+        temperature: 0.5,
+        maxOutputTokens: 1024,
+        topP: 0.9,
       },
     };
 

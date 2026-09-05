@@ -132,10 +132,10 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
     setIsLoading(true);
 
     try {
-      // Build conversation history (last 10 messages for context window)
+      // Build conversation history (last 6 messages for ultra-fast prompt processing)
       const history = [...messages, userMsg]
         .filter((m) => m.id !== 'welcome')
-        .slice(-10)
+        .slice(-6)
         .map((m) => ({ role: m.role, content: m.content }));
 
       const response = await fetch('/api/copilot', {
@@ -152,13 +152,29 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
       const contentType = response.headers.get('content-type') || '';
 
       if (contentType.includes('text/event-stream')) {
-        // ─── Streaming Response ───
+        // ─── High-Performance Stream Renderer ───
         const reader = response.body?.getReader();
         if (!reader) throw new Error('No reader');
 
         const decoder = new TextDecoder();
         let buffer = '';
         let accumulated = '';
+        let renderPending = false;
+
+        const scheduleRender = () => {
+          if (renderPending) return;
+          renderPending = true;
+          requestAnimationFrame(() => {
+            renderPending = false;
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === assistantId
+                  ? { ...m, content: accumulated, isStreaming: true }
+                  : m
+              )
+            );
+          });
+        };
 
         while (true) {
           const { done, value } = await reader.read();
@@ -179,13 +195,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
               const parsed = JSON.parse(data);
               if (parsed.content) {
                 accumulated += parsed.content;
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === assistantId
-                      ? { ...m, content: accumulated, isStreaming: true }
-                      : m
-                  )
-                );
+                scheduleRender();
               }
             } catch {
               // Skip malformed chunks
@@ -196,7 +206,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
         // Finalize
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === assistantId ? { ...m, isStreaming: false } : m
+            m.id === assistantId ? { ...m, content: accumulated, isStreaming: false } : m
           )
         );
       } else {
