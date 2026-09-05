@@ -1,58 +1,87 @@
 import { getAuthenticatedUser } from '@/lib/auth';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { ProvenanceBadge } from '@/components/ProvenanceBadge';
+import { redirect } from 'next/navigation';
+import { AdminOverviewClient } from './AdminOverviewClient';
+import { type WorkforceOverview, type DepartmentSummary, type TrainingPriority } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminAnalyticsPage() {
-  await getAuthenticatedUser();
+  const user = await getAuthenticatedUser();
+
+  if (!user || user.role !== 'admin') {
+    redirect('/dashboard');
+  }
+
+  // Pre-seeded high-fidelity demonstration datasets
+  const demoOverview: WorkforceOverview = {
+    totalOfficials: 1420,
+    avgReadiness: 68,
+    criticalGaps: 312,
+    trendDirection: 'up',
+    activePrioritiesCount: 2,
+  };
+
+  const demoDepartments: DepartmentSummary[] = [
+    {
+      department: 'NSSO FOD UP East',
+      officialCount: 420,
+      avgReadiness: 48,
+      criticalGapCount: 112,
+      trendDirection: 'down',
+      isPriorityFlagged: true,
+    },
+    {
+      department: 'NSSO FOD Bihar Regional',
+      officialCount: 380,
+      avgReadiness: 54,
+      criticalGapCount: 94,
+      trendDirection: 'stable',
+      isPriorityFlagged: true,
+    },
+    {
+      department: 'SSS Data Supervision Wing',
+      officialCount: 340,
+      avgReadiness: 74,
+      criticalGapCount: 62,
+      trendDirection: 'up',
+      isPriorityFlagged: false,
+    },
+    {
+      department: 'ISS Macroeconomic Aggregate Wing',
+      officialCount: 280,
+      avgReadiness: 88,
+      criticalGapCount: 44,
+      trendDirection: 'up',
+      isPriorityFlagged: false,
+    },
+  ];
+
+  const demoPriorities: TrainingPriority[] = [
+    {
+      id: 'tp-1',
+      organization_id: user.organization_id,
+      department: 'NSSO FOD UP East',
+      reason: '15.4% listing error rate in Schedule 0.0 scrutiny audit.',
+      flagged_by: user.id,
+      flagged_at: new Date(Date.now() - 3600000 * 24).toISOString(),
+      resolved: false,
+    },
+    {
+      id: 'tp-2',
+      organization_id: user.organization_id,
+      department: 'NSSO FOD Bihar Regional',
+      reason: 'Urgent refresh needed for CAPI tablet synchronization protocol.',
+      flagged_by: user.id,
+      flagged_at: new Date(Date.now() - 3600000 * 48).toISOString(),
+      resolved: false,
+    },
+  ];
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto py-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Workforce Intelligence & Analytics</h1>
-          <p className="text-sm text-slate-500">
-            Cadre-wide readiness indices, competency heatmaps, and simulated outcome correlations.
-          </p>
-        </div>
-        <ProvenanceBadge provenance="SYNTHETIC_DEMO_DATA" />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm text-slate-500">Total Survey Workforce</CardTitle>
-            <div className="text-3xl font-bold text-slate-900 mt-2">1,420</div>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm text-slate-500">Average Readiness Index</CardTitle>
-            <div className="text-3xl font-bold text-slate-900 mt-2">68.4%</div>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm text-slate-500">Critical Gaps Identified</CardTitle>
-            <div className="text-3xl font-bold text-rose-600 mt-2">312</div>
-          </CardHeader>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Phase 6 Pipeline: MoSPI Executive Dashboard</CardTitle>
-          <CardDescription>
-            High-level workforce readiness and training outcome correlation analytics.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="h-48 flex items-center justify-center bg-slate-50 rounded-lg border border-slate-200 text-slate-500 text-sm">
-            📊 Interactive Workforce Heatmaps & Training Impact Analytics (Phase 6)
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <AdminOverviewClient
+      initialOverview={demoOverview}
+      initialDepartments={demoDepartments}
+      initialPriorities={demoPriorities}
+    />
   );
 }
