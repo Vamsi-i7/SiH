@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import {
@@ -66,47 +66,11 @@ const DEMO_COMPETENCIES = [
   { id: 'comp-teamwork', name: 'Teamwork & Collaboration', category: 'Behavioural', current: 3, target: 2, priority: 'desirable' as const, activity: 'Field Team Coordination', course: 'Effective Field Team Coordination & Informant Engagement' },
 ];
 
-const SEVERITY_MAP = { 0: 'PROFICIENT' as const, 1: 'MODERATE' as const, 2: 'HIGH' as const };
-
-const INITIAL_GAPS: CompetencyGapCard[] = DEMO_COMPETENCIES
-  .map((comp) => {
-    const severityScore = CompetencyService.computeGapSeverity(comp.current, comp.target, comp.priority);
-    const severity = SEVERITY_MAP[severityScore as keyof typeof SEVERITY_MAP] || 'PROFICIENT';
-    return {
-      competencyId: comp.id,
-      competencyName: comp.name,
-      category: comp.category,
-      currentLevel: comp.current,
-      targetLevel: comp.target,
-      gap: Math.max(0, comp.target - comp.current),
-      severity,
-      priority: comp.priority,
-      activity: comp.activity,
-      recommendedCourseTitle: comp.course,
-      recommendedCourseLink: '/pathways',
-    };
-  })
-  .filter((g) => g.gap > 0)
-  .sort((a, b) => b.gap - a.gap);
-
-const INITIAL_RADAR: RadarDataPoint[] = DEMO_COMPETENCIES.map((c) => ({
-  label: c.name.split(' ').slice(0, 2).join(' '),
-  current: c.current,
-  target: c.target,
-}));
-
-const INITIAL_READINESS = Math.round(
-  (DEMO_COMPETENCIES.filter((c) => c.current >= c.target).length / DEMO_COMPETENCIES.length) * 100
-);
-
 export default function DashboardClient({ user }: DashboardProps) {
   const t = useTranslations();
   const locale = useLocale();
 
   const [selectedCourseTab, setSelectedCourseTab] = useState<'all' | 'critical' | 'applied' | 'foundational'>('all');
-  const [readinessIndex] = useState<number>(INITIAL_READINESS);
-  const [topGaps] = useState<CompetencyGapCard[]>(INITIAL_GAPS);
-  const [radarData] = useState<RadarDataPoint[]>(INITIAL_RADAR);
 
   // Time-aware greeting
   const getGreeting = () => {
@@ -120,6 +84,45 @@ export default function DashboardClient({ user }: DashboardProps) {
   const userDesignation = user.user_metadata?.designation || 'Junior Statistical Officer';
   const userCadre = user.user_metadata?.cadre || 'Subordinate Statistical Service (SSS)';
 
+  // Calculate readiness index (% of target competencies met)
+  const readinessIndex = useMemo(() => {
+    const met = DEMO_COMPETENCIES.filter((c) => c.current >= c.target).length;
+    return Math.round((met / DEMO_COMPETENCIES.length) * 100);
+  }, []);
+
+  // Build actionable gap list
+  const topGaps = useMemo<CompetencyGapCard[]>(() => {
+    const SEVERITY_MAP = { 0: 'PROFICIENT' as const, 1: 'MODERATE' as const, 2: 'HIGH' as const };
+    return DEMO_COMPETENCIES
+      .map((comp) => {
+        const severityScore = CompetencyService.computeGapSeverity(comp.current, comp.target, comp.priority);
+        const severity = SEVERITY_MAP[severityScore as keyof typeof SEVERITY_MAP] || 'PROFICIENT';
+        return {
+          competencyId: comp.id,
+          competencyName: comp.name,
+          category: comp.category,
+          currentLevel: comp.current,
+          targetLevel: comp.target,
+          gap: Math.max(0, comp.target - comp.current),
+          severity,
+          priority: comp.priority,
+          activity: comp.activity,
+          recommendedCourseTitle: comp.course,
+          recommendedCourseLink: '/pathways',
+        };
+      })
+      .filter((g) => g.gap > 0)
+      .sort((a, b) => b.gap - a.gap);
+  }, []);
+
+  // Build radar data
+  const radarData = useMemo<RadarDataPoint[]>(() => {
+    return DEMO_COMPETENCIES.map((c) => ({
+      label: c.name.split(' ').slice(0, 2).join(' '),
+      current: c.current,
+      target: c.target,
+    }));
+  }, []);
   // Format catalog courses for the CourseCard component
   const recommendedCourses: CourseData[] = OFFICIAL_COURSE_CATALOG.map((course) => {
     let whyRec = 'Recommended by statistical training council to build institutional competency.';

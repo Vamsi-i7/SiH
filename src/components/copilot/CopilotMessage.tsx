@@ -193,7 +193,7 @@ function renderStructuredMessage(content: string) {
   return elements;
 }
 
-function CopilotMessageInner({ role, content, isStreaming, timestamp }: CopilotMessageProps) {
+function CopilotMessageInner({ role, content, timestamp }: CopilotMessageProps) {
   const isBot = role === 'assistant';
 
   return (
@@ -218,9 +218,14 @@ function CopilotMessageInner({ role, content, isStreaming, timestamp }: CopilotM
       >
         {isBot ? (
           <div className="space-y-0.5">
-            {renderStructuredMessage(content)}
-            {isStreaming && (
-              <span className="ml-1 inline-block h-3 w-0.5 animate-pulse bg-[#555934]" />
+            {!content.trim() ? (
+              <div className="flex items-center gap-1.5 py-1 px-0.5">
+                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            ) : (
+              renderStructuredMessage(content)
             )}
           </div>
         ) : (

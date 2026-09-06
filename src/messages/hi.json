@@ -19,7 +19,30 @@
     "language": "भाषा",
     "offline": "ऑफ़लाइन",
     "online": "ऑनलाइन",
-    "pendingSync": "सिंक लंबित"
+    "pendingSync": "सिंक लंबित",
+    "notifications": "सूचनाएं",
+    "persona": "व्यक्तित्व",
+    "learner": "शिक्षार्थी",
+    "trainer": "प्रशिक्षक",
+    "admin": "प्रशासक"
+  },
+  "notifications": {
+    "title": "सूचनाएं",
+    "markAllAsRead": "सभी को पढ़ा हुआ चिह्नित करें",
+    "allCaughtUp": "आप पूरी तरह से अद्यतन हैं",
+    "noNotifications": "अभी कोई नई सूचना नहीं है।",
+    "viewAll": "सभी सूचनाएं देखें",
+    "unreadBadge": "{count} अपठित",
+    "emptyDescription": "जब आपको मूल्यांकन, अध्ययन पथ अद्यतन या प्रणाली चेतावनियां प्राप्त होंगी, वे यहां दिखाई देंगी।",
+    "filterAll": "सभी",
+    "filterUnread": "अपठित",
+    "types": {
+      "assessment": "मूल्यांकन",
+      "learning": "अध्ययन",
+      "system": "प्रणाली",
+      "achievement": "उपलब्धि",
+      "announcement": "घोषणा"
+    }
   },
   "home": {
     "badge": "स्टैटविद्या राष्ट्रीय कौशल मूल्यांकन पोर्टल",

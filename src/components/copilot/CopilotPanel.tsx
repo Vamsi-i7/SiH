@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send, Sparkles, Zap, RotateCcw, WifiOff } from 'lucide-react';
 import { CopilotMessage } from './CopilotMessage';
 import type { CopilotUserContext } from '@/lib/copilotPrompt';
+import { matchPreMadeFaq } from '@/data/copilotFaqResponses';
 
 // ============================================================================
 // TYPES
@@ -131,6 +132,39 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
     setIsLoading(true);
 
     try {
+      // ─── Fast-path Curated FAQs & Suggestions ───
+      const preMadeResponse = matchPreMadeFaq(text, userContext);
+      if (preMadeResponse) {
+        // Simulate a realistic slight AI thinking delay (~450ms)
+        await new Promise((resolve) => setTimeout(resolve, 450));
+
+        // Fast, organic token typewriter effect (~16ms per chunk)
+        const words = preMadeResponse.split(/(\s+)/);
+        const chunkSize = 4;
+
+        for (let i = chunkSize; i < words.length; i += chunkSize) {
+          const currentText = words.slice(0, i).join('');
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? { ...m, content: currentText, isStreaming: true }
+                : m
+            )
+          );
+          await new Promise((resolve) => setTimeout(resolve, 16));
+        }
+
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? { ...m, content: preMadeResponse, isStreaming: false }
+              : m
+          )
+        );
+        setIsLoading(false);
+        return;
+      }
+
       // Build conversation history (last 6 messages for ultra-fast prompt processing)
       const history = [...messages, userMsg]
         .filter((m) => m.id !== 'welcome')
@@ -331,20 +365,6 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
               timestamp={msg.timestamp}
             />
           ))}
-
-          {/* Typing indicator */}
-          {isLoading && messages[messages.length - 1]?.content === '' && (
-            <div className="flex items-center gap-2 px-1">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#555934]">
-                <Sparkles className="h-3.5 w-3.5 text-white" />
-              </div>
-              <div className="flex gap-1">
-                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '300ms' }} />
-              </div>
-            </div>
-          )}
 
           <div ref={messagesEndRef} />
         </div>

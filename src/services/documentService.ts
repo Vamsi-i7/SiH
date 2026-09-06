@@ -6,7 +6,7 @@
  */
 
 import { db, storage } from '@/lib/firebase';
-import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, doc, deleteDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export interface DocumentChunk {
@@ -34,6 +34,7 @@ export interface IngestedDocument {
   chunks?: DocumentChunk[];
   storageUrl?: string;
   storagePath?: string;
+  userId?: string;
 }
 
 export class DocumentService {
@@ -43,7 +44,8 @@ export class DocumentService {
   static async processDocument(
     filename: string,
     fileContent: string | Buffer,
-    targetCompetencies: string[] = []
+    targetCompetencies: string[] = [],
+    userId?: string
   ): Promise<IngestedDocument> {
     const docId = `doc-${Date.now()}`;
     const fileBuffer = typeof fileContent === 'string' ? Buffer.from(fileContent) : fileContent;
@@ -91,11 +93,12 @@ export class DocumentService {
       chunks,
       storageUrl,
       storagePath,
+      userId,
     };
 
     // 2. Map metadata to Firestore DB
     try {
-      await addDoc(collection(db, 'documents'), {
+      const docRef = await addDoc(collection(db, 'documents'), {
         title: docRecord.title,
         filename,
         storagePath,
@@ -104,8 +107,11 @@ export class DocumentService {
         status: 'INDEXED',
         chunkCount: chunks.length || 1,
         targetCompetencies,
+        chunks: chunks.slice(0, 15),
+        userId: userId || 'public',
         createdAt: docRecord.uploadedAt,
       });
+      docRecord.id = docRef.id;
     } catch {
       // Local fallback if Firestore offline
     }
@@ -114,36 +120,63 @@ export class DocumentService {
   }
 
   /**
-   * Retrieves documents from Firestore DB or sample pre-loaded MoSPI official manuals
+   * Retrieves documents from Firestore DB filtered by user ownership + public official manuals
    */
-  static async getDocuments(): Promise<IngestedDocument[]> {
+  static async getDocuments(filterUserId?: string): Promise<IngestedDocument[]> {
     try {
       const docsRef = collection(db, 'documents');
       const q = query(docsRef, orderBy('createdAt', 'desc'));
       const snapshot = await getDocs(q);
 
       if (!snapshot.empty) {
-        return snapshot.docs.map((docSnap) => {
-          const data = docSnap.data();
-          return {
-            id: docSnap.id,
-            title: data.title || 'Untitled Document',
-            filename: data.filename || 'manual.pdf',
-            sizeBytes: Number(data.sizeBytes || 0),
-            uploadedAt: data.createdAt || new Date().toISOString(),
-            status: data.status || 'INDEXED',
-            chunkCount: data.chunkCount || 16,
-            targetCompetencies: data.targetCompetencies || ['comp-capi', 'comp-nsso'],
-            storageUrl: data.storageUrl,
-            storagePath: data.storagePath,
-          };
-        });
+        const firestoreDocs = snapshot.docs
+          .map((docSnap) => {
+            const data = docSnap.data();
+            return {
+              id: docSnap.id,
+              title: data.title || 'Untitled Document',
+              filename: data.filename || 'manual.pdf',
+              sizeBytes: Number(data.sizeBytes || 0),
+              uploadedAt: data.createdAt || new Date().toISOString(),
+              status: data.status || 'INDEXED',
+              chunkCount: data.chunkCount || 16,
+              targetCompetencies: data.targetCompetencies || ['comp-capi', 'comp-nsso'],
+              chunks: data.chunks as DocumentChunk[] | undefined,
+              storageUrl: data.storageUrl,
+              storagePath: data.storagePath,
+              userId: (data.userId as string) || 'public',
+            };
+          })
+          .filter((doc) => {
+            // Include public/system documents plus user's own uploads
+            if (!filterUserId) return true;
+            return doc.userId === filterUserId || doc.userId === 'public' || doc.userId === 'system';
+          });
+
+        // Merge with sample documents for rich initial repository
+        const sampleDocs = DocumentService.getSampleDocuments();
+        const existingFilenames = new Set(firestoreDocs.map((d) => d.filename));
+        const nonDuplicateSamples = sampleDocs.filter((s) => !existingFilenames.has(s.filename));
+        return [...firestoreDocs, ...nonDuplicateSamples];
       }
     } catch {
-      // Fallback
+      // Fallback to samples if Firestore offline
     }
 
     return DocumentService.getSampleDocuments();
+  }
+
+  /**
+   * Delete a document from Firestore
+   */
+  static async deleteDocument(id: string): Promise<boolean> {
+    try {
+      const docRef = doc(db, 'documents', id);
+      await deleteDoc(docRef);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   /**
