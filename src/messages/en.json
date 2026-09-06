@@ -19,7 +19,30 @@
     "language": "Language",
     "offline": "Offline",
     "online": "Online",
-    "pendingSync": "Pending Sync"
+    "pendingSync": "Pending Sync",
+    "notifications": "Notifications",
+    "persona": "Persona",
+    "learner": "Learner",
+    "trainer": "Trainer",
+    "admin": "Admin"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllAsRead": "Mark all as read",
+    "allCaughtUp": "You're all caught up",
+    "noNotifications": "No new notifications right now.",
+    "viewAll": "View all notifications",
+    "unreadBadge": "{count} unread",
+    "emptyDescription": "When you receive assessments, pathway updates, or system alerts, they will appear here.",
+    "filterAll": "All",
+    "filterUnread": "Unread",
+    "types": {
+      "assessment": "Assessment",
+      "learning": "Learning",
+      "system": "System",
+      "achievement": "Achievement",
+      "announcement": "Announcement"
+    }
   },
   "home": {
     "badge": "StatVidya National Skill Assessment Portal",
