@@ -107,7 +107,7 @@ export function DocumentPracticeCard({
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">
                 <Sparkles className="h-3 w-3 text-emerald-700" />
-                Groq AI Practice
+                AI Practice Station
               </span>
               <span className="text-[11px] px-2 py-0.5 rounded-md bg-stone-200/80 text-stone-700 font-semibold uppercase tracking-wider">
                 {difficulty} Calibration
@@ -361,7 +361,7 @@ export function DocumentPracticeCard({
           </div>
 
           <div className="flex items-center gap-2 text-xs text-stone-500">
-            <span>Powered by Groq AI</span>
+            <span>MoSPI Cognitive Assessment Engine</span>
             <span>•</span>
             <span>Consensus: {(question.consensusScore * 100).toFixed(0)}%</span>
           </div>
