@@ -4,7 +4,7 @@ import { MCQService } from '@/services/mcqService';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { competencyId, difficulty, topicPrompt, citationSource } = body;
+    const { competencyId, difficulty, topicPrompt, citationSource, docText, docTitle } = body;
 
     if (!competencyId) {
       return NextResponse.json({ error: 'Competency ID required' }, { status: 400 });
@@ -15,6 +15,8 @@ export async function POST(request: Request) {
       difficulty: difficulty || 'medium',
       topicPrompt,
       citationSource,
+      docText,
+      docTitle,
     });
 
     return NextResponse.json({
