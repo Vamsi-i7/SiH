@@ -1,8 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { type OutcomeCorrelationSeries } from '@/lib/types';
-import { ScatterChart } from '@/components/ScatterChart';
+
+const ScatterChart = dynamic(
+  () => import('@/components/ScatterChart').then((mod) => mod.ScatterChart),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-80 w-full items-center justify-center bg-white rounded-2xl shadow-card border border-stone-200">
+        <div className="h-48 w-full max-w-md bg-[#E8DACB]/30 rounded-xl animate-pulse" />
+      </div>
+    ),
+  }
+);
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
