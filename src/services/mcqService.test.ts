@@ -70,7 +70,7 @@ describe('MCQService', () => {
     );
 
     expect(questions.length).toBe(3);
-    questions.forEach((q, idx) => {
+    questions.forEach((q) => {
       expect(q.id).toBeDefined();
       expect(q.competencyId).toBe('comp-nsso');
       expect(q.optionsEn.length).toBe(4);

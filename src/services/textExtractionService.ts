@@ -76,11 +76,12 @@ export class TextExtractionService {
       const decoder = new TextDecoder('utf-8');
       const decoded = decoder.decode(bytes);
       const cleaned = this.cleanText(decoded);
+      const finalText = cleaned || 'Empty document provided.';
 
       return {
-        text: cleaned || 'Empty document provided.',
+        text: finalText,
         method: 'plain_text',
-        wordCount: this.countWords(cleaned),
+        wordCount: this.countWords(finalText),
       };
     } catch {
       return {
