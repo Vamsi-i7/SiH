@@ -413,6 +413,7 @@ export function DocumentPracticeCard({
             </div>
             <Link
               href="/review-queue"
+              prefetch={true}
               className="font-bold underline text-emerald-800 hover:text-emerald-950 shrink-0"
             >
               Open Queue →
