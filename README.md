@@ -8,9 +8,8 @@
 [![iGOT Karmayogi](https://img.shields.io/badge/Ecosystem-iGOT_Karmayogi-FF9933?style=flat-square)](https://igotkarmayogi.gov.in/)
 [![Next.js 15](https://img.shields.io/badge/Frontend-Next.js_15_App_Router-000000?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Styling-Tailwind_CSS_v4_OKLCH-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Database-Supabase_PostgreSQL_16-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com/)
-[![Cloudflare R2](https://img.shields.io/badge/Storage-Cloudflare_R2_$0_Egress-F38020?style=flat-square&logo=cloudflare)](https://cloudflare.com/)
-[![Multi-AI Gateway](https://img.shields.io/badge/AI-Gemini_2.5_+_Claude_3.5-8E75B2?style=flat-square&logo=google)](https://ai.google.dev/)
+[![Firebase](https://img.shields.io/badge/Platform-Firebase_Auth_|_Firestore_|_Storage-FFCA28?style=flat-square&logo=firebase)](https://firebase.google.com/)
+[![AI Engine](https://img.shields.io/badge/AI-Gemini_3.6_Flash-8E75B2?style=flat-square&logo=google)](https://ai.google.dev/)
 
 ---
 
@@ -44,38 +43,23 @@ graph TD
 
 ---
 
-## 🏛️ 3-Provider Cloud Architecture (v2.0)
+## 🏛️ Firebase Cloud Architecture (v3.0)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                                CLIENT TIER                                  │
 │  Next.js 15 App Router + Tailwind CSS v4 (OKLCH) + @serwist/next PWA        │
 │  State: TanStack Query + React Context | Offline: IndexedDB (`idb` queue)   │
-└───────────────────┬──────────────────────┬──────────────────────┬───────────┘
-                    │                      │                      │
-      Direct HTTPS  │        BFF HTTPS     │        Direct Upload │
-      & Realtime WS │        API Routes    │        & AI Proxy    │
-                    ▼                      ▼                      ▼
-┌──────────────────────────────┐ ┌──────────────────┐ ┌───────────────────────┐
-│       SUPABASE TIER          │ │   VERCEL TIER    │ │    CLOUDFLARE TIER    │
-│                              │ │                  │ │                       │
-│  • Supabase Auth (JWT)       │ │  • Next.js App   │ │  • Cloudflare Workers │
-│  • Parichay OIDC SSO         │ │    Server Comps  │ │    ├─ r2-upload       │
-│  • PostgreSQL 16+ with RLS   │ │  • Edge API      │ │    └─ ai-proxy        │
-│  • Edge Functions (Deno)     │ │    BFF Gate      │ │  • Cloudflare R2      │
-│  • Realtime WebSocket PubSub │ │                  │ │    ($0 Egress PDFs)   │
-│  • Storage (Avatars)         │ │                  │ │  • Cloudflare AI      │
-│                              │ │                  │ │    Gateway (Failover) │
-└──────────────────────────────┘ └──────────────────┘ └───────────┬───────────┘
-                                                                  │
-                                                                  ▼
-                                                      ┌───────────────────────┐
-                                                      │ EXTERNAL AI CHAIN     │
-                                                      │ 1. Gemini 2.5 Flash   │
-                                                      │ 2. Claude 3.5 Sonnet  │
-                                                      │ 3. GPT-4o-mini        │
-                                                      │ 4. In-Repo Rule Engine│
-                                                      └───────────────────────┘
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                               FIREBASE TIER                                 │
+│  • Firebase Authentication (Email/Password, Google OAuth, Session Cookies)  │
+│  • Cloud Firestore Database (`firestore.rules` for Role-Based Access)       │
+│  • Firebase Storage (`storage.rules` for Manuals & Large PDF Documents)     │
+│  • Firestore Realtime Subscriptions (`onSnapshot` for Admin Flags)          │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -86,7 +70,7 @@ graph TD
 | :--- | :--- | :--- |
 | 🌾 **Sunita Devi** (Field Investigator) | NSSO FOD Field Enumeration | Offline PWA assessment runner, Hindi-first UI, zero data-loss sync |
 | 👨‍💼 **Amit Sharma** (Junior Statistical Officer) | MoSPI HQ / SSS Cadre | FRAC gap analysis, APAR milestone tracking, iGOT course enrolment |
-| 👨‍🏫 **Dr. Priya Verma** (NSSTA Faculty) | Training Academies | Direct-to-R2 large manual upload, AI MCQ generation, review queue |
+| 👨‍🏫 **Dr. Priya Verma** (NSSTA Faculty) | Training Academies | Document PDF manual upload, AI MCQ generation, review queue |
 | 🏢 **Rajesh Kumar** (Additional Director General) | MoSPI Leadership | Macro readiness index, training priority write-back, outcome correlation |
 
 ---
@@ -107,9 +91,9 @@ StatVidya enforces a 100% visible **Provenance Labeling Policy** across all doma
 
 - **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS v4, shadcn/ui, Lucide Icons
 - **PWA & Offline**: `@serwist/next` Service Worker, IndexedDB (`idb` queue), bilingual i18n
-- **Database & Auth**: Supabase PostgreSQL 16+ (Row Level Security), Supabase Auth, Parichay OIDC SSO
-- **Serverless & Storage**: Supabase Edge Functions (Deno), Cloudflare R2 ($0 egress), Cloudflare Workers
-- **AI Engine**: Cloudflare AI Gateway with automated failover (Gemini 2.5 Flash → Claude 3.5 Sonnet → GPT-4o-mini → In-repo Rule Engine)
+- **Database & Auth**: Cloud Firestore Database, Firebase Authentication, Security Rules (`firestore.rules`, `storage.rules`)
+- **Serverless & Storage**: Firebase Storage, Next.js Server Components & Route Handlers
+- **AI Engine**: Gemini 3.6 Flash Copilot with offline fallback response generator
 
 ---
 

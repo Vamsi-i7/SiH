@@ -7,7 +7,7 @@
 | Document type | Product Requirements Document (PRD) — Full Technical Specification |
 | Working title | StatVidya |
 | Origin | Ground-up build for SIH 26101 |
-| Status | Draft v2.0 — Architecture Pivot (Supabase + Cloudflare + Next.js) |
+| Status | Active v3.0 — Firebase Architecture (Auth, Firestore, Storage, Security Rules) |
 | Target program | Smart India Hackathon, Problem Statement **SIH 26101** |
 | Owner | *(fill in)* |
 | Last updated | 2026-09-05 |

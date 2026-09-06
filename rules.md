@@ -6,9 +6,9 @@
 |---|---|
 | Companion docs | PRD.md, Architecture.md, Phases.md, Design.md, memory.md |
 | Purpose | Codify what we do, what we avoid, and where every boundary is — libraries, error handling, AI, naming, security |
-| Status | **Active v2.0 — Architecture Pivot (Supabase + Cloudflare + Next.js)** |
+| Status | **Active v3.0 — Firebase Architecture (Auth, Firestore, Storage, Security Rules)** |
 
-> **Read this before writing any code.** Every rule here exists because of a specific architectural decision in **PRD.md v2.0** or **Architecture.md v2.0**. If a rule conflicts with an ad-hoc implementation shortcut, the rule wins until it is formally amended.
+> **Read this before writing any code.** Every rule here exists because of a specific architectural decision in **PRD.md** and **Architecture.md**. If a rule conflicts with an ad-hoc implementation shortcut, the rule wins until it is formally amended.
 
 ---
 
@@ -20,7 +20,7 @@
 4. [Library & Dependency Rules](#4-library--dependency-rules)
 5. [TypeScript & Code Style](#5-typescript--code-style)
 6. [Error Handling & Boundaries](#6-error-handling--boundaries)
-7. [Security & RLS Rules](#7-security--rls-rules)
+7. [Security & Firestore Rules](#7-security--firestore-rules)
 8. [AI Boundaries & Multi-Provider Rules](#8-ai-boundaries--multi-provider-rules)
 9. [Data & Provenance Rules](#9-data--provenance-rules)
 10. [Testing Rules](#10-testing-rules)
@@ -32,18 +32,18 @@
 ## 1. General Principles
 
 1. **Server Enforces, Client Suggests**:
-   - Any value that affects a competency level, assessment score, or audit record is computed and written server-side (Supabase Edge Functions or database triggers).
+   - Any value that affects a competency level, assessment score, or audit record is computed and written server-side via Firebase Auth token verification and Security Rules.
    - Client-side checks are UI/UX conveniences, never security boundaries.
 2. **Offline is a First-Class State, Not an Error**:
-   - The application must handle offline operation gracefully. Never throw an unhandled exception or display a generic network error modal when connectivity drops.
+   - The application must handle offline operation gracefully via IndexedDB + Firestore offline persistence. Never throw an unhandled exception or display a generic network error modal when connectivity drops.
 3. **Structural Provenance Over Convention**:
-   - Every domain-data record (competencies, roles, activities, courses, questions) must carry a `provenance` field enforced at the TypeScript type level and validated in PostgreSQL constraints.
+   - Every domain-data record (competencies, roles, activities, courses, questions) must carry a `provenance` field enforced at the TypeScript type level.
 4. **Zero-Trust Multi-Tenancy**:
-   - All database tables holding user data must include `organization_id`. Every PostgreSQL Row Level Security (RLS) policy must strictly isolate queries by organization.
-5. **Multi-Provider Cloud Optimization**:
-   - Large PDFs (>50MB) stream directly to Cloudflare R2 ($0 egress fees) via presigned URLs.
-   - Relational data and transactional mutations live in Supabase PostgreSQL.
-   - Application shell and SSR/SSG rendering run on Vercel Edge.
+   - All database documents holding user data must include `organization_id`. Every Firestore Security Rule policy must strictly isolate queries by organization.
+5. **Unified Firebase Platform Topology**:
+   - Large PDFs stream directly to Firebase Storage (`storage.rules`).
+   - Real-time document data and transactional mutations live in Cloud Firestore (`firestore.rules`).
+   - Authentication and identity management run through Firebase Authentication.
 
 ---
 
@@ -130,8 +130,8 @@
 | **UI Primitives** | shadcn/ui + Radix UI | Accessible, unstyled primitives, customizable |
 | **PWA / Service Worker** | `@serwist/next` | Workbox-based service worker built specifically for Next.js App Router |
 | **Offline Storage** | `idb` | Lightweight, typed wrapper around browser IndexedDB |
-| **Database Client** | `@supabase/supabase-js`, `@supabase/ssr` | Native connection to Supabase PostgreSQL, Auth & Realtime |
-| **Object Storage SDK** | `@aws-sdk/client-s3`, `@aws-sdk/s3-request-presigner` | Used inside Cloudflare Workers for R2 presigned URL generation |
+| **Database Client** | `firebase`, `firebase-admin` | Native connection to Cloud Firestore, Auth & Realtime |
+| **Object Storage SDK** | `firebase/storage` | Managed zero-egress document and PDF storage |
 | **PDF Extraction** | `pdf.js` + `tesseract.js` | Client-side chunking and OCR fallback for scanned training manuals |
 | **Charts** | Recharts + Bespoke SVG | Recharts for scatter/trendlines; bespoke SVG for radar charts and progress rings |
 | **Icons** | Lucide React | Clean, modern, accessible vector iconography |
@@ -143,7 +143,6 @@
 - `moment.js` (use native `Intl` or lightweight `date-fns`)
 - `styled-components` / `emotion` (Tailwind CSS v4 is the exclusive styling system)
 - Full `lodash` bundle (use vanilla TypeScript or tree-shaken helpers)
-- `firebase` client SDK (statvidya is built on Supabase + Cloudflare)
 
 ---
 
