@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import { FileText, CheckCircle2, Upload, Eye } from 'lucide-react';
+import { FileText, CheckCircle2, Upload, Eye, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 interface IngestedDoc {
   id: string;
+  manualId: string;
   title: string;
   division: string;
   pages: number;
@@ -18,6 +19,7 @@ interface IngestedDoc {
 const INGESTED_DOCUMENTS: IngestedDoc[] = [
   {
     id: 'doc-1',
+    manualId: 'manual-plfs-vol1',
     title: 'PLFS 2026 Instructions Vol. 1: Field Operations',
     division: 'NSSO Field Operations Division',
     pages: 184,
@@ -28,6 +30,7 @@ const INGESTED_DOCUMENTS: IngestedDoc[] = [
   },
   {
     id: 'doc-2',
+    manualId: 'manual-schedule0',
     title: 'Schedule 0.0 Household Listing & Demarcation Handbook',
     division: 'Survey Design & Research Division (SDRD)',
     pages: 96,
@@ -38,6 +41,7 @@ const INGESTED_DOCUMENTS: IngestedDoc[] = [
   },
   {
     id: 'doc-3',
+    manualId: 'manual-capi',
     title: 'ASHE & CAPI Tablet Operational Protocol Ver 2026.2',
     division: 'Data Processing Division (DPD)',
     pages: 64,
@@ -48,6 +52,7 @@ const INGESTED_DOCUMENTS: IngestedDoc[] = [
   },
   {
     id: 'doc-4',
+    manualId: 'manual-plfs-vol1',
     title: 'National Industrial Classification (NIC-2008) Concordance',
     division: 'Data Quality Assurance Division (DQAD)',
     pages: 120,
@@ -58,6 +63,7 @@ const INGESTED_DOCUMENTS: IngestedDoc[] = [
   },
   {
     id: 'doc-5',
+    manualId: 'manual-schedule0',
     title: 'Annual Survey of Industries (ASI) Scrutiny Rules',
     division: 'Economic Statistics Division (ESD)',
     pages: 78,
@@ -68,7 +74,11 @@ const INGESTED_DOCUMENTS: IngestedDoc[] = [
   },
 ];
 
-export function IngestedDocumentsLedger() {
+interface IngestedDocumentsLedgerProps {
+  onOpenManualReader?: (manualId: string) => void;
+}
+
+export function IngestedDocumentsLedger({ onOpenManualReader }: IngestedDocumentsLedgerProps) {
   return (
     <div className="rounded-3xl bg-white border border-[#BF9B7A]/30 p-6 shadow-xs overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-[#BF9B7A]/20">
@@ -150,13 +160,24 @@ export function IngestedDocumentsLedger() {
 
                 {/* Actions */}
                 <td className="py-4 pr-2 text-right">
-                  <Link
-                    href="/documents"
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 text-xs font-bold text-[#555934] hover:bg-[#FAF6F0]/80 transition-colors"
-                  >
-                    <Eye className="h-3 w-3" />
-                    <span>Chunks</span>
-                  </Link>
+                  {onOpenManualReader ? (
+                    <button
+                      type="button"
+                      onClick={() => onOpenManualReader(doc.manualId)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 text-xs font-bold text-[#555934] hover:bg-[#F2E6D8] transition-colors cursor-pointer"
+                    >
+                      <BookOpen className="h-3 w-3" />
+                      <span>Inspect</span>
+                    </button>
+                  ) : (
+                    <Link
+                      href="/documents"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 text-xs font-bold text-[#555934] hover:bg-[#FAF6F0]/80 transition-colors"
+                    >
+                      <Eye className="h-3 w-3" />
+                      <span>Chunks</span>
+                    </Link>
+                  )}
                 </td>
               </tr>
             ))}
@@ -166,3 +187,5 @@ export function IngestedDocumentsLedger() {
     </div>
   );
 }
+
+export default IngestedDocumentsLedger;

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Check, X, Edit3, ShieldAlert, Sparkles, BookOpen, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Check, X, Edit3, ShieldAlert, Sparkles, BookOpen, ArrowRight, ArrowLeft, BarChart3 } from 'lucide-react';
+import type { ItemAnalysisData } from './modals/ItemAnalysisModal';
 
 interface QuestionItem {
   id: string;
@@ -66,7 +67,11 @@ const INITIAL_QUEUE: QuestionItem[] = [
   },
 ];
 
-export function TrainerReviewTriageCard() {
+interface TrainerReviewTriageCardProps {
+  onInspectItem?: (item: ItemAnalysisData) => void;
+}
+
+export function TrainerReviewTriageCard({ onInspectItem }: TrainerReviewTriageCardProps) {
   const [queue, setQueue] = useState<QuestionItem[]>(INITIAL_QUEUE);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -107,6 +112,24 @@ export function TrainerReviewTriageCard() {
     setIsEditing(false);
   };
 
+  const currentAnalysisData: ItemAnalysisData | null = currentItem
+    ? {
+        id: currentItem.id,
+        stem: currentItem.stem,
+        options: currentItem.options,
+        correctIndex: currentItem.correctIndex,
+        discriminationIndex: 0.44,
+        facilityIndex: currentItem.confidence / 100,
+        distractorPercentages: [14, 68, 12, 6],
+        totalResponses: 420,
+        competencyTag: currentItem.competencyTag,
+        sourceDoc: currentItem.sourceDoc,
+        section: currentItem.section,
+        sourceSnippet: `Statutory operational instructions from ${currentItem.sourceDoc} governing ${currentItem.competencyTag}.`,
+        status: currentItem.status,
+      }
+    : null;
+
   return (
     <div className="rounded-3xl bg-[#2d1f17] text-white p-6 sm:p-7 shadow-md border border-[#BF9B7A]/20 flex flex-col justify-between">
       <div>
@@ -134,11 +157,13 @@ export function TrainerReviewTriageCard() {
           <div className="mt-5 space-y-4">
             {/* Metadata Badges */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold font-mono ${
-                currentItem.confidence < 70
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-              }`}>
+              <span
+                className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold font-mono ${
+                  currentItem.confidence < 70
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                    : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                }`}
+              >
                 <ShieldAlert className="h-3 w-3" />
                 Confidence: {currentItem.confidence}%
               </span>
@@ -164,14 +189,14 @@ export function TrainerReviewTriageCard() {
                     <button
                       type="button"
                       onClick={() => setIsEditing(false)}
-                      className="px-3 py-1 rounded-lg bg-white/10 text-xs font-semibold hover:bg-white/20"
+                      className="px-3 py-1 rounded-lg bg-white/10 text-xs font-semibold hover:bg-white/20 cursor-pointer"
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={handleSaveEdit}
-                      className="px-3 py-1 rounded-lg bg-[#F8C858] text-[#2d1f17] text-xs font-bold hover:bg-[#e6b94e]"
+                      className="px-3 py-1 rounded-lg bg-[#F8C858] text-[#2d1f17] text-xs font-bold hover:bg-[#e6b94e] cursor-pointer"
                     >
                       Save Changes
                     </button>
@@ -185,7 +210,7 @@ export function TrainerReviewTriageCard() {
                   <button
                     type="button"
                     onClick={handleStartEdit}
-                    className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-white/10 text-xs text-[#FAF6F0] hover:bg-white/20 transition-opacity"
+                    className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg bg-white/10 text-xs text-[#FAF6F0] hover:bg-white/20 transition-opacity cursor-pointer"
                     title="Edit question text"
                   >
                     <Edit3 className="h-3.5 w-3.5" />
@@ -207,11 +232,13 @@ export function TrainerReviewTriageCard() {
                         : 'bg-white/5 border-white/10 text-[#FAF6F0]/80'
                     }`}
                   >
-                    <span className={`h-5 w-5 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold font-mono ${
-                      isCorrect
-                        ? 'bg-emerald-500 text-[#2d1f17]'
-                        : 'bg-white/10 text-[#FAF6F0]/70'
-                    }`}>
+                    <span
+                      className={`h-5 w-5 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold font-mono ${
+                        isCorrect
+                          ? 'bg-emerald-500 text-[#2d1f17]'
+                          : 'bg-white/10 text-[#FAF6F0]/70'
+                      }`}
+                    >
                       {String.fromCharCode(65 + optIdx)}
                     </span>
                     <span className="flex-1 leading-snug">{option}</span>
@@ -236,7 +263,7 @@ export function TrainerReviewTriageCard() {
             type="button"
             disabled={currentIndex === 0}
             onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
-            className="p-2 rounded-xl bg-white/10 text-white hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            className="p-2 rounded-xl bg-white/10 text-white hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
             title="Previous question"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -245,20 +272,22 @@ export function TrainerReviewTriageCard() {
             type="button"
             disabled={currentIndex === queue.length - 1}
             onClick={() => setCurrentIndex((prev) => Math.min(queue.length - 1, prev + 1))}
-            className="p-2 rounded-xl bg-white/10 text-white hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            className="p-2 rounded-xl bg-white/10 text-white hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
             title="Next question"
           >
             <ArrowRight className="h-4 w-4" />
           </button>
           <span className="text-xs text-[#FAF6F0]/70 font-mono ml-2">
             Status:{' '}
-            <strong className={`uppercase ${
-              currentItem?.status === 'approved'
-                ? 'text-emerald-400'
-                : currentItem?.status === 'rejected'
-                  ? 'text-red-400'
-                  : 'text-amber-400'
-            }`}>
+            <strong
+              className={`uppercase ${
+                currentItem?.status === 'approved'
+                  ? 'text-emerald-400'
+                  : currentItem?.status === 'rejected'
+                    ? 'text-red-400'
+                    : 'text-amber-400'
+              }`}
+            >
               {currentItem?.status}
             </strong>
           </span>
@@ -266,10 +295,21 @@ export function TrainerReviewTriageCard() {
 
         {/* Triage Buttons: Reject vs Approve */}
         <div className="flex items-center gap-2.5 w-full sm:w-auto">
+          {onInspectItem && currentAnalysisData && (
+            <button
+              type="button"
+              onClick={() => onInspectItem(currentAnalysisData)}
+              className="px-3.5 py-2 rounded-xl bg-white/10 text-white hover:bg-white/20 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <BarChart3 className="h-3.5 w-3.5 text-[#F8C858]" />
+              <span>Psychometrics</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => currentItem && handleReject(currentItem.id)}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-red-500/20 text-red-300 border border-red-500/30 text-xs font-bold hover:bg-red-500/30 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-red-500/20 text-red-300 border border-red-500/30 text-xs font-bold hover:bg-red-500/30 transition-colors cursor-pointer"
           >
             <X className="h-3.5 w-3.5" />
             <span>Reject</span>
@@ -277,7 +317,7 @@ export function TrainerReviewTriageCard() {
           <button
             type="button"
             onClick={() => currentItem && handleApprove(currentItem.id)}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 transition-colors shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 transition-colors shadow-xs cursor-pointer"
           >
             <Check className="h-3.5 w-3.5" />
             <span>Approve for Bank</span>
@@ -287,3 +327,5 @@ export function TrainerReviewTriageCard() {
     </div>
   );
 }
+
+export default TrainerReviewTriageCard;
