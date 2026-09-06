@@ -13,6 +13,10 @@ import { getAssessmentMetas } from '@/data/assessments';
 import { ClipboardCheck, Clock, BookOpen, ChevronRight } from 'lucide-react';
 
 const iconByIndex = [
+  '📱', // CAPI Operations
+  '🗺️', // Schedule 0.0 & UFS Demarcation
+  '📊', // PLFS Survey
+  '📋', // Statistical Scrutiny
   '🧩', // Problem Solving
   '🔍', // Critical Thinking
   '💬', // Communication
@@ -20,9 +24,10 @@ const iconByIndex = [
 ];
 
 const accentByIndex = [
-  { border: 'border-[#8b9a6e]/30', bg: 'bg-[#8b9a6e]/5', badge: 'bg-[#8b9a6e]/10 text-[#8b9a6e]', btn: 'bg-[#8b9a6e] hover:bg-[#6e7d56]' },
+  { border: 'border-[#1b365d]/30', bg: 'bg-[#1b365d]/5', badge: 'bg-[#1b365d]/10 text-[#1b365d]', btn: 'bg-[#1b365d] hover:bg-[#132742]' },
   { border: 'border-[#c9963a]/30', bg: 'bg-[#c9963a]/5', badge: 'bg-[#c9963a]/10 text-[#c9963a]', btn: 'bg-[#c9963a] hover:bg-[#a77930]' },
   { border: 'border-[#5b7fa6]/30', bg: 'bg-[#5b7fa6]/5', badge: 'bg-[#5b7fa6]/10 text-[#5b7fa6]', btn: 'bg-[#5b7fa6] hover:bg-[#486786]' },
+  { border: 'border-[#8b9a6e]/30', bg: 'bg-[#8b9a6e]/5', badge: 'bg-[#8b9a6e]/10 text-[#8b9a6e]', btn: 'bg-[#8b9a6e] hover:bg-[#6e7d56]' },
   { border: 'border-[#a05c9a]/30', bg: 'bg-[#a05c9a]/5', badge: 'bg-[#a05c9a]/10 text-[#a05c9a]', btn: 'bg-[#a05c9a] hover:bg-[#7d477a]' },
 ];
 
@@ -48,7 +53,7 @@ export default function AssignmentsClient() {
         {[
           { label: 'Available Tests', value: metas.length.toString() },
           { label: 'Questions Each', value: '10' },
-          { label: 'Time Limit', value: '5 min' },
+          { label: 'Time Limit', value: '5-10 min' },
           { label: 'Question Type', value: 'MCQ' },
         ].map((stat) => (
           <div

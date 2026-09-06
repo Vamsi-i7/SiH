@@ -56,10 +56,6 @@ export default async function AdminAnalyticsPage() {
     },
   ];
 
-  // Static demo timestamps (avoids Date.now() purity lint in server component)
-  const oneDayAgo = '2026-09-05T12:00:00.000Z';
-  const twoDaysAgo = '2026-09-04T12:00:00.000Z';
-
   const demoPriorities: TrainingPriority[] = [
     {
       id: 'tp-1',
@@ -67,7 +63,7 @@ export default async function AdminAnalyticsPage() {
       department: 'NSSO FOD UP East',
       reason: '15.4% listing error rate in Schedule 0.0 scrutiny audit.',
       flagged_by: user.id,
-      flagged_at: oneDayAgo,
+      flagged_at: '2025-01-14T10:30:00.000Z',
       resolved: false,
     },
     {
@@ -76,7 +72,7 @@ export default async function AdminAnalyticsPage() {
       department: 'NSSO FOD Bihar Regional',
       reason: 'Urgent refresh needed for CAPI tablet synchronization protocol.',
       flagged_by: user.id,
-      flagged_at: twoDaysAgo,
+      flagged_at: '2025-01-13T14:15:00.000Z',
       resolved: false,
     },
   ];

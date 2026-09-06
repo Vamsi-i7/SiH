@@ -592,10 +592,570 @@ const DECISION_MAKING: Assessment = {
 };
 
 // ============================================================
+// Assessment 5 — CAPI Operations & Offline Sync (MoSPI Domain)
+// ============================================================
+
+const CAPI_OPERATIONS: Assessment = {
+  id: 'capi-operations',
+  title: 'CAPI Tablet Operations & Sync',
+  title_hi: 'कैपी टैबलेट संचालन और सिंक',
+  description:
+    'Field protocol assessment on Computer Assisted Personal Interviewing, GPS capture, offline storage validation, and data upload compliance.',
+  description_hi:
+    'कंप्यूटर असिस्टेड पर्सनल इंटरव्यूइंग (CAPI), जीपीएस कैप्चर, ऑफलाइन स्टोरेज सत्यापन और डेटा अपलोड अनुपालन पर क्षेत्रीय प्रोटोकॉल मूल्यांकन।',
+  durationSeconds: 10 * 60,
+  totalQuestions: 10,
+  type: 'MoSPI Domain',
+  questions: [
+    {
+      id: 'capi-q1',
+      question:
+        'When conducting a CAPI survey in an area with zero cellular connectivity, what is the mandatory protocol for completed interview schedules?',
+      options: [
+        'Store completed schedules in the local encrypted SQLite DB and trigger sync as soon as network is re-established',
+        'Delete schedules and re-conduct interviews when cellular network is restored',
+        'Carry physical backup sheets and re-key all data manually',
+        'Leave the tablet permanently unlocked until reaching the regional office',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q2',
+      question:
+        'What is the acceptable GPS geo-tagging accuracy threshold required before saving a household listing point in the CAPI app?',
+      options: [
+        'Accuracy within ±10 metres with at least 4 satellite locks',
+        'Accuracy within ±150 metres',
+        'Any coordinate regardless of satellite lock',
+        'Manual coordinate typing from a paper map',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q3',
+      question:
+        'In the CAPI application, what differentiates a "Soft Warning" from a "Hard Error" during roster entry?',
+      options: [
+        'A Soft Warning allows the investigator to proceed after recording an explanatory remark; a Hard Error completely blocks progression until corrected',
+        'A Soft Warning shuts down the tablet',
+        'A Hard Error automatically deletes previous answers',
+        'Both can be permanently dismissed without supervisor oversight',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q4',
+      question:
+        'If an enumerator tablet battery drops below 15% during an active household interview, what is the correct protocol?',
+      options: [
+        'Save the active draft, connect an external certified power bank, and verify the integrity hash before resuming',
+        'Rush through the remaining blocks by guessing respondent answers',
+        'Continue until the tablet unexpectedly dies',
+        'Discard the household interview entirely',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q5',
+      question:
+        'How should an investigator handle sensitive demographic answers under the Collection of Statistics Act when respondents express fear of data misuse?',
+      options: [
+        'Explain statutory confidentiality guarantees under the Act and demonstrate that data is encrypted on device',
+        'Promise to give a paper copy of other respondents to prove safety',
+        'Skip all sensitive questions without noting remarks',
+        'Record arbitrary fictitious responses to calm the respondent',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q6',
+      question:
+        'What hash mechanism is used in the MoSPI CAPI offline sync protocol to detect payload corruption during transmission?',
+      options: [
+        'Cryptographic checksum (SHA-256) calculated locally and verified by the central ingestion server',
+        'Simple character count comparison',
+        'Tablet serial number verification only',
+        'No verification is performed',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q7',
+      question:
+        'When listing members in a household roster, how is the "Head of Household" formally defined in NSSO guidelines?',
+      options: [
+        'A person who is acknowledged as such by the members of the household and bears primary economic/social management responsibility',
+        'Strictly the oldest male individual present',
+        'The member with the highest bank balance',
+        'The member who answers the door first',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q8',
+      question:
+        'What is the standard procedure when a selected sample household has temporarily migrated for 3 months during the survey round?',
+      options: [
+        'Record as "Temporarily Absent" if expected within round, or substitute as per substitution guidelines if absent for >6 months',
+        'Immediately pick any neighbour without consulting the listing schedule',
+        'Fabricate responses based on neighbour hearsay',
+        'Leave the schedule incomplete without any status code',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q9',
+      question:
+        'Before initiating daily field enumeration, what step must an investigator perform in the CAPI dashboard?',
+      options: [
+        'Verify metadata sync, check assigned FSU/sample list, and inspect battery/storage health',
+        'Factory reset the tablet',
+        'Uninstall antivirus and security policies',
+        'Re-register with a personal Gmail account',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'capi-q10',
+      question:
+        'What should be done if the CAPI tablet app crashes during a multi-member survey module?',
+      options: [
+        'Reopen the app to trigger auto-recovery from the local transaction log up to the last saved item',
+        'Assume all work is lost and start from household 1',
+        'Report the tablet damaged and abandon the assignment',
+        'Reinstall the application from an unverified APK',
+      ],
+      correctAnswer: 0,
+    },
+  ],
+};
+
+// ============================================================
+// Assessment 6 — Schedule 0.0 & UFS Demarcation (MoSPI Domain)
+// ============================================================
+
+const SCHEDULE_0_LISTING: Assessment = {
+  id: 'schedule-0-listing',
+  title: 'Schedule 0.0 & UFS Demarcation',
+  title_hi: 'अनुसूची 0.0 और यूएफएस सीमांकन',
+  description:
+    'Comprehensive test on Urban Frame Survey (UFS) blocks, hamlet-group formation, household listing, and sampling frame preparation.',
+  description_hi:
+    'शहरी फ्रेम सर्वेक्षण (UFS) ब्लॉक, हेमलेट-ग्रुप गठन, घरेलू सूचीकरण और नमूनाकरण फ्रेम तैयार करने पर व्यापक परीक्षण।',
+  durationSeconds: 10 * 60,
+  totalQuestions: 10,
+  type: 'MoSPI Domain',
+  questions: [
+    {
+      id: 's0-q1',
+      question:
+        'What is the primary objective of preparing Schedule 0.0 in an NSS First Stage Unit (FSU)?',
+      options: [
+        'To list all buildings, census houses, and households within the boundary to build an unbiased frame for second-stage selection',
+        'To collect detailed expenditure figures from each family',
+        'To record political opinions of village leaders',
+        'To issue official ration cards to residents',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q2',
+      question:
+        'Under what condition must an investigator form Hamlet-Groups (hg) or Sub-Blocks (sb) in a large FSU?',
+      options: [
+        'When the approximate present population of the sample village/block is 1,200 or more',
+        'Whenever the investigator feels tired',
+        'Only when the village head explicitly demands it',
+        'When the village has fewer than 100 residents',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q3',
+      question:
+        'When dividing a large sample village into 4 hamlet-groups, what is the governing principle for creating boundaries?',
+      options: [
+        'Groups must have roughly equal population and clear, identifiable natural or man-made boundaries',
+        'Groups must strictly follow caste lines',
+        'Groups must be drawn as random geometrical squares on a map',
+        'Groups should only include pucca houses',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q4',
+      question:
+        'How should a vacant non-residential commercial structure (e.g. locked warehouse) be recorded in Schedule 0.0?',
+      options: [
+        'Assign a census house number, record institutional/non-residential purpose, and note zero resident households',
+        'Ignore the building completely from the listing',
+        'Invent a fictitious household living inside',
+        'Record the owner’s primary residence outside the FSU',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q5',
+      question:
+        'What is the standard path of listing that an investigator must follow in an urban block or rural village?',
+      options: [
+        'North-West corner to South-East following a continuous serpentine/clockwise sweep',
+        'Random zigzag jumping between distant streets',
+        'Listing only houses adjacent to main highways',
+        'Alphabetical order of household heads',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q6',
+      question:
+        'What defines a "Household" in NSS survey methodology?',
+      options: [
+        'A group of persons normally living together and taking food from a common kitchen, unless exigencies prevent it',
+        'Any group of people who share the same family surname',
+        'All people living on the same street',
+        'Only legally married couples and their biological children',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q7',
+      question:
+        'What is Second Stage Stratification (SSS) in Schedule 0.0 listing?',
+      options: [
+        'Classifying listed households into relatively homogeneous socio-economic strata before drawing sample units',
+        'Dividing the state into regional districts',
+        'Splitting survey forms into separate paper files',
+        'A method to eliminate lower-income households from surveys',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q8',
+      question:
+        'If a hamlet-group contains two selected sub-groups, how are samples drawn across them?',
+      options: [
+        'Using Circular Systematic Sampling with random start independently in each stratum',
+        'Arbitrary hand-picking by the field investigator',
+        'Selecting the first 8 households on the list',
+        'Selecting only households that volunteer',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q9',
+      question:
+        'What should an investigator do if an entire selected hamlet-group is inaccessible due to severe flooding?',
+      options: [
+        'Document the situation thoroughly, notify the supervisory officer, and follow formal guidelines for inaccessible units',
+        'Substitue with an unauthorized neighbouring village',
+        'Fill mock data from memory',
+        'Close the survey round without submitting any listing schedule',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 's0-q10',
+      question:
+        'Why must temporary visitors (staying less than 6 months without intent to reside) be excluded from household listing in Schedule 0.0?',
+      options: [
+        'To prevent double-counting across their usual place of residence and preserve unbiased population estimates',
+        'Because visitors do not consume food',
+        'Because visitors lack Aadhaar cards',
+        'To minimise paperwork for the enumerator',
+      ],
+      correctAnswer: 0,
+    },
+  ],
+};
+
+// ============================================================
+// Assessment 7 — Periodic Labour Force Survey (MoSPI Domain)
+// ============================================================
+
+const PLFS_SURVEY: Assessment = {
+  id: 'plfs-survey',
+  title: 'Periodic Labour Force Survey (PLFS)',
+  title_hi: 'आवधिक श्रम बल सर्वेक्षण (PLFS)',
+  description:
+    'Detailed assessment of Usual Status (ps+ss), Current Weekly Status (CWS), daily time disposition matrix, and economic activity classification.',
+  description_hi:
+    'सामान्य स्थिति (ps+ss), वर्तमान साप्ताहिक स्थिति (CWS), दैनिक समय व्यवस्था मैट्रिक्स और आर्थिक गतिविधि वर्गीकरण का विस्तृत मूल्यांकन।',
+  durationSeconds: 10 * 60,
+  totalQuestions: 10,
+  type: 'MoSPI Domain',
+  questions: [
+    {
+      id: 'plfs-q1',
+      question:
+        'In PLFS, how is the "Principal Activity Status" of an individual determined over the 365-day reference period?',
+      options: [
+        'By the activity status on which the person spent relatively the major time (majority criterion) during the 365 days',
+        'By the activity in which the person earned the maximum income',
+        'By whatever the person was doing on the day of survey',
+        'By the highest educational degree attained',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q2',
+      question:
+        'What minimum duration of economic engagement during the 365-day reference period qualifies a person for "Subsidiary Economic Activity Status"?',
+      options: [
+        'Engaged for at least 30 days during the reference year',
+        'Engaged for at least 183 days',
+        'Engaged for at least 1 full year',
+        'Engaged for 1 single hour',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q3',
+      question:
+        'Under Current Weekly Status (CWS), what is the threshold for a person to be considered "Employed" during the 7-day reference week?',
+      options: [
+        'Worked for at least 1 hour on any 1 day during the 7 days preceding the survey date',
+        'Worked for at least 40 hours during the week',
+        'Earned at least minimum wage during the week',
+        'Worked continuously for all 7 days',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q4',
+      question:
+        'In the Daily Time Disposition matrix of PLFS, what intensity score is recorded for an activity pursued for 2.5 hours on a given day?',
+      options: [
+        'Half day (intensity 0.5)',
+        'Full day (intensity 1.0)',
+        'Zero intensity',
+        'Quarter day (intensity 0.25)',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q5',
+      question:
+        'How does PLFS classify an unpaid family member assisting in a household enterprise without regular wages?',
+      options: [
+        'Helper in household enterprise (Status code 21) within the self-employed category',
+        'Unemployed person seeking work (Status code 81)',
+        'Casual labour in non-agriculture (Status code 51)',
+        'Out of labour force (Status code 92)',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q6',
+      question:
+        'Which industry classification standard is currently used in PLFS to record 5-digit economic activity codes?',
+      options: [
+        'National Industrial Classification (NIC-2008)',
+        'Standard Industrial Classification (SIC-1987)',
+        'Harmonized System (HS-2022)',
+        'COICOP classification',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q7',
+      question:
+        'In PLFS scrutiny, what cross-validation error occurs if an individual has Activity Status 11 (Own Account Worker) but their employer status indicates a government department?',
+      options: [
+        'Inconsistency flag: Own-account workers cannot have government or public sector employer type',
+        'Valid combination with no warning',
+        'Automatic upgrade to regular wage worker without verification',
+        'Ignored by validation software',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q8',
+      question:
+        'What constitutes the "Labour Force" in national statistical reporting?',
+      options: [
+        'Persons who are either employed (working or having work but not working) or unemployed (seeking or available for work)',
+        'All citizens aged 18 to 60 regardless of student or retiree status',
+        'Only formally registered taxpayers',
+        'Only workers with written contracts',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q9',
+      question:
+        'If a student spent 8 months studying and 4 months working in agricultural harvesting during the year, what is their Usual Status (ps+ss)?',
+      options: [
+        'Principal status: Student (out of labour force); Subsidiary status: Agricultural worker (employed)',
+        'Principal status: Unemployed; Subsidiary status: Student',
+        'Principal status: Agricultural worker; Subsidiary status: None',
+        'Not classified',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'plfs-q10',
+      question:
+        'What is the rotational panel scheme used in PLFS for urban sampling units?',
+      options: [
+        '2-8-2 rotational panel where an urban FSU is visited 4 times over 4 consecutive quarters',
+        'A single one-time visit with no revisits',
+        'Revisiting the same household every month for 10 years',
+        'Random replacement without panel tracking',
+      ],
+      correctAnswer: 0,
+    },
+  ],
+};
+
+// ============================================================
+// Assessment 8 — Statistical Scrutiny & Validation (SSS Cadre)
+// ============================================================
+
+const DATA_SCRUTINY: Assessment = {
+  id: 'data-scrutiny',
+  title: 'Statistical Scrutiny & Validation',
+  title_hi: 'सांख्यिकीय संवीक्षा और सत्यापन',
+  description:
+    'Desk scrutiny procedures, inter-schedule consistency checks, outlier flags, and National Accounts aggregation principles for SSS Cadre.',
+  description_hi:
+    'एसएसएस संवर्ग के लिए डेस्क संवीक्षा प्रक्रियाएं, अंतर-अनुसूची संगति जांच, आउटलायर फ्लैग और राष्ट्रीय लेखा एकत्रीकरण सिद्धांत।',
+  durationSeconds: 10 * 60,
+  totalQuestions: 10,
+  type: 'MoSPI Domain',
+  questions: [
+    {
+      id: 'scrutiny-q1',
+      question:
+        'What is the fundamental purpose of "Desk Scrutiny" performed by Junior Statistical Officers (JSO)?',
+      options: [
+        'To detect recording inconsistencies, out-of-range values, and conceptual errors before raw microdata is accepted into the estimation pipeline',
+        'To eliminate low-income records to artificially boost economic averages',
+        'To rewrite field schedules without investigator consultation',
+        'To approve all records automatically without inspection',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q2',
+      question:
+        'In an Annual Survey of Industries (ASI) return, Gross Sale Value of products is recorded as less than Net Sale Value. What scrutiny action is required?',
+      options: [
+        'Flag as critical error: Gross value must equal or exceed Net value (Net = Gross minus taxes, rebates, and freight)',
+        'Approve the return as an acceptable negative rebate',
+        'Delete the tax block entirely',
+        'Divide both figures by two',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q3',
+      question:
+        'When cross-scrutinizing household consumption expenditure with reported household monthly income, what constitutes a severe warning flag?',
+      options: [
+        'Reported monthly food expenditure exceeds total household monthly income by a factor of 4 with zero reported loans, dissavings, or transfers',
+        'Expenditure exactly matches income',
+        'Household saves 10% of monthly income',
+        'Food expenditure is 30% of total expenditure',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q4',
+      question:
+        'What is the difference between "Sampling Error" and "Non-Sampling Error" in large-scale sample surveys?',
+      options: [
+        'Sampling error arises from observing a subset instead of the full census; non-sampling error arises from measurement, coverage, reporting, or processing flaws',
+        'Sampling errors only happen in cities, non-sampling errors in villages',
+        'Non-sampling errors decrease automatically with larger sample sizes',
+        'There is no mathematical distinction between them',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q5',
+      question:
+        'When an extreme outlier is detected in enterprise turnover data (e.g. 100x sector median), what is the correct professional methodology?',
+      options: [
+        'Trace back the scrutiny slip to the field unit for verified audited financial statements or clarification notes before applying any statistical adjustment',
+        'Instantly delete the enterprise from the survey frame',
+        'Replace the value with the state median without documenting the modification',
+        'Ignore the return and don’t report it to the officer-in-charge',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q6',
+      question:
+        'In the Consumer Price Index (CPI) price collection scrutiny, how is a sudden 50% price spike in seasonal vegetables evaluated across base and current quotes?',
+      options: [
+        'Check nearby centre price trends and state market arrivals to confirm genuine market movement versus transcription error',
+        'Force the price quote to equal the base year index',
+        'Discard all quotations from that district',
+        'Change the unit of measurement without verification',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q7',
+      question:
+        'What principle governs the "Hot-Deck Imputation" technique used in statistical data cleaning?',
+      options: [
+        'Replacing missing values with observed responses from a randomly selected "donor" unit with matching demographic/economic characteristics',
+        'Setting all missing values to zero',
+        'Replacing missing values with the national overall mean',
+        'Deleting the entire questionnaire from analysis',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q8',
+      question:
+        'Under National Accounts Statistics (NAS), what constitutes "Gross Fixed Capital Formation" (GFCF)?',
+      options: [
+        'Net additions to fixed assets (machinery, equipment, infrastructure, dwellings) during the accounting period',
+        'Only purchases of stock market shares by households',
+        'Total government expenditure on salaries and pensions',
+        'Total imports minus total exports',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q9',
+      question:
+        'What is an "Item Non-Response" versus a "Unit Non-Response" in NSS surveys?',
+      options: [
+        'Item non-response is when a responding household leaves specific questions blank; unit non-response is when the household cannot be surveyed at all (locked/refused)',
+        'They are synonymous terms for data corruption',
+        'Unit non-response applies only to factories in ASI',
+        'Item non-response means the entire schedule was lost in transit',
+      ],
+      correctAnswer: 0,
+    },
+    {
+      id: 'scrutiny-q10',
+      question:
+        'What does an Official Scrutiny Sheet accompany when transmitting validated survey batches to the National Data Center?',
+      options: [
+        'A formal log of all corrections, supervisor signatures, FSU sample allocation weights, and validation rule pass certificates',
+        'A marketing brochure for public release',
+        'Raw unvalidated paper notes without timestamps',
+        'Only an invoice for travel reimbursements',
+      ],
+      correctAnswer: 0,
+    },
+  ],
+};
+
+// ============================================================
 // Catalog
 // ============================================================
 
 export const ASSESSMENTS: Assessment[] = [
+  CAPI_OPERATIONS,
+  SCHEDULE_0_LISTING,
+  PLFS_SURVEY,
+  DATA_SCRUTINY,
   PROBLEM_SOLVING,
   CRITICAL_THINKING,
   COMMUNICATION,
@@ -608,8 +1168,11 @@ export const ASSESSMENT_MAP: Record<string, Assessment> = Object.fromEntries(
 
 /** Returns metadata only (no questions) — safe to send to client for listing. */
 export function getAssessmentMetas(): AssessmentMeta[] {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  return ASSESSMENTS.map(({ questions: _questions, ...meta }) => meta);
+  return ASSESSMENTS.map((a) => {
+    const { questions: _, ...meta } = a;
+    void _;
+    return meta;
+  });
 }
 
 /** Returns a single assessment by ID, or null if not found. */

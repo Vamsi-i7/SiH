@@ -1,0 +1,22 @@
+NATIONAL STATISTICAL SYSTEMS TRAINING ACADEMY (NSSTA)
+MINISTRY OF STATISTICS AND PROGRAMME IMPLEMENTATION, GOVT OF INDIA
+GREATER NOIDA, UTTAR PRADESH
+
+CURRICULUM MODULE: OFFICIAL STATISTICS & SAMPLE SURVEY METHODOLOGY
+SUBORDINATE STATISTICAL SERVICE (SSS) INDUCTION TRAINING
+
+MODULE 1: PRINCIPLES OF LARGE-SCALE SURVEY DESIGN
+1.1 Sampling Errors vs Non-Sampling Errors: Sampling error results from measuring a probability subset rather than the complete population. Non-sampling error arises from response bias, interviewer misunderstanding, data capture errors, or flawed frames.
+1.2 Design Effect (DEFF): Defined as the ratio of the variance of an estimator under the chosen complex multi-stage design to the variance under Simple Random Sampling (SRS) of the same sample size.
+1.3 Stratification Gain: Stratification maximizes between-strata variance while minimizing within-stratum variance, yielding lower standard errors for key macroeconomic indicators.
+
+MODULE 2: DESK SCRUTINY OF FIELD SCHEDULES
+2.1 Primary Function of JSO Scrutiny: Scrutiny verifies logical consistency across related schedules before microdata aggregation.
+2.2 Range and Consistency Checks:
+- In Annual Survey of Industries (ASI): Net Sale Value = Gross Sale Value - Taxes - Rebates. Gross sale value cannot be lower than Net sale value.
+- In Household Consumption Expenditure Survey (HCES): Monthly per-capita expenditure must be consistent with reported earnings and transfers.
+2.3 Imputation Guidelines: Hot-deck imputation replaces item non-responses using donor units possessing similar demographic profiles within the same geographical stratum.
+
+MODULE 3: NATIONAL ACCOUNTS STATISTICS (NAS) & AGGREGATE ESTIMATION
+3.1 Gross Fixed Capital Formation (GFCF): Measures acquisitions less disposals of produced fixed assets during the accounting period.
+3.2 Consumer Price Index (CPI): Base year basket weights are periodically re-benchmarked using nationwide NSS Consumer Expenditure rounds.

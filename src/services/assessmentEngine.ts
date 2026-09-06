@@ -170,10 +170,11 @@ export function resumeFromReview(state: EngineState): EngineState {
  * submitAssessment — Final submission. Transitions REVIEW → SUBMITTED.
  */
 export function submitAssessment(state: EngineState): EngineState {
-  if (state.phase !== 'REVIEW') return state;
+  if (state.phase !== 'REVIEW' && state.phase !== 'ACTIVE') return state;
   return {
     ...state,
     phase: 'SUBMITTED',
+    confirmModalOpen: false,
     endedAt: state.endedAt ?? new Date().toISOString(),
   };
 }
