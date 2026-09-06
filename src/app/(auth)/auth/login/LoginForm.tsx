@@ -66,7 +66,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       <div className="space-y-1.5">
-        <label htmlFor="email" className="text-sm font-medium text-gray-700">
+        <label htmlFor="email" className="text-sm font-medium text-foreground">
           {t('email')}
         </label>
         <input
@@ -75,13 +75,13 @@ export default function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full h-11 rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition text-[16px]"
           placeholder="you@mospi.gov.in"
         />
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="password" className="text-sm font-medium text-gray-700">
+        <label htmlFor="password" className="text-sm font-medium text-foreground">
           {t('password')}
         </label>
         <input
@@ -90,28 +90,28 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full h-11 rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition text-[16px]"
           placeholder="Enter your password"
         />
       </div>
 
       {error && (
-        <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+        <div className="text-xs text-destructive bg-destructive/10 border border-destructive/20 rounded-md px-3 py-2">
           {error}
         </div>
       )}
 
       <div className="flex items-center justify-between pt-0.5">
-        <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer select-none">
+        <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer select-none">
           <input
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-200 text-blue-700 focus:ring-blue-500"
+            className="h-4 w-4 rounded border-border text-primary focus:ring-ring"
           />
           <span className="text-xs">Remember me</span>
         </label>
         <a
           href="#"
-          className="text-xs font-medium text-blue-700 hover:text-blue-800 transition-colors"
+          className="text-xs font-medium text-primary hover:text-primary-dark transition-colors"
         >
           {t('forgotPassword')}
         </a>
@@ -120,11 +120,11 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full h-11 rounded-lg bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold shadow-sm transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground text-sm font-semibold shadow-sm transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? (
           <span className="flex items-center gap-2">
-            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+            <svg className="h-4 w-4 animate-spin outline-none" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -137,10 +137,10 @@ export default function LoginForm() {
 
       <div className="relative my-3">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200" />
+          <div className="w-full border-t border-accent" />
         </div>
         <div className="relative flex justify-center text-xs uppercase tracking-wider">
-          <span className="bg-white px-3 text-gray-400">Or</span>
+          <span className="bg-card px-3 text-muted-foreground">Or</span>
         </div>
       </div>
 
@@ -148,7 +148,7 @@ export default function LoginForm() {
         type="button"
         onClick={handleGoogleLogin}
         disabled={loading}
-        className="w-full h-11 flex items-center justify-center gap-2.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 text-sm font-semibold shadow-xs transition disabled:opacity-50"
+        className="w-full h-11 flex items-center justify-center gap-2.5 rounded-md border border-border bg-card hover:bg-secondary text-foreground text-sm font-semibold shadow-sm transition disabled:opacity-50"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h9.96c-.26 1.37-1.04 2.53-2.21 3.31v2.77h1.78c.43-1.4 1.07-2.35 1.88-3.01 1.09-.94 1.88-2.23 2.21-3.77-.5 1.07-1.4 1.88-2.58 2.45z" fill="#4285F4" />
@@ -159,9 +159,9 @@ export default function LoginForm() {
         <span>{t('google')}</span>
       </button>
 
-      <p className="text-center text-xs text-gray-500 pt-1">
+      <p className="text-center text-xs text-muted-foreground pt-1">
         {t('noAccount')}{' '}
-        <a href="/auth/signup" className="font-semibold text-blue-700 hover:text-blue-800">
+        <a href="/auth/signup" className="font-semibold text-primary hover:text-primary-dark">
           {t('signup')}
         </a>
       </p>

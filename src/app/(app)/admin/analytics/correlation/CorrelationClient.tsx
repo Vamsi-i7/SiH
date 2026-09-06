@@ -68,9 +68,9 @@ export function CorrelationClient({ seriesList }: CorrelationClientProps) {
             />
 
             {/* Regression Summary Banner */}
-            <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-center justify-between">
+            <div className="p-4 bg-[--color-destructive]/10 border border-[--color-destructive]/20 rounded-xl flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold text-rose-600 dark:text-rose-400">
+                <p className="text-xs font-bold text-[--color-destructive]">
                   Statistical Regression (Ordinary Least Squares)
                 </p>
                 <p className="text-sm font-semibold text-foreground mt-0.5">

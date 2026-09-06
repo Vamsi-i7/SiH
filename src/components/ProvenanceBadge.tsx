@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { ProvenanceType } from '@/lib/types';
+import { ShieldCheck, FileEdit, FlaskConical, AlertTriangle } from 'lucide-react';
 
 // ============================================================================
 // PROVENANCE BADGE COMPONENT
@@ -18,7 +19,7 @@ const PROVENANCE_CONFIG: Record<
   ProvenanceType,
   {
     label: string;
-    icon: string;
+    IconComponent: React.ComponentType<{ className?: string }>;
     bgColor: string;
     borderColor: string;
     textColor: string;
@@ -27,34 +28,34 @@ const PROVENANCE_CONFIG: Record<
 > = {
   VERIFIED_OFFICIAL: {
     label: 'Verified Official',
-    icon: '✅',
-    bgColor: 'bg-green-50',
-    borderColor: 'border-green-300',
-    textColor: 'text-green-700',
+    IconComponent: ShieldCheck,
+    bgColor: 'bg-primary/10',
+    borderColor: 'border-primary/30',
+    textColor: 'text-primary-dark',
     description: 'Matches real government structure or fact from official sources (MoSPI, NSSTA, FRAC)',
   },
   PROPOSED_FRAMEWORK: {
     label: 'Proposed Framework',
-    icon: '⚠️',
-    bgColor: 'bg-amber-50',
-    borderColor: 'border-amber-300',
-    textColor: 'text-amber-700',
+    IconComponent: FileEdit,
+    bgColor: 'bg-[#c9963a]/10',
+    borderColor: 'border-[#c9963a]/30',
+    textColor: 'text-[#99671e]',
     description: 'Structurally grounded in official methodology, but specific content is our proposal',
   },
   PROPOSED_METHODOLOGY: {
     label: 'Proposed Methodology',
-    icon: '⚠️',
-    bgColor: 'bg-amber-50',
-    borderColor: 'border-amber-300',
-    textColor: 'text-amber-700',
+    IconComponent: FlaskConical,
+    bgColor: 'bg-[#c9963a]/10',
+    borderColor: 'border-[#c9963a]/30',
+    textColor: 'text-[#99671e]',
     description: 'Our team proposed formula or methodology (e.g., gap severity calculation)',
   },
   SYNTHETIC_DEMO_DATA: {
     label: 'Demo Data',
-    icon: '🟡',
-    bgColor: 'bg-yellow-50',
-    borderColor: 'border-yellow-300',
-    textColor: 'text-yellow-700',
+    IconComponent: AlertTriangle,
+    bgColor: 'bg-[#c9963a]/10',
+    borderColor: 'border-[#c9963a]/30',
+    textColor: 'text-[#99671e]',
     description: 'Fabricated for demonstration; no claim to real-world accuracy',
   },
 };
@@ -71,6 +72,7 @@ export function ProvenanceBadge({
 }: ProvenanceBadgeProps) {
   const config = PROVENANCE_CONFIG[provenance];
   const [showTooltipContent, setShowTooltipContent] = React.useState(false);
+  const IconComponent = config.IconComponent;
 
   const sizeClasses = {
     sm: 'px-2 py-1 text-xs gap-1',
@@ -98,7 +100,7 @@ export function ProvenanceBadge({
         onMouseLeave={() => setShowTooltipContent(false)}
         title={config.description}
       >
-        <span className={iconSizes[size]}>{config.icon}</span>
+        <IconComponent className={iconSizes[size]} />
         {showLabel && <span>{config.label}</span>}
       </span>
 
@@ -141,9 +143,11 @@ export function ProvenanceBadgeInline({ provenance }: Pick<ProvenanceBadgeProps,
  */
 export function ProvenanceIndicator({ provenance }: Pick<ProvenanceBadgeProps, 'provenance'>) {
   const config = PROVENANCE_CONFIG[provenance];
+  const IconComponent = config.IconComponent;
   return (
-    <span className="text-xs font-medium" title={config.description}>
-      {config.icon} {config.label}
+    <span className="text-xs font-medium flex items-center gap-1" title={config.description}>
+      <IconComponent className="w-3.5 h-3.5" />
+      <span>{config.label}</span>
     </span>
   );
 }
@@ -154,10 +158,10 @@ export function ProvenanceIndicator({ provenance }: Pick<ProvenanceBadgeProps, '
  */
 export function ProvenanceDisclosure() {
   return (
-    <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-6">
-      <h3 className="text-lg font-semibold">Data Provenance & Transparency</h3>
+    <div className="space-y-4 rounded-xl border border-border bg-secondary/30 p-6">
+      <h3 className="text-lg font-semibold text-foreground">Data Provenance & Transparency</h3>
 
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-muted-foreground">
         StatVidya explicitly labels every domain data element with its origin and verification status. This
         transparency ensures you always know whether data represents official government fact, our team&apos;s proposal,
         or demonstration simulations.
@@ -165,25 +169,28 @@ export function ProvenanceDisclosure() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {(Object.entries(PROVENANCE_CONFIG) as Array<[ProvenanceType, (typeof PROVENANCE_CONFIG)[ProvenanceType]]>).map(
-          ([type, config]) => (
-            <div
-              key={type}
-              className={`rounded-md border p-4 ${config.bgColor} ${config.borderColor}`}
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xl">{config.icon}</span>
-                <span className={`font-semibold ${config.textColor}`}>{config.label}</span>
+          ([type, cfg]) => {
+            const IconComponent = cfg.IconComponent;
+            return (
+              <div
+                key={type}
+                className={`rounded-md border p-4 ${cfg.bgColor} ${cfg.borderColor}`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <IconComponent className="w-5 h-5 text-inherit" />
+                  <span className={`font-semibold ${cfg.textColor}`}>{cfg.label}</span>
+                </div>
+                <p className="text-sm text-muted-foreground">{cfg.description}</p>
               </div>
-              <p className="text-sm text-gray-700">{config.description}</p>
-            </div>
-          )
+            );
+          }
         )}
       </div>
 
-      <div className="text-xs text-gray-500 border-t border-gray-200 pt-4">
+      <div className="text-xs text-muted-foreground border-t border-border pt-4">
         <p>
-          <strong>Questions?</strong> Read more about our framework alignment in the{' '}
-          <a href="/docs/frac" className="underline hover:text-gray-700">
+          <strong className="text-foreground">Questions?</strong> Read more about our framework alignment in the{' '}
+          <a href="/docs/frac" className="font-medium text-primary hover:text-primary-dark transition-colors underline">
             FRAC documentation
           </a>
           .
