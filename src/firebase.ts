@@ -15,7 +15,7 @@ const firebaseConfig = {
 // This initializes the connection to your Firebase project
 export const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getFirestore(app, 'default');
 export const storage = getStorage(app);
 
 export function isFirebaseConfigured(): boolean {

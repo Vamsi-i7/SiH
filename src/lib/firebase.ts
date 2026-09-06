@@ -15,7 +15,7 @@ const firebaseConfig = {
 // This initializes the connection to your Firebase project (Singleton for Next.js SSR/HMR)
 export const app: FirebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 export const auth: Auth = getAuth(app);
-export const db: Firestore = getFirestore(app);
+export const db: Firestore = getFirestore(app, 'default');
 export const storage: FirebaseStorage = getStorage(app);
 
 export function isFirebaseConfigured(): boolean {
