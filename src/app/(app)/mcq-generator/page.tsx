@@ -7,6 +7,7 @@ import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { type GeneratedQuestion } from '@/services/mcqService';
 import { Sparkles, RefreshCw, BookOpen, Bot, FileText, SlidersHorizontal, Hash } from 'lucide-react';
 import { DocumentPracticeCard, type AnswerRecord } from '@/components/mcq/DocumentPracticeCard';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 interface IngestedDoc {
   id: string;
@@ -226,7 +227,7 @@ function MCQGeneratorInner() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-              MoSPI AI Learning & Practice
+              MoSPI Practice & Calibration
             </span>
             <span className="text-xs text-stone-500">• Clause 4.3 FRAC Calibrated Generator</span>
           </div>
@@ -517,7 +518,20 @@ function MCQGeneratorInner() {
 
 export default function MCQGeneratorPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-sm text-stone-500">Loading MCQ Generator...</div>}>
+    <Suspense
+      fallback={
+        <div className="space-y-6 max-w-5xl mx-auto py-6 animate-fadeIn">
+          <div className="rounded-2xl bg-white p-6 shadow-card space-y-3">
+            <Skeleton className="h-6 w-52" />
+            <Skeleton className="h-4 w-96 max-w-full" />
+          </div>
+          <div className="rounded-2xl bg-white p-6 shadow-card space-y-4">
+            <Skeleton className="h-10 w-full rounded-xl" />
+            <Skeleton className="h-32 w-full rounded-xl" />
+          </div>
+        </div>
+      }
+    >
       <MCQGeneratorInner />
     </Suspense>
   );

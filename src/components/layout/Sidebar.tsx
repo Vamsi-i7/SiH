@@ -103,14 +103,14 @@ export function Sidebar({ initialRole }: SidebarProps) {
 
   return (
     <aside
-      className={`flex flex-col bg-white border-r border-[#BF9B7A]/30 transition-all duration-200 select-none z-20 shadow-[2px_0_16px_-4px_rgba(89,62,46,0.06)] ${
+      className={`flex flex-col bg-white border-r border-[#BF9B7A]/30 transition-[width] duration-200 ease-out will-change-[width] select-none z-20 shadow-[2px_0_16px_-4px_rgba(89,62,46,0.06)] ${
         collapsed ? 'w-18' : 'w-64'
       }`}
     >
       {/* Brand Header */}
       <div className="flex h-16 items-center justify-between px-4 border-b border-[#BF9B7A]/20">
         {!collapsed ? (
-          <Link href="/dashboard" className="flex items-center gap-3 group">
+          <Link href="/dashboard" prefetch={true} className="flex items-center gap-3 group">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-2xs transition-transform group-hover:scale-105 p-1 shrink-0">
               <KarmayogiEmblemIcon className="h-7 w-7" />
             </div>
@@ -126,6 +126,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
         ) : (
           <Link
             href="/dashboard"
+            prefetch={true}
             className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-2xs p-1"
           >
             <KarmayogiEmblemIcon className="h-7 w-7" />
@@ -210,6 +211,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               title={collapsed ? labelText : undefined}
               className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium transition-all duration-150 ${
                 collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''

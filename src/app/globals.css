@@ -106,10 +106,18 @@
      BASE TYPOGRAPHY & TEXT STYLES
      ════════════════════════════════════════════════════════════════ */
 
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
   }
 
   /* Tabular numbers for all numeric scores, percentages, IDs */
@@ -250,7 +258,7 @@
   input,
   select,
   textarea {
-    transition: all 150ms ease-out;
+    transition: color 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out, box-shadow 150ms ease-out, opacity 150ms ease-out, transform 150ms ease-out;
   }
 
   /* Page / view transitions */
@@ -451,4 +459,17 @@
   .copilot-fab-pulse {
     animation: none;
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 150ms ease-out forwards;
 }

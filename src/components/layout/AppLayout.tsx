@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { Breadcrumb } from './Breadcrumb';
-import { CopilotFAB } from '@/components/copilot/CopilotFAB';
+import dynamic from 'next/dynamic';
+
+const CopilotFAB = dynamic(
+  () => import('@/components/copilot/CopilotFAB').then((mod) => mod.CopilotFAB),
+  { ssr: false }
+);
 import {
   AssessmentModeProvider,
   useAssessmentMode,

@@ -7,7 +7,7 @@
  * Visual language mirrors PathwaysClient card grid.
  */
 
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { getAssessmentMetas } from '@/data/assessments';
 import { ClipboardCheck, Clock, BookOpen, ChevronRight } from 'lucide-react';
@@ -31,7 +31,6 @@ const accentByIndex = [
 ];
 
 export default function AssignmentsClient() {
-  const router = useRouter();
   const t = useTranslations();
   const metas = getAssessmentMetas();
 
@@ -115,14 +114,15 @@ export default function AssignmentsClient() {
                 </div>
 
                 {/* CTA */}
-                <button
+                <Link
                   id={`take-assessment-${meta.id}`}
-                  onClick={() => router.push(`/assessment/${meta.id}/instructions`)}
+                  href={`/assessment/${meta.id}/instructions`}
+                  prefetch={true}
                   className={`w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold transition-all shadow-xs active:scale-95 ${accent.btn}`}
                 >
                   Take Assessment
                   <ChevronRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             );
           })}

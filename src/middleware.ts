@@ -15,6 +15,11 @@ const PROTECTED_ROUTES: Record<string, UserRole[]> = {
 };
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
+
   const response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -116,7 +121,13 @@ export async function middleware(request: NextRequest) {
   // even if exploring as a learner, so features are never blocked while evaluating
   const isDemoDev = process.env.NODE_ENV !== 'production' || request.cookies.has('demo_user');
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    if (isDemoDev && (routePath === '/documents' || routePath === '/mcq-generator' || routePath === '/review-queue')) {
+    if (
+      isDemoDev &&
+      (routePath === '/documents' ||
+        routePath === '/mcq-generator' ||
+        routePath === '/review-queue' ||
+        routePath.startsWith('/admin/analytics'))
+    ) {
       // Allow demo inspection
     } else {
       const dashboardUrl = new URL('/dashboard', request.url);
@@ -128,11 +139,13 @@ export async function middleware(request: NextRequest) {
   const validLocale = (requestLocale === 'en' || requestLocale === 'hi') ? requestLocale : null;
   const locale = validLocale || user?.user_metadata?.preferred_language || 'en';
 
-  request.cookies.set('locale', locale);
-  response.cookies.set('locale', locale, {
-    path: '/',
-    maxAge: 60 * 60 * 24 * 365,
-  });
+  if (requestLocale !== locale) {
+    request.cookies.set('locale', locale);
+    response.cookies.set('locale', locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+    });
+  }
 
   response.headers.set('x-user-role', String(userRole));
   response.headers.set('x-user-org-id', userOrgId || '');

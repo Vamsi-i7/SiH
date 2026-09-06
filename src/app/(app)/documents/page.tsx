@@ -258,6 +258,7 @@ export default function DocumentsPage() {
 
                   <Link
                     href={`/mcq-generator?docId=${doc.id}&competency=${doc.targetCompetencies[0] || 'comp-capi'}&docTitle=${encodeURIComponent(doc.title)}`}
+                    prefetch={true}
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-[#555934] hover:bg-[#3e4225] text-white text-xs font-semibold rounded-xl transition-all shadow-xs"
                   >
                     <Brain className="w-3.5 h-3.5" />
@@ -299,7 +300,7 @@ export default function DocumentsPage() {
 
             <div className="p-4 overflow-y-auto space-y-3 flex-1 text-sm">
               <p className="text-xs text-slate-500">
-                Extracted MoSPI chapter sections and paragraph chunks mapped for AI grounding:
+                Extracted MoSPI chapter sections and paragraph chunks mapped for question grounding:
               </p>
               {(selectedChunkDoc.chunks && selectedChunkDoc.chunks.length > 0
                 ? selectedChunkDoc.chunks.map((c) => ({
@@ -348,6 +349,7 @@ export default function DocumentsPage() {
               </span>
               <Link
                 href={`/mcq-generator?docId=${selectedChunkDoc.id}&competency=${selectedChunkDoc.targetCompetencies[0] || 'comp-capi'}`}
+                prefetch={true}
                 className="px-4 py-2 bg-[#555934] hover:bg-[#3e4225] text-white text-xs font-bold rounded-xl transition"
               >
                 Proceed to MCQ Generation →

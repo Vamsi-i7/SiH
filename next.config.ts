@@ -12,6 +12,21 @@ const withSerwist = withSerwistInit({
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  compress: true,
+  poweredByHeader: false,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      'recharts',
+      'date-fns',
+      'clsx',
+      'tailwind-merge',
+      'unpdf',
+    ],
+  },
 };
 
 export default withSerwist(withNextIntl(nextConfig));

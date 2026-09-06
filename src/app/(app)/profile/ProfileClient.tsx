@@ -1,10 +1,23 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
+import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
+import type { RadarDataPoint } from '@/components/RadarChart';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { ProgressRing } from '@/components/ProgressRing';
+
+const RadarChart = dynamic(
+  () => import('@/components/RadarChart').then((mod) => mod.RadarChart),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 w-64 items-center justify-center">
+        <div className="h-48 w-48 rounded-full bg-[#E8DACB]/40 animate-pulse" />
+      </div>
+    ),
+  }
+);
 import { Award, CheckCircle2, Clock, Sparkles } from 'lucide-react';
 import { getPersonaFRAC } from '@/data/fracCadres';
 import { CompetencyService } from '@/services/competencyService';

@@ -1,10 +1,23 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { PlayCircle } from 'lucide-react';
-import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
+import dynamic from 'next/dynamic';
+import type { RadarDataPoint } from '@/components/RadarChart';
+
+const RadarChart = dynamic(
+  () => import('@/components/RadarChart').then((mod) => mod.RadarChart),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 w-64 items-center justify-center">
+        <div className="h-48 w-48 rounded-full bg-[#E8DACB]/40 animate-pulse" />
+      </div>
+    ),
+  }
+);
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { CompetencyService } from '@/services/competencyService';
 import { getPersonaFRAC } from '@/data/fracCadres';
@@ -93,7 +106,8 @@ function GapCard({ gap }: GapCardProps) {
           </div>
           <Link
             href={`/assessment/${gap.competencyId}`}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs text-white bg-[#555934] hover:bg-[#3e4225] font-semibold rounded-xl transition-colors shadow-2xs"
+            prefetch={true}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs text-white bg-[#555934] hover:bg-[#3e4225] font-semibold rounded-xl transition-all shadow-2xs active:scale-[0.98]"
           >
             <PlayCircle className="h-3.5 w-3.5" />
             Take Assessment
@@ -165,11 +179,15 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
   const [{ gaps, radarData }] = useState(() => buildPersonaGapsAndRadar(user));
   const [filter, setFilter] = useState<'all' | 'HIGH' | 'MODERATE' | 'PROFICIENT'>('all');
 
-  const filteredGaps = gaps.filter(gap => filter === 'all' || gap.severity === filter);
+  const severityCounts = useMemo(() => ({
+    HIGH: gaps.filter((g) => g.severity === 'HIGH').length,
+    MODERATE: gaps.filter((g) => g.severity === 'MODERATE').length,
+    PROFICIENT: gaps.filter((g) => g.severity === 'PROFICIENT').length,
+  }), [gaps]);
 
-  const getSeverityCount = (severity: 'HIGH' | 'MODERATE' | 'PROFICIENT') => {
-    return gaps.filter(g => g.severity === severity).length;
-  };
+  const filteredGaps = useMemo(() => {
+    return filter === 'all' ? gaps : gaps.filter((gap) => gap.severity === filter);
+  }, [gaps, filter]);
 
   return (
     <div className="space-y-8">
@@ -217,7 +235,7 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
                 : 'bg-[#8C5B3E]/10 text-[#8C5B3E] hover:bg-[#8C5B3E]/20'
             }`}
           >
-            🔴 High ({getSeverityCount('HIGH')})
+            🔴 High ({severityCounts.HIGH})
           </button>
           <button
             onClick={() => setFilter('MODERATE')}
@@ -227,7 +245,7 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
                 : 'bg-[#BF9B7A]/15 text-[#593E2E] hover:bg-[#BF9B7A]/25'
             }`}
           >
-            🟡 Moderate ({getSeverityCount('MODERATE')})
+            🟡 Moderate ({severityCounts.MODERATE})
           </button>
           <button
             onClick={() => setFilter('PROFICIENT')}
@@ -237,7 +255,7 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
                 : 'bg-[#555934]/10 text-[#555934] hover:bg-[#555934]/20'
             }`}
           >
-            🟢 Proficient ({getSeverityCount('PROFICIENT')})
+            🟢 Proficient ({severityCounts.PROFICIENT})
           </button>
         </div>
       </div>
