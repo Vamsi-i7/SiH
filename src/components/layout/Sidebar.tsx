@@ -256,7 +256,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
                 {footerData.title}
               </span>
             </div>
-            {role === 'learner' && (
+            {(role === 'learner' || role === 'admin') && (
               <button
                 type="button"
                 onClick={() => {
@@ -268,7 +268,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
                   }, 700);
                 }}
                 disabled={syncing}
-                title="Force Synchronize 38 Schedules"
+                title={role === 'admin' ? "Synchronize with NSC Central Nodes" : "Force Synchronize 38 Schedules"}
                 className="p-1 rounded-lg bg-white border border-[#BF9B7A]/30 text-[#555934] hover:bg-[#555934] hover:text-white transition-colors cursor-pointer shrink-0"
               >
                 <RefreshCw className={`h-3 w-3 ${syncing ? 'animate-spin' : ''}`} />
@@ -276,7 +276,11 @@ export function Sidebar({ initialRole }: SidebarProps) {
             )}
           </div>
           <p className="text-[10px] text-[#705849] mt-0.5 truncate">
-            {synced ? '✓ 38 Forms Synced with MoSPI Central Node!' : footerData.subtitle}
+            {synced
+              ? role === 'admin'
+                ? '✓ Cabinet Protocol Synced with NSC Nodes!'
+                : '✓ 38 Forms Synced with MoSPI Central Node!'
+              : footerData.subtitle}
           </p>
           <div className="mt-2 pt-2 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[10px] font-medium text-[#705849]">
             <span className="font-mono text-[#8C5B3E]">{footerData.badge}</span>

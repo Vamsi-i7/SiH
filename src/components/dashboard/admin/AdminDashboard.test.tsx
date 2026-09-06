@@ -23,6 +23,8 @@ describe('AdminDashboard Component', () => {
     expect(html).toContain('Rajesh Kumar');
     expect(html).toContain('Additional Director General');
     expect(html).toContain('MoSPI Headquarters');
+    expect(html).toContain('Secretary Memo (PDF)');
+    expect(html).toContain('Cadre Roster');
   });
 
   it('renders national workforce governance KPI strip', () => {
@@ -47,10 +49,22 @@ describe('AdminDashboard Component', () => {
     expect(html).toContain('Listing Scrutiny Error Rate');
   });
 
-  it('renders regional office breakdown table with flag priority training buttons', () => {
+  it('renders regional office breakdown table with inspect and flag priority training buttons', () => {
     const html = renderToString(<AdminDashboard user={mockUserAdmin} />);
     expect(html).toContain('Regional Offices &amp; Division Readiness');
     expect(html).toContain('FOD Bihar');
+    expect(html).toContain('Inspect');
     expect(html).toContain('Flag Priority Training');
+  });
+
+  it('renders multi-deck workspace tabs and horizontal carousels', () => {
+    const html = renderToString(<AdminDashboard user={mockUserAdmin} />);
+    expect(html).toContain('Executive Command');
+    expect(html).toContain('Regional Cadre Health');
+    expect(html).toContain('Outcome Regression');
+    expect(html).toContain('Policy Directives');
+    expect(html).toContain('Cabinet Drawer');
+    expect(html).toContain('National Zonal Health &amp; Cadre Readiness');
+    expect(html).toContain('National Policy Directives &amp; Cabinet Circulars');
   });
 });

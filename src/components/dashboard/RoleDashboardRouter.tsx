@@ -24,18 +24,6 @@ export interface DashboardUserProps {
 }
 
 export function resolveUserRole(user?: Partial<DashboardUserProps> | null): UserRole {
-  if (!user) return 'learner';
-
-  const roleFromApp = user.app_metadata?.role;
-  if (roleFromApp === 'trainer' || roleFromApp === 'admin' || roleFromApp === 'learner') {
-    return roleFromApp as UserRole;
-  }
-
-  const roleFromMeta = user.user_metadata?.role;
-  if (roleFromMeta === 'trainer' || roleFromMeta === 'admin' || roleFromMeta === 'learner') {
-    return roleFromMeta as UserRole;
-  }
-
   // Check client cookie if present
   if (typeof document !== 'undefined') {
     try {
@@ -49,6 +37,18 @@ export function resolveUserRole(user?: Partial<DashboardUserProps> | null): User
     } catch {
       // ignore
     }
+  }
+
+  if (!user) return 'learner';
+
+  const roleFromApp = user.app_metadata?.role;
+  if (roleFromApp === 'trainer' || roleFromApp === 'admin' || roleFromApp === 'learner') {
+    return roleFromApp as UserRole;
+  }
+
+  const roleFromMeta = user.user_metadata?.role;
+  if (roleFromMeta === 'trainer' || roleFromMeta === 'admin' || roleFromMeta === 'learner') {
+    return roleFromMeta as UserRole;
   }
 
   // Fallback by email heuristic

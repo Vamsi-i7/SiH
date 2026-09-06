@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Flag, CheckCircle2, AlertTriangle, Search } from 'lucide-react';
 
-interface DepartmentRow {
+export interface DepartmentRow {
   id: string;
   name: string;
   zone: string;
@@ -97,7 +97,11 @@ const INITIAL_DEPARTMENTS: DepartmentRow[] = [
   },
 ];
 
-export function DepartmentBreakdownTable() {
+interface DepartmentBreakdownTableProps {
+  onInspectOffice?: (office: DepartmentRow) => void;
+}
+
+export function DepartmentBreakdownTable({ onInspectOffice }: DepartmentBreakdownTableProps = {}) {
   const [departments, setDepartments] = useState<DepartmentRow[]>(INITIAL_DEPARTMENTS);
   const [search, setSearch] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -242,20 +246,30 @@ export function DepartmentBreakdownTable() {
                     )}
                   </td>
 
-                  {/* Action: Flag Priority Training */}
+                  {/* Action: Inspect & Flag Priority Training */}
                   <td className="py-4 pr-2 text-right">
-                    <button
-                      type="button"
-                      onClick={() => toggleFlag(dept.id, dept.name)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                        dept.isFlagged
-                          ? 'bg-red-500/15 text-red-700 border border-red-500/40 hover:bg-red-500/25'
-                          : 'bg-[#FAF6F0] text-[#555934] border border-[#BF9B7A]/40 hover:bg-[#555934] hover:text-white'
-                      }`}
-                    >
-                      <Flag className="h-3 w-3" />
-                      <span>{dept.isFlagged ? 'Flagged 🚩' : 'Flag Priority Training'}</span>
-                    </button>
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => onInspectOffice && onInspectOffice(dept)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-[#FAF6F0] text-[#555934] border border-[#BF9B7A]/40 hover:bg-white transition-all cursor-pointer shadow-2xs"
+                      >
+                        <span>Inspect</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => toggleFlag(dept.id, dept.name)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          dept.isFlagged
+                            ? 'bg-red-500/15 text-red-700 border border-red-500/40 hover:bg-red-500/25'
+                            : 'bg-[#FAF6F0] text-[#555934] border border-[#BF9B7A]/40 hover:bg-[#555934] hover:text-white'
+                        }`}
+                      >
+                        <Flag className="h-3 w-3" />
+                        <span>{dept.isFlagged ? 'Flagged 🚩' : 'Flag Priority Training'}</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );

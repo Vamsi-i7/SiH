@@ -9,6 +9,7 @@ interface AdminKpiStripProps {
   scrutinyErrorRate?: number;
   priorityFlaggedCount?: number;
   activeCohortsCount?: number;
+  onKpiClick?: (kpiId: string) => void;
 }
 
 export function AdminKpiStrip({
@@ -17,6 +18,7 @@ export function AdminKpiStrip({
   scrutinyErrorRate = 8.2,
   priorityFlaggedCount = 2,
   activeCohortsCount = 4,
+  onKpiClick,
 }: AdminKpiStripProps) {
   const kpis = [
     {
@@ -73,7 +75,17 @@ export function AdminKpiStrip({
         return (
           <div
             key={kpi.id}
-            className="rounded-2xl bg-white border border-[#BF9B7A]/30 p-4 shadow-2xs hover:shadow-xs transition-all hover:scale-101 flex items-center gap-3.5"
+            onClick={() => onKpiClick && onKpiClick(kpi.id)}
+            role={onKpiClick ? 'button' : undefined}
+            tabIndex={onKpiClick ? 0 : undefined}
+            onKeyDown={(e) => {
+              if (onKpiClick && (e.key === 'Enter' || e.key === ' ')) {
+                onKpiClick(kpi.id);
+              }
+            }}
+            className={`rounded-2xl bg-white border border-[#BF9B7A]/30 p-4 shadow-2xs hover:shadow-xs transition-all flex items-center gap-3.5 ${
+              onKpiClick ? 'cursor-pointer hover:scale-101 active:scale-98' : ''
+            }`}
           >
             <div className={`h-11 w-11 rounded-2xl ${kpi.bgColor} flex items-center justify-center shrink-0`}>
               <Icon className={`h-5 w-5 ${kpi.textColor}`} />

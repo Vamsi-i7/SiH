@@ -30,6 +30,9 @@ import { DEMO_PERSONAS } from '@/lib/demoPersonas';
 import type { DemoPersona, UserRole } from '@/lib/types';
 import { LearnerKarmaLedgerModal } from '@/components/dashboard/learner/modals/LearnerKarmaLedgerModal';
 import { CAPIConnectivityModal } from '@/components/dashboard/learner/modals/CAPIConnectivityModal';
+import { MinisterialBriefingModal } from '@/components/dashboard/admin/modals/MinisterialBriefingModal';
+import { NationalReadinessModal } from '@/components/dashboard/admin/modals/NationalReadinessModal';
+import { FlaggedRegionsModal } from '@/components/dashboard/admin/modals/FlaggedRegionsModal';
 
 function getInitialPersona(): DemoPersona {
   if (typeof document === 'undefined') return DEMO_PERSONAS[0];
@@ -91,6 +94,9 @@ export function Topbar({ initialRole }: TopbarProps) {
   const [karmaModalOpen, setKarmaModalOpen] = useState(false);
   const [capiModalOpen, setCapiModalOpen] = useState(false);
   const [isOfflineSimulated, setIsOfflineSimulated] = useState(false);
+  const [adminBriefingOpen, setAdminBriefingOpen] = useState(false);
+  const [adminReadinessOpen, setAdminReadinessOpen] = useState(false);
+  const [adminFlaggedOpen, setAdminFlaggedOpen] = useState(false);
 
   const [activePersona, setActivePersona] = useState<DemoPersona>(() => {
     const fromCookie = getInitialPersona();
@@ -319,23 +325,34 @@ export function Topbar({ initialRole }: TopbarProps) {
 
           {role === 'admin' && (
             <>
-              {/* National Readiness Index */}
-              <div className="flex items-center gap-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 px-3 py-1.5 text-xs font-bold text-emerald-800">
+              {/* National Readiness Index Capsule */}
+              <button
+                type="button"
+                onClick={() => setAdminReadinessOpen(true)}
+                title="View National FRAC Readiness Breakdown"
+                className="flex items-center gap-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 px-3 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-500/25 transition-all cursor-pointer shadow-2xs active:scale-95"
+              >
                 <Target className="h-3.5 w-3.5 text-emerald-700" />
                 <span>National Readiness: 72.4%</span>
-              </div>
+              </button>
 
-              {/* Priority Flagged ROs */}
-              <div className="hidden sm:flex items-center gap-1.5 rounded-xl bg-red-500/15 border border-red-500/30 px-3 py-1.5 text-xs font-bold text-red-800">
+              {/* Priority Flagged ROs Capsule */}
+              <button
+                type="button"
+                onClick={() => setAdminFlaggedOpen(true)}
+                title="View Critical Flagged Regional Offices"
+                className="hidden sm:flex items-center gap-1.5 rounded-xl bg-red-500/15 border border-red-500/30 px-3 py-1.5 text-xs font-bold text-red-800 hover:bg-red-500/25 transition-all cursor-pointer shadow-2xs active:scale-95"
+              >
                 <Flag className="h-3.5 w-3.5 text-red-600" />
                 <span>2 Flagged ROs</span>
-              </div>
+              </button>
 
               {/* Ministerial Briefing CTA */}
               <button
                 type="button"
-                onClick={() => alert('Generating Confidential Secretary Briefing Memo (PDF)...')}
-                className="hidden lg:flex items-center gap-1.5 rounded-xl bg-[#2d1f17] px-3 py-1.5 text-xs font-bold text-[#FAF6F0] hover:bg-black transition-colors shadow-2xs"
+                onClick={() => setAdminBriefingOpen(true)}
+                title="Preview Official Secretary Briefing Memo (PDF)"
+                className="hidden lg:flex items-center gap-1.5 rounded-xl bg-[#2d1f17] px-3 py-1.5 text-xs font-bold text-[#FAF6F0] hover:bg-black transition-all cursor-pointer shadow-2xs active:scale-95"
               >
                 <Download className="h-3.5 w-3.5 text-[#F8C858]" />
                 <span>Ministerial PDF</span>
@@ -604,6 +621,24 @@ export function Topbar({ initialRole }: TopbarProps) {
             isHindi={locale === 'hi'}
             isOfflineSimulated={isOfflineSimulated}
             onToggleOfflineSimulated={() => setIsOfflineSimulated((prev) => !prev)}
+          />
+        </>
+      )}
+
+      {/* Interactive Admin Modals */}
+      {role === 'admin' && (
+        <>
+          <MinisterialBriefingModal
+            isOpen={adminBriefingOpen}
+            onClose={() => setAdminBriefingOpen(false)}
+          />
+          <NationalReadinessModal
+            isOpen={adminReadinessOpen}
+            onClose={() => setAdminReadinessOpen(false)}
+          />
+          <FlaggedRegionsModal
+            isOpen={adminFlaggedOpen}
+            onClose={() => setAdminFlaggedOpen(false)}
           />
         </>
       )}

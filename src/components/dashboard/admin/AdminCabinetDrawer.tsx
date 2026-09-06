@@ -3,17 +3,39 @@
 import React from 'react';
 import { Download, FileText, Send, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
-export function AdminCabinetDrawer() {
+interface AdminCabinetDrawerProps {
+  onOpenBriefingModal?: () => void;
+  onOpenRosterModal?: () => void;
+  onOpenSweepModal?: () => void;
+}
+
+export function AdminCabinetDrawer({
+  onOpenBriefingModal,
+  onOpenRosterModal,
+  onOpenSweepModal,
+}: AdminCabinetDrawerProps = {}) {
   const handleExportPDF = () => {
-    alert('Generating Official MoSPI Ministerial Briefing PDF (Confidential)...');
+    if (onOpenBriefingModal) {
+      onOpenBriefingModal();
+    } else {
+      alert('Generating Official MoSPI Ministerial Briefing PDF (Confidential)...');
+    }
   };
 
   const handleExportCSV = () => {
-    alert('Downloading National Cadre Competency Matrix CSV (4,850 rows)...');
+    if (onOpenRosterModal) {
+      onOpenRosterModal();
+    } else {
+      alert('Downloading National Cadre Competency Matrix CSV (4,850 rows)...');
+    }
   };
 
   const handleCommissionRound = () => {
-    alert('National Statistical Capacity Building Round commissioned for Q3 2026.');
+    if (onOpenSweepModal) {
+      onOpenSweepModal();
+    } else {
+      alert('National Statistical Capacity Building Round commissioned for Q3 2026.');
+    }
   };
 
   return (

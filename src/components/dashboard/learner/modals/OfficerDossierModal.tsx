@@ -19,14 +19,47 @@ export function OfficerDossierModal({
 }: OfficerDossierModalProps) {
   if (!isOpen) return null;
 
-  const employeeCode = persona.id.includes('sunita')
+  const isSunita = persona.id.includes('sunita');
+  const isAdmin = persona.role === 'admin' || persona.id.includes('rajesh');
+  const isTrainer = persona.role === 'trainer' || persona.id.includes('priya');
+
+  const employeeCode = isSunita
     ? 'MOSPI-FOD-2021-4921'
+    : isAdmin
+    ? 'MOSPI-ISS-1998-0042'
+    : isTrainer
+    ? 'MOSPI-NSSTA-2012-3081'
     : 'MOSPI-SSS-2022-8419';
-  const cadreBatch = persona.id.includes('sunita') ? '2021 Cadre Batch' : '2022 Cadre Batch';
-  const payMatrix = persona.id.includes('sunita') ? 'Level 5 (FOD)' : 'Level 7 (JSO Pay Band)';
-  const postingStation = persona.id.includes('sunita')
+
+  const cadreBatch = isSunita
+    ? '2021 Cadre Batch'
+    : isAdmin
+    ? '1998 Cadre Batch (Senior SAG)'
+    : isTrainer
+    ? '2012 Faculty Batch'
+    : '2022 Cadre Batch';
+
+  const payMatrix = isSunita
+    ? 'Level 5 (FOD)'
+    : isAdmin
+    ? 'Level 14 (Executive SAG)'
+    : isTrainer
+    ? 'Level 12 (Course Director)'
+    : 'Level 7 (JSO Pay Band)';
+
+  const postingStation = isSunita
     ? 'Regional Office, Patna (Field Operations Division)'
+    : isAdmin
+    ? 'Ministry Headquarters, Sardar Patel Bhawan, New Delhi'
+    : isTrainer
+    ? 'National Statistical Systems Training Academy (NSSTA), Greater Noida'
     : 'Survey Design & Research Division (SDRD), New Delhi';
+
+  const fracBaseline = isAdmin
+    ? '92% Executive Qualified (Level 4-5)'
+    : isTrainer
+    ? '88% Faculty Certified (Master Trainer)'
+    : '71% Qualified (Level 3-4)';
 
   const handleDownloadPDF = () => {
     alert(
@@ -125,7 +158,7 @@ export function OfficerDossierModal({
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
                 <span>{isHindi ? 'FRAC योग्यता आधार' : 'FRAC Competency Baseline'}</span>
               </div>
-              <p className="font-bold text-emerald-700">71% Qualified (Level 3-4)</p>
+              <p className="font-bold text-emerald-700">{fracBaseline}</p>
             </div>
 
             <div className="p-3.5 rounded-xl bg-white border border-[#BF9B7A]/20 space-y-1">
