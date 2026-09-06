@@ -6,7 +6,7 @@
  */
 
 import { db, storage } from '@/lib/firebase';
-import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, doc, deleteDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export interface DocumentChunk {
@@ -95,7 +95,7 @@ export class DocumentService {
 
     // 2. Map metadata to Firestore DB
     try {
-      await addDoc(collection(db, 'documents'), {
+      const docRef = await addDoc(collection(db, 'documents'), {
         title: docRecord.title,
         filename,
         storagePath,
@@ -104,8 +104,10 @@ export class DocumentService {
         status: 'INDEXED',
         chunkCount: chunks.length || 1,
         targetCompetencies,
+        chunks: chunks.slice(0, 15),
         createdAt: docRecord.uploadedAt,
       });
+      docRecord.id = docRef.id;
     } catch {
       // Local fallback if Firestore offline
     }
@@ -123,7 +125,7 @@ export class DocumentService {
       const snapshot = await getDocs(q);
 
       if (!snapshot.empty) {
-        return snapshot.docs.map((docSnap) => {
+        const firestoreDocs = snapshot.docs.map((docSnap) => {
           const data = docSnap.data();
           return {
             id: docSnap.id,
@@ -134,16 +136,36 @@ export class DocumentService {
             status: data.status || 'INDEXED',
             chunkCount: data.chunkCount || 16,
             targetCompetencies: data.targetCompetencies || ['comp-capi', 'comp-nsso'],
+            chunks: data.chunks as DocumentChunk[] | undefined,
             storageUrl: data.storageUrl,
             storagePath: data.storagePath,
           };
         });
+
+        // Merge with sample documents for rich initial repository
+        const sampleDocs = DocumentService.getSampleDocuments();
+        const existingFilenames = new Set(firestoreDocs.map((d) => d.filename));
+        const nonDuplicateSamples = sampleDocs.filter((s) => !existingFilenames.has(s.filename));
+        return [...firestoreDocs, ...nonDuplicateSamples];
       }
     } catch {
-      // Fallback
+      // Fallback to samples if Firestore offline
     }
 
     return DocumentService.getSampleDocuments();
+  }
+
+  /**
+   * Delete a document from Firestore
+   */
+  static async deleteDocument(id: string): Promise<boolean> {
+    try {
+      const docRef = doc(db, 'documents', id);
+      await deleteDoc(docRef);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   /**
