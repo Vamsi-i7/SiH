@@ -137,56 +137,60 @@ export default function DashboardClient({ user }: DashboardProps) {
     }));
   }, []);
   // Format catalog courses for the CourseCard component
-  const recommendedCourses: CourseData[] = OFFICIAL_COURSE_CATALOG.map((course) => {
-    let whyRec = 'Recommended by statistical training council to build institutional competency.';
-    let pri: 'HIGH' | 'MEDIUM' | 'LOW' = 'MEDIUM';
+  const recommendedCourses = useMemo<CourseData[]>(() => {
+    return OFFICIAL_COURSE_CATALOG.map((course) => {
+      let whyRec = 'Recommended by statistical training council to build institutional competency.';
+      let pri: 'HIGH' | 'MEDIUM' | 'LOW' = 'MEDIUM';
 
-    if (course.targetCompetencies.includes('comp-capi')) {
-      whyRec = 'Directly addresses your CAPI Tablet competency gap (L2 → L4) for upcoming census enumeration.';
-      pri = 'HIGH';
-    } else if (course.targetCompetencies.includes('comp-survey')) {
-      whyRec = 'Closes high-priority Survey Sampling & Design gap (L1 → L3) required for field investigation.';
-      pri = 'HIGH';
-    } else if (course.targetCompetencies.includes('comp-data')) {
-      whyRec = 'Targeted to eliminate data entry scrutiny errors in Schedule 0.0 listings.';
-      pri = 'MEDIUM';
-    } else if (course.targetCompetencies.includes('comp-nsso')) {
-      whyRec = 'Refreshes foundational NSSO protocols and PLFS schedule canvassing guidelines.';
-      pri = 'LOW';
-    }
+      if (course.targetCompetencies.includes('comp-capi')) {
+        whyRec = 'Directly addresses your CAPI Tablet competency gap (L2 → L4) for upcoming census enumeration.';
+        pri = 'HIGH';
+      } else if (course.targetCompetencies.includes('comp-survey')) {
+        whyRec = 'Closes high-priority Survey Sampling & Design gap (L1 → L3) required for field investigation.';
+        pri = 'HIGH';
+      } else if (course.targetCompetencies.includes('comp-data')) {
+        whyRec = 'Targeted to eliminate data entry scrutiny errors in Schedule 0.0 listings.';
+        pri = 'MEDIUM';
+      } else if (course.targetCompetencies.includes('comp-nsso')) {
+        whyRec = 'Refreshes foundational NSSO protocols and PLFS schedule canvassing guidelines.';
+        pri = 'LOW';
+      }
 
-    return {
-      id: course.id,
-      courseId: course.courseId,
-      title: course.title,
-      title_hi: course.title_hi,
-      provider: course.provider,
-      duration: course.duration,
-      description: course.description,
-      description_hi: course.description_hi,
-      priority: pri,
-      targetCompetencies: course.targetCompetencies.map((id) => {
-        if (id === 'comp-capi') return 'CAPI Tablet Operation';
-        if (id === 'comp-survey') return 'Survey Sampling & Design';
-        if (id === 'comp-data') return 'Data Entry & Scrutiny';
-        if (id === 'comp-nsso') return 'NSSO Protocol Mastery';
-        return 'Statistical Operations';
-      }),
-      whyRecommended: whyRec,
-      stage: course.stage,
-      iGotLink: course.iGotLink,
-      rating: course.rating,
-      enrolledCount: course.enrolledCount,
-    };
-  });
+      return {
+        id: course.id,
+        courseId: course.courseId,
+        title: course.title,
+        title_hi: course.title_hi,
+        provider: course.provider,
+        duration: course.duration,
+        description: course.description,
+        description_hi: course.description_hi,
+        priority: pri,
+        targetCompetencies: course.targetCompetencies.map((id) => {
+          if (id === 'comp-capi') return 'CAPI Tablet Operation';
+          if (id === 'comp-survey') return 'Survey Sampling & Design';
+          if (id === 'comp-data') return 'Data Entry & Scrutiny';
+          if (id === 'comp-nsso') return 'NSSO Protocol Mastery';
+          return 'Statistical Operations';
+        }),
+        whyRecommended: whyRec,
+        stage: course.stage,
+        iGotLink: course.iGotLink,
+        rating: course.rating,
+        enrolledCount: course.enrolledCount,
+      };
+    });
+  }, []);
 
   // Filter courses based on active tab
-  const filteredCourses = recommendedCourses.filter((course) => {
-    if (selectedCourseTab === 'critical') return course.priority === 'HIGH';
-    if (selectedCourseTab === 'applied') return course.stage === 'APPLIED';
-    if (selectedCourseTab === 'foundational') return course.stage === 'FOUNDATIONAL';
-    return true;
-  });
+  const filteredCourses = useMemo(() => {
+    return recommendedCourses.filter((course) => {
+      if (selectedCourseTab === 'critical') return course.priority === 'HIGH';
+      if (selectedCourseTab === 'applied') return course.stage === 'APPLIED';
+      if (selectedCourseTab === 'foundational') return course.stage === 'FOUNDATIONAL';
+      return true;
+    });
+  }, [recommendedCourses, selectedCourseTab]);
 
   // Active in-progress course
   const activeCourse: CourseData = {
