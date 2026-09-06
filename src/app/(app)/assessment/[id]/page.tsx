@@ -39,7 +39,7 @@ export default async function AssessmentPage({ params }: PageProps) {
   let competencyName = DEMO_COMPETENCIES[competencyId]?.name || 'Statistical Competency';
   let competencyNameHi = DEMO_COMPETENCIES[competencyId]?.name_hi || 'सांख्यिकीय योग्यता';
 
-  // Helper for fast-timeout Supabase query to prevent slow page loads
+  // Helper for fast-timeout database query to prevent slow page loads
   const fastQuery = async <T,>(promise: PromiseLike<T>, timeoutMs = 250): Promise<T | null> => {
     return Promise.race([
       Promise.resolve(promise),

@@ -107,16 +107,16 @@ gh pr create --base master --head phase-1.1 \
 
 ### .env.local (Already Created)
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://demo.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+NEXT_PUBLIC_FIREBASE_API_KEY=demo-api-key
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=statvidya-demo
 NEXT_PUBLIC_AUTH_REDIRECT_URL=http://localhost:3000/auth/callback
 ```
 
 ### Next Steps After Merge
-1. Update Supabase credentials in production `.env`
+1. Update Firebase credentials in production `.env`
 2. Run `npm run build` in production
-3. Deploy to Vercel/hosting
-4. Test all endpoints with real Supabase instance
+3. Deploy to production
+4. Test all endpoints with Firebase instance
 
 ---
 
@@ -160,14 +160,14 @@ NEXT_PUBLIC_AUTH_REDIRECT_URL=http://localhost:3000/auth/callback
 ## What's Next (Phase 4)
 
 ### Immediate (Post-Merge)
-- [ ] Test with real Supabase instance
+- [ ] Test with Firebase instance
 - [ ] Verify all auth flows
 - [ ] Test offline functionality
 
 ### Phase 4 Priority
 1. **Adaptive Assessment Engine** — Dynamic MCQ delivery
 2. **Offline Sync** — Critical for Field Investigators
-3. **Cloudflare R2 Integration** — Object storage
+3. **Firebase Storage Integration** — Object storage
 4. **Multi-AI MCQ Pipeline** — Question generation
 
 ---
@@ -175,7 +175,7 @@ NEXT_PUBLIC_AUTH_REDIRECT_URL=http://localhost:3000/auth/callback
 ## Support & Questions
 
 If you encounter any issues:
-1. Check `.env.local` has correct Supabase credentials
+1. Check `.env.local` has correct Firebase credentials
 2. Verify `next-intl.config.ts` exists in project root
 3. Run `npm run build` to verify production build works
 4. See troubleshooting section in PRD.md

@@ -110,10 +110,7 @@ npm install
 # 3. Environment configuration
 cp .env.example .env.local
 
-# 4. Start Supabase (Local or Remote)
-npx supabase start
-
-# 5. Start development server
+# 4. Start development server
 npm run dev
 ```
 

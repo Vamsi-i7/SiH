@@ -258,7 +258,7 @@ No `.dark` selectors, no `dark:` Tailwind variants, no theme toggle UI. Light-on
 ## 14. Related Documentation
 
 - **PRD.md** — Product requirements, personas, user journeys
-- **Architecture.md** — Technical topology (Vercel + Supabase + Cloudflare)
+- **Architecture.md** — Technical topology (Firebase Auth + Cloud Firestore + Firebase Storage)
 - **Phases.md** — Build phases; Phase 3 complete, Phase 4 next (Adaptive Assessment + Offline)
 - **AGENTS.md** — Next.js version notes (breaking changes from training data)
 

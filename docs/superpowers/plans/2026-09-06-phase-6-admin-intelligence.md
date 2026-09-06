@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Complete Phase 6 (the final MVP phase) by implementing the Admin Workforce Intelligence dashboard, MoSPI Field Outcome Correlation engine with bespoke SVG regression charts, write-back priority training flags with Supabase Realtime broadcast, and automated bilingual i18n guardrails.
+**Goal:** Complete Phase 6 (the final MVP phase) by implementing the Admin Workforce Intelligence dashboard, MoSPI Field Outcome Correlation engine with bespoke SVG regression charts, write-back priority training flags with Cloud Firestore realtime listeners, and automated bilingual i18n guardrails.
 
-**Architecture:** Next.js 15 App Router + React 19 + TypeScript + Supabase PostgreSQL (RLS) + Cloudflare (3-Provider Topology v2.0). Data aggregation executes via `adminService.ts`, write-backs persist to `training_priorities` with automated PostgreSQL audit triggers, and live broadcasts are received via Supabase Realtime.
+**Architecture:** Next.js 15 App Router + React 19 + TypeScript + Firebase Auth + Cloud Firestore + Firebase Storage. Data aggregation executes via `adminService.ts`, write-backs persist to `trainingPriorities` with automated Firestore audit logs, and live updates are received via Cloud Firestore realtime listeners.
 
-**Tech Stack:** Next.js 15, TypeScript, Tailwind CSS v4 (OKLCH tokens), Supabase Client (`@supabase/ssr`, `@supabase/supabase-js`), Vitest, next-intl.
+**Tech Stack:** Next.js 15, TypeScript, Tailwind CSS v4 (OKLCH tokens), Firebase SDK (`firebase`), Vitest, next-intl.
 
 **Spec:** `docs/superpowers/specs/2026-09-06-phase-6-admin-intelligence-design.md`
 
