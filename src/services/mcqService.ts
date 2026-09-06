@@ -174,13 +174,14 @@ Target JSON Structure:
       }
 
       try {
-        const parsedArray = JSON.parse(cleaned.substring(startIndex, endIndex + 1));
+        const jsonCandidate = cleaned.substring(startIndex, endIndex + 1).replace(/,\s*([}\]])/g, '$1');
+        const parsedArray = JSON.parse(jsonCandidate);
         if (Array.isArray(parsedArray)) {
           for (let i = 0; i < parsedArray.length; i++) {
             const item = parsedArray[i];
             if (item.stemEn && Array.isArray(item.optionsEn) && item.optionsEn.length === 4) {
               allQuestions.push({
-                id: `mcq-groq-${Date.now()}-${allQuestions.length}`,
+                id: `mcq-eval-${Date.now()}-${allQuestions.length}`,
                 competencyId,
                 difficulty,
                 stemEn: item.stemEn,
@@ -272,7 +273,8 @@ Target JSON Structure:
       throw new Error('No JSON object found in Groq response');
     }
 
-    const parsed = JSON.parse(cleaned.substring(startIndex, endIndex + 1));
+    const jsonCandidate = cleaned.substring(startIndex, endIndex + 1).replace(/,\s*([}\]])/g, '$1');
+    const parsed = JSON.parse(jsonCandidate);
     if (
       !parsed.stemEn ||
       !Array.isArray(parsed.optionsEn) ||
@@ -283,7 +285,7 @@ Target JSON Structure:
     }
 
     return {
-      id: `mcq-groq-${Date.now()}`,
+      id: `mcq-eval-${Date.now()}`,
       competencyId,
       difficulty,
       stemEn: parsed.stemEn,
