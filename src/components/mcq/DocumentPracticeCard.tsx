@@ -15,7 +15,15 @@ import {
   Sparkles,
   HelpCircle,
   Award,
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
 } from 'lucide-react';
+
+export interface AnswerRecord {
+  selectedIndex: number;
+  isChecked: boolean;
+}
 
 interface DocumentPracticeCardProps {
   question: GeneratedQuestion;
@@ -25,6 +33,14 @@ interface DocumentPracticeCardProps {
   isGeneratingNext: boolean;
   onStageToQueue: () => void;
   stagedToQueue: boolean;
+  // Multi-question batch navigation
+  currentIndex?: number;
+  totalCount?: number;
+  onPreviousQuestion?: () => void;
+  onJumpToQuestion?: (index: number) => void;
+  sessionAnswers?: Record<number, AnswerRecord>;
+  onRecordAnswer?: (qIndex: number, optIndex: number, checked: boolean) => void;
+  onResetSession?: () => void;
 }
 
 export function DocumentPracticeCard({
@@ -35,11 +51,25 @@ export function DocumentPracticeCard({
   isGeneratingNext,
   onStageToQueue,
   stagedToQueue,
+  currentIndex = 0,
+  totalCount = 1,
+  onPreviousQuestion,
+  onJumpToQuestion,
+  sessionAnswers,
+  onRecordAnswer,
+  onResetSession,
 }: DocumentPracticeCardProps) {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const currentRecord = sessionAnswers?.[currentIndex];
+  const [selectedOption, setSelectedOption] = useState<number | null>(
+    currentRecord ? currentRecord.selectedIndex : null
+  );
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(
+    currentRecord ? currentRecord.isChecked : false
+  );
   const [lang, setLang] = useState<'en' | 'hi'>('en');
-  const [showExplanation, setShowExplanation] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(
+    currentRecord ? currentRecord.isChecked : false
+  );
 
   const isCorrect = selectedOption === question.correctIndex;
   const currentStem = lang === 'en' ? question.stemEn : question.stemHi;
@@ -49,6 +79,7 @@ export function DocumentPracticeCard({
   const handleSelect = (idx: number) => {
     if (!isSubmitted) {
       setSelectedOption(idx);
+      onRecordAnswer?.(currentIndex, idx, false);
     }
   };
 
@@ -56,7 +87,16 @@ export function DocumentPracticeCard({
     if (selectedOption === null) return;
     setIsSubmitted(true);
     setShowExplanation(true);
+    onRecordAnswer?.(currentIndex, selectedOption, true);
   };
+
+  const hasNext = totalCount > 1 && currentIndex < totalCount - 1;
+  const hasPrevious = totalCount > 1 && currentIndex > 0;
+
+  // Calculate score across batch
+  const answeredCount = Object.keys(sessionAnswers || {}).filter(
+    (k) => sessionAnswers?.[Number(k)]?.isChecked
+  ).length;
 
   return (
     <Card className="border-stone-200 bg-white shadow-md rounded-2xl overflow-hidden animate-in fade-in-50 duration-300">
@@ -108,14 +148,63 @@ export function DocumentPracticeCard({
             </button>
           </div>
         </div>
+
+        {/* Batch Stepper Bar (if multiple questions) */}
+        {totalCount > 1 && (
+          <div className="pt-4 mt-2 border-t border-stone-200/60 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-stone-700">
+                Question <strong className="text-[#555934]">{currentIndex + 1}</strong> of{' '}
+                <strong>{totalCount}</strong>
+              </span>
+              <span className="text-stone-500">
+                Progress: {answeredCount}/{totalCount} Completed
+              </span>
+            </div>
+
+            {/* Pagination Bubbles */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {Array.from({ length: totalCount }).map((_, idx) => {
+                const record = sessionAnswers?.[idx];
+                const isCurrent = idx === currentIndex;
+                const isAnswered = record?.isChecked;
+
+                let bubbleStyle = 'bg-stone-100 text-stone-600 border-stone-200 hover:bg-stone-200';
+                if (isCurrent) {
+                  bubbleStyle = 'bg-[#555934] text-white border-[#555934] ring-2 ring-[#555934]/30';
+                } else if (isAnswered) {
+                  bubbleStyle = 'bg-emerald-600 text-white border-emerald-600';
+                }
+
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => onJumpToQuestion?.(idx)}
+                    className={`h-7 w-7 rounded-lg text-xs font-bold border transition flex items-center justify-center cursor-pointer ${bubbleStyle}`}
+                    title={`Go to question ${idx + 1}`}
+                  >
+                    {idx + 1}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="p-5 sm:p-7 space-y-6">
         {/* Question Stem */}
         <div className="p-5 rounded-2xl bg-stone-50 border border-stone-200/80">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5 flex items-center gap-1.5">
-            <HelpCircle className="h-3.5 w-3.5 text-stone-500" />
-            <span>Operational Question ({lang === 'en' ? 'English' : 'हिन्दी'})</span>
+          <div className="text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-1.5 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <HelpCircle className="h-3.5 w-3.5 text-stone-500" />
+              Operational Question ({lang === 'en' ? 'English' : 'हिन्दी'})
+            </span>
+            {totalCount > 1 && (
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-stone-200 text-stone-700">
+                Item #{currentIndex + 1}
+              </span>
+            )}
           </div>
           <h2 className="text-base sm:text-lg font-semibold text-stone-900 leading-relaxed">
             {currentStem}
@@ -211,23 +300,41 @@ export function DocumentPracticeCard({
           </div>
         </div>
 
-        {/* Action Controls: Check Answer vs Next Question */}
+        {/* Action Controls: Navigation, Check Answer, Next */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-          {!isSubmitted ? (
-            <button
-              onClick={handleCheckAnswer}
-              disabled={selectedOption === null}
-              className="w-full sm:w-auto px-6 py-3 bg-[#555934] hover:bg-[#3e4225] disabled:bg-stone-300 disabled:cursor-not-allowed text-white text-sm font-bold rounded-xl shadow-xs transition active:scale-95 flex items-center justify-center gap-2"
-            >
-              Check Answer
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          ) : (
-            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            {hasPrevious && (
+              <button
+                onClick={onPreviousQuestion}
+                className="px-4 py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-bold rounded-xl transition flex items-center gap-1.5"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Previous
+              </button>
+            )}
+
+            {!isSubmitted ? (
+              <button
+                onClick={handleCheckAnswer}
+                disabled={selectedOption === null}
+                className="flex-1 sm:flex-none px-6 py-3 bg-[#555934] hover:bg-[#3e4225] disabled:bg-stone-300 disabled:cursor-not-allowed text-white text-sm font-bold rounded-xl shadow-xs transition active:scale-95 flex items-center justify-center gap-2"
+              >
+                Check Answer
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            ) : hasNext ? (
               <button
                 onClick={onNextQuestion}
+                className="flex-1 sm:flex-none px-6 py-3 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-bold rounded-xl shadow-xs transition active:scale-95 flex items-center justify-center gap-2"
+              >
+                Next Question
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            ) : (
+              <button
+                onClick={onResetSession || onNextQuestion}
                 disabled={isGeneratingNext}
-                className="px-6 py-3 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-bold rounded-xl shadow-xs transition active:scale-95 flex items-center justify-center gap-2"
+                className="flex-1 sm:flex-none px-6 py-3 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-bold rounded-xl shadow-xs transition active:scale-95 flex items-center justify-center gap-2"
               >
                 {isGeneratingNext ? (
                   <>
@@ -236,20 +343,22 @@ export function DocumentPracticeCard({
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4" />
-                    Practice Next Question
+                    <RotateCcw className="h-4 w-4" />
+                    Complete & Practice Again
                   </>
                 )}
               </button>
+            )}
 
+            {isSubmitted && (
               <button
                 onClick={() => setShowExplanation(!showExplanation)}
                 className="px-4 py-3 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold rounded-xl transition"
               >
                 {showExplanation ? 'Hide Explanation' : 'View Explanation'}
               </button>
-            </div>
-          )}
+            )}
+          </div>
 
           <div className="flex items-center gap-2 text-xs text-stone-500">
             <span>Powered by Groq AI</span>
@@ -275,7 +384,6 @@ export function DocumentPracticeCard({
                 <strong>Citation Anchor:</strong> {question.citation}
               </div>
 
-              {/* Staging button inside explanation */}
               <div>
                 {stagedToQueue ? (
                   <span className="text-xs font-semibold text-emerald-800 flex items-center gap-1.5">
