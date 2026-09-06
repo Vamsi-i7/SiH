@@ -7,9 +7,6 @@
  * 3. Standard text decoder for TXT/MD/CSV files
  */
 
-import { extractText as extractPdfText } from 'unpdf';
-import Tesseract from 'tesseract.js';
-
 export interface ExtractionResult {
   text: string;
   method: 'pdf_parse' | 'ocr_tesseract' | 'plain_text';
@@ -32,6 +29,7 @@ export class TextExtractionService {
     // 1. PDF Document
     if (ext === 'pdf' || mimeType === 'application/pdf') {
       try {
+        const { extractText: extractPdfText } = await import('unpdf');
         const result = await extractPdfText(bytes);
         const joinedText = Array.isArray(result.text) ? result.text.join('\n\n') : String(result.text || '');
         const cleaned = this.cleanText(joinedText);
@@ -57,6 +55,7 @@ export class TextExtractionService {
 
     if (isImage) {
       try {
+        const Tesseract = (await import('tesseract.js')).default;
         const nodeBuffer = Buffer.from(bytes);
         const { data } = await Tesseract.recognize(nodeBuffer, 'eng');
         const cleaned = this.cleanText(data.text);

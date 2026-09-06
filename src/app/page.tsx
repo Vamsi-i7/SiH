@@ -28,7 +28,6 @@ import {
 } from '@/components/LandingAnimations';
 import { KarmayogiEmblemIcon } from '@/components/auth/KarmayogiEmblem';
 
-export const dynamic = 'force-dynamic';
 
 export default async function LandingPage() {
   const t = await getTranslations('home');

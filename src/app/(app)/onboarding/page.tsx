@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 import { getAuthenticatedUser } from '@/lib/auth';
 import OnboardingWizard from './OnboardingWizard';
 
-export const dynamic = 'force-dynamic';
 
 export default async function OnboardingPage() {
   const user = await getAuthenticatedUser();

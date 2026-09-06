@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import LoginForm from './LoginForm';
 import { AuthShowcaseVisual } from '@/components/auth/AuthShowcaseVisual';
 
-export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
   return (

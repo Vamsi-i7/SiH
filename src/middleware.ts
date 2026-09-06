@@ -15,6 +15,11 @@ const PROTECTED_ROUTES: Record<string, UserRole[]> = {
 };
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
+
   const response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -128,11 +133,13 @@ export async function middleware(request: NextRequest) {
   const validLocale = (requestLocale === 'en' || requestLocale === 'hi') ? requestLocale : null;
   const locale = validLocale || user?.user_metadata?.preferred_language || 'en';
 
-  request.cookies.set('locale', locale);
-  response.cookies.set('locale', locale, {
-    path: '/',
-    maxAge: 60 * 60 * 24 * 365,
-  });
+  if (requestLocale !== locale) {
+    request.cookies.set('locale', locale);
+    response.cookies.set('locale', locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+    });
+  }
 
   response.headers.set('x-user-role', String(userRole));
   response.headers.set('x-user-org-id', userOrgId || '');
