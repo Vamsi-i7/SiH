@@ -5,7 +5,6 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ProgressRing } from '@/components/ProgressRing';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 
-export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: Promise<{ dept: string }>;

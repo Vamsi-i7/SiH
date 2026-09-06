@@ -47,7 +47,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col bg-white transition-all duration-200 select-none z-20 shadow-[2px_0_16px_-4px_rgba(89,62,46,0.04)] ${
+      className={`flex flex-col bg-white transition-[width] duration-200 ease-out will-change-[width] select-none z-20 shadow-[2px_0_16px_-4px_rgba(89,62,46,0.04)] ${
         collapsed ? 'w-18' : 'w-64'
       }`}
     >
@@ -106,7 +106,7 @@ export function Sidebar() {
                   key={item.href}
                   href={item.href}
                   title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                     collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
                   } ${
                     active
@@ -140,7 +140,7 @@ export function Sidebar() {
                   key={item.href}
                   href={item.href}
                   title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                     collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
                   } ${
                     active
@@ -174,7 +174,7 @@ export function Sidebar() {
                   key={item.href}
                   href={item.href}
                   title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                     collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
                   } ${
                     active

@@ -19,10 +19,23 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
+import dynamic from 'next/dynamic';
 import { ProgressRing } from '@/components/ProgressRing';
-import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
+import type { RadarDataPoint } from '@/components/RadarChart';
 import { CourseCard, type CourseData } from '@/components/CourseCard';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
+
+const RadarChart = dynamic(
+  () => import('@/components/RadarChart').then((mod) => mod.RadarChart),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 w-64 items-center justify-center">
+        <div className="h-48 w-48 rounded-full bg-[#E8DACB]/40 animate-pulse" />
+      </div>
+    ),
+  }
+);
 import { CompetencyService } from '@/services/competencyService';
 import { OFFICIAL_COURSE_CATALOG } from '@/services/recommendationService';
 

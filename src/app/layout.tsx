@@ -6,7 +6,6 @@ import { Inter, Noto_Sans_Devanagari, JetBrains_Mono } from 'next/font/google';
 import { OfflineIndicator, LanguageSwitcher } from '@/components/layout';
 import './globals.css';
 
-export const dynamic = 'force-dynamic';
 
 const inter = Inter({
   variable: '--font-inter',

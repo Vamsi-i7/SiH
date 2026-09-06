@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 import { AdminOverviewClient } from './AdminOverviewClient';
 import { type WorkforceOverview, type DepartmentSummary, type TrainingPriority } from '@/lib/types';
 
-export const dynamic = 'force-dynamic';
 
 export default async function AdminAnalyticsPage() {
   const user = await getAuthenticatedUser();

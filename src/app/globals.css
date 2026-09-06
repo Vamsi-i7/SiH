@@ -250,7 +250,7 @@
   input,
   select,
   textarea {
-    transition: all 150ms ease-out;
+    transition: color 150ms ease-out, background-color 150ms ease-out, border-color 150ms ease-out, box-shadow 150ms ease-out, opacity 150ms ease-out, transform 150ms ease-out;
   }
 
   /* Page / view transitions */
@@ -451,4 +451,17 @@
   .copilot-fab-pulse {
     animation: none;
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 150ms ease-out forwards;
 }

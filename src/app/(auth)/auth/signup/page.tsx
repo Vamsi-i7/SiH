@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import SignupForm from './SignupForm';
 import { AuthShowcaseVisual } from '@/components/auth/AuthShowcaseVisual';
 
-export const dynamic = 'force-dynamic';
 
 export default function SignupPage() {
   return (
