@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { Breadcrumb } from './Breadcrumb';
@@ -8,6 +9,8 @@ import {
   AssessmentModeProvider,
   useAssessmentMode,
 } from '@/contexts/AssessmentModeContext';
+import type { UserRole } from '@/lib/types';
+import { resolveUserRole } from '@/components/dashboard/RoleDashboardRouter';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -16,25 +19,49 @@ interface AppLayoutProps {
 /** Inner component — reads context after provider has been mounted. */
 function AppLayoutInner({ children }: AppLayoutProps) {
   const { isAssessmentActive } = useAssessmentMode();
+  const [role, setRole] = useState<UserRole>('learner');
 
-  // Default demo context — will be replaced with live user data from Firebase
+  useEffect(() => {
+    const updateRole = () => {
+      setRole(resolveUserRole());
+    };
+    updateRole();
+    const interval = setInterval(updateRole, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const userContext = {
-    name: 'Amit Sharma',
-    role: 'learner',
-    cadre: 'Indian Statistical Service (ISS)',
-    designation: 'Junior Statistical Officer',
-    readinessIndex: 42,
+    name:
+      role === 'trainer'
+        ? 'Dr. Priya Verma'
+        : role === 'admin'
+          ? 'Rajesh Kumar'
+          : 'Amit Sharma',
+    role,
+    cadre:
+      role === 'trainer'
+        ? 'NSSTA Faculty'
+        : role === 'admin'
+          ? 'MoSPI Headquarters'
+          : 'Subordinate Statistical Service (SSS)',
+    designation:
+      role === 'trainer'
+        ? 'Course Director'
+        : role === 'admin'
+          ? 'Additional Director General'
+          : 'Junior Statistical Officer',
+    readinessIndex: role === 'admin' ? 72 : 42,
     topGaps: [
-      { competency: 'Big Data Analytics', levelDelta: 2, priority: 'critical' },
-      { competency: 'Machine Learning Fundamentals', levelDelta: 2, priority: 'critical' },
-      { competency: 'GIS & Spatial Analysis', levelDelta: 1, priority: 'important' },
+      { competency: 'CAPI Tablet Operations', levelDelta: 2, priority: 'critical' },
+      { competency: 'Census Boundary Demarcation', levelDelta: 2, priority: 'critical' },
+      { competency: 'Household Listing & Stratification', levelDelta: 1, priority: 'important' },
     ],
   };
 
   if (isAssessmentActive) {
     // Full-screen assessment mode: no sidebar, no topbar, no max-width padding
     return (
-      <div className="flex h-full flex-col">
+      <div className="flex h-full flex-col bg-[#FAF6F0]">
         {children}
         <CopilotFAB userContext={userContext} />
       </div>
@@ -42,14 +69,16 @@ function AppLayoutInner({ children }: AppLayoutProps) {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-[#FAF6F0]/40">
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <Topbar />
-        <main className="flex-1 overflow-y-auto bg-background">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-            <Breadcrumb />
-            <div className="mt-4">{children}</div>
+        <main className="flex-1 overflow-y-auto bg-[#FAF6F0]/30">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5">
+            <div className="mb-4">
+              <Breadcrumb />
+            </div>
+            <div>{children}</div>
           </div>
         </main>
       </div>
@@ -65,3 +94,5 @@ export function AppLayout({ children }: AppLayoutProps) {
     </AssessmentModeProvider>
   );
 }
+
+export default AppLayout;

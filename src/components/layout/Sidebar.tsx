@@ -4,71 +4,126 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { KarmayogiEmblemIcon } from '@/components/auth/KarmayogiEmblem';
+import { ChevronLeft, ChevronRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { DEMO_PERSONAS } from '@/lib/demoPersonas';
+import type { DemoPersona, UserRole } from '@/lib/types';
 import {
-  LayoutDashboard,
-  Target,
-  Flag,
-  UserCircle,
-  FileText,
-  Brain,
-  ClipboardCheck,
-  BarChart3,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
-import { useState } from 'react';
+  getNavigationForRole,
+  getRoleIdentity,
+  getRoleFooterData,
+  type RoleNavItem,
+} from './roleNavigation';
 
-const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'nav.dashboard' },
-  { href: '/skill-gap', icon: Target, label: 'nav.skillGap' },
-  { href: '/assignments', icon: ClipboardCheck, label: 'nav.assessment' },
-  { href: '/pathways', icon: Flag, label: 'nav.pathways' },
-  { href: '/profile', icon: UserCircle, label: 'nav.profile' },
-];
+function getActivePersonaFromCookie(): DemoPersona {
+  if (typeof document === 'undefined') return DEMO_PERSONAS[0];
+  try {
+    const match = document.cookie.match(/(?:^|; )demo_user=([^;]*)/);
+    if (match) {
+      const decoded = JSON.parse(decodeURIComponent(match[1]));
+      const found = DEMO_PERSONAS.find(
+        (p) => p.email?.toLowerCase() === decoded.email?.toLowerCase()
+      );
+      if (found) return found;
+      if (decoded.role) {
+        return {
+          id: decoded.id || 'custom-user',
+          name: decoded.name || 'Civil Officer',
+          email: decoded.email || 'user@mospi.gov.in',
+          role: decoded.role as UserRole,
+          designation: decoded.designation || 'Statistical Officer',
+          cadre: decoded.cadre || 'MoSPI Cadre',
+          organization_id: 'org-mospi',
+          preferred_language: (decoded.preferred_language as 'en' | 'hi') || 'en',
+          department: decoded.department || 'MoSPI Headquarters',
+        };
+      }
+    }
+  } catch {
+    // fallback
+  }
+  return DEMO_PERSONAS[0];
+}
 
-const trainerItems = [
-  { href: '/documents', icon: FileText, label: 'nav.documents' },
-  { href: '/mcq-generator', icon: Brain, label: 'nav.mcqGenerator' },
-  { href: '/review-queue', icon: ClipboardCheck, label: 'nav.reviewQueue' },
-];
+interface SidebarProps {
+  initialRole?: UserRole;
+}
 
-const adminItems = [
-  { href: '/admin/analytics', icon: BarChart3, label: 'nav.adminAnalytics' },
-];
-
-export function Sidebar() {
+export function Sidebar({ initialRole }: SidebarProps) {
   const t = useTranslations();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
+  const [activePersona, setActivePersona] = useState<DemoPersona>(() => {
+    const fromCookie = getActivePersonaFromCookie();
+    if (initialRole && fromCookie.role !== initialRole) {
+      const matched = DEMO_PERSONAS.find((p) => p.role === initialRole);
+      return matched || fromCookie;
+    }
+    return fromCookie;
+  });
+
+  // Keep synced with cookie changes (e.g. from Topbar persona switcher)
+  useEffect(() => {
+    const checkCookie = () => {
+      const persona = getActivePersonaFromCookie();
+      setActivePersona((prev) => (prev.email !== persona.email ? persona : prev));
+    };
+
+    checkCookie();
+    const interval = setInterval(checkCookie, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const role: UserRole = initialRole || activePersona.role || 'learner';
+  const navItems: RoleNavItem[] = getNavigationForRole(role);
+  const identity = getRoleIdentity(role);
+  const footerData = getRoleFooterData(role);
+
   const isActive = (href: string) => {
-    return pathname === href || pathname.startsWith(href + '/');
+    if (href === '/dashboard') {
+      return pathname === '/dashboard';
+    }
+    const cleanHref = href.split('#')[0];
+    return pathname === cleanHref || pathname.startsWith(cleanHref + '/');
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
   };
 
   return (
     <aside
-      className={`flex flex-col bg-white transition-all duration-200 select-none z-20 shadow-[2px_0_16px_-4px_rgba(89,62,46,0.04)] ${
+      className={`flex flex-col bg-white border-r border-[#BF9B7A]/30 transition-all duration-200 select-none z-20 shadow-[2px_0_16px_-4px_rgba(89,62,46,0.06)] ${
         collapsed ? 'w-18' : 'w-64'
       }`}
     >
       {/* Brand Header */}
-      <div className="flex h-16 items-center justify-between px-4">
+      <div className="flex h-16 items-center justify-between px-4 border-b border-[#BF9B7A]/20">
         {!collapsed ? (
           <Link href="/dashboard" className="flex items-center gap-3 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-xs transition-transform group-hover:scale-105 p-1 shrink-0">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-2xs transition-transform group-hover:scale-105 p-1 shrink-0">
               <KarmayogiEmblemIcon className="h-7 w-7" />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-base text-[#2d1f17] tracking-tight">
-                StatVidya
+                {identity.title}
               </span>
-              <span className="text-[10px] font-medium text-[#705849] uppercase tracking-widest -mt-0.5">
-                MoSPI • NSSTA
+              <span className="text-[10px] font-bold text-[#8C5B3E] uppercase tracking-wider -mt-0.5">
+                {identity.subtitle}
               </span>
             </div>
           </Link>
         ) : (
-          <Link href="/dashboard" className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-xs p-1">
+          <Link
+            href="/dashboard"
+            className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-2xs p-1"
+          >
             <KarmayogiEmblemIcon className="h-7 w-7" />
           </Link>
         )}
@@ -76,141 +131,129 @@ export function Sidebar() {
         <button
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#F2E6D8]/50 text-[#705849] hover:bg-[#E8DACB] hover:text-[#2d1f17] transition-colors"
+          className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#FAF6F0] border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0]/80 hover:text-[#2d1f17] transition-colors"
         >
-          {collapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <ChevronLeft className="h-4 w-4" />
-          )}
+          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </button>
       </div>
 
-      {/* Navigation Groups */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
-        {/* Main Section */}
-        <div>
-          {!collapsed ? (
-            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-2">
-              Main Platform
-            </p>
-          ) : (
-            <div className="h-px bg-[#F2E6D8] my-2 mx-1" />
-          )}
-          <div className="space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
-                    collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
-                  } ${
-                    active
-                      ? 'bg-[#555934] text-white shadow-xs font-semibold'
-                      : 'text-[#593E2E] hover:bg-[#EAE0D0]/60 hover:text-[#2d1f17]'
-                  }`}
-                >
-                  <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-white' : 'text-[#705849]'}`} />
-                  {!collapsed && <span className="truncate">{t(item.label)}</span>}
-                </Link>
-              );
-            })}
+      {/* Role Profile Card at Top of Sidebar */}
+      {!collapsed ? (
+        <div className="p-3 mx-3 mt-3 rounded-2xl bg-[#FAF6F0]/70 border border-[#BF9B7A]/25 flex items-center gap-3">
+          <div
+            className="h-10 w-10 rounded-xl text-white flex items-center justify-center font-bold text-xs font-serif shrink-0 shadow-2xs"
+            style={{ backgroundColor: identity.themeColor }}
+          >
+            {getInitials(activePersona.name)}
           </div>
-        </div>
-
-        {/* Content & Curation */}
-        <div>
-          {!collapsed ? (
-            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-2">
-              Curriculum & AI
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5">
+              <p className="text-xs font-bold text-[#2d1f17] truncate leading-tight">
+                {activePersona.name}
+              </p>
+            </div>
+            <p className="text-[11px] font-medium text-[#705849] truncate mt-0.5">
+              {activePersona.designation}
             </p>
-          ) : (
-            <div className="h-px bg-[#F2E6D8] my-2 mx-1" />
-          )}
-          <div className="space-y-1">
-            {trainerItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
-                    collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
-                  } ${
-                    active
-                      ? 'bg-[#555934] text-white shadow-xs font-semibold'
-                      : 'text-[#593E2E] hover:bg-[#EAE0D0]/60 hover:text-[#2d1f17]'
-                  }`}
-                >
-                  <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-white' : 'text-[#705849]'}`} />
-                  {!collapsed && <span className="truncate">{t(item.label)}</span>}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Governance & Admin */}
-        <div>
-          {!collapsed ? (
-            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-2">
-              Workforce Governance
-            </p>
-          ) : (
-            <div className="h-px bg-[#F2E6D8] my-2 mx-1" />
-          )}
-          <div className="space-y-1">
-            {adminItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
-                    collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
-                  } ${
-                    active
-                      ? 'bg-[#555934] text-white shadow-xs font-semibold'
-                      : 'text-[#593E2E] hover:bg-[#EAE0D0]/60 hover:text-[#2d1f17]'
-                  }`}
-                >
-                  <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-white' : 'text-[#705849]'}`} />
-                  {!collapsed && <span className="truncate">{t(item.label)}</span>}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </nav>
-
-      {/* Cadre Status Footer */}
-      {!collapsed && (
-        <div className="p-3 bg-[#F2E6D8]/40">
-          <div className="rounded-xl bg-white p-3 shadow-sm">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#705849]">
-                Active Cadre
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#555934]/12 px-2 py-0.5 text-[9px] font-bold text-[#555934]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#555934] animate-pulse" />
-                FRAC L1-L5
+            <div className="flex items-center gap-1 mt-1">
+              <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.2 rounded bg-white text-[#555934] border border-[#BF9B7A]/30">
+                <ShieldCheck className="h-2.5 w-2.5" />
+                {identity.roleLabel}
               </span>
             </div>
-            <p className="text-xs font-semibold text-[#2d1f17] truncate">
-              Subordinate Statistical Service
-            </p>
-            <p className="text-[10px] text-[#705849] truncate">
-              Junior Statistical Officer (JSO)
-            </p>
           </div>
+        </div>
+      ) : (
+        <div className="py-3 flex justify-center">
+          <div
+            className="h-9 w-9 rounded-xl text-white flex items-center justify-center font-bold text-xs shadow-2xs"
+            style={{ backgroundColor: identity.themeColor }}
+            title={`${activePersona.name} (${identity.roleLabel})`}
+          >
+            {getInitials(activePersona.name)}
+          </div>
+        </div>
+      )}
+
+      {/* Role Navigation Items */}
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5">
+        {!collapsed && (
+          <div className="px-3 pb-1 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#705849]">
+            <span>{identity.subtitle}</span>
+            <span className="text-[9px] font-mono text-[#8C5B3E] font-semibold">
+              {navItems.length} Tools
+            </span>
+          </div>
+        )}
+
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const active = isActive(item.href);
+          const labelText = item.label.startsWith('nav.') ? t(item.label) : item.label;
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              title={collapsed ? labelText : undefined}
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-medium transition-all duration-150 ${
+                collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
+              } ${
+                active
+                  ? 'bg-[#555934] text-white shadow-2xs font-bold'
+                  : 'text-[#593E2E] hover:bg-[#FAF6F0] hover:text-[#2d1f17]'
+              }`}
+            >
+              <Icon
+                className={`h-4 w-4 shrink-0 ${
+                  active ? 'text-white' : 'text-[#8C5B3E]'
+                }`}
+              />
+              {!collapsed && (
+                <span className="truncate flex-1 font-medium">{labelText}</span>
+              )}
+
+              {!collapsed && item.badge && (
+                <span
+                  className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded-md ${
+                    item.badgeType === 'warning'
+                      ? 'bg-amber-500/15 text-amber-700 border border-amber-500/30'
+                      : item.badgeType === 'accent'
+                        ? 'bg-[#F8C858]/25 text-[#8C5B3E] border border-[#F8C858]/40'
+                        : 'bg-white/80 text-[#705849] border border-[#BF9B7A]/30'
+                  }`}
+                >
+                  {item.badge}
+                </span>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Role Status Footer */}
+      {!collapsed ? (
+        <div className="p-3 m-3 rounded-2xl bg-[#FAF6F0]/80 border border-[#BF9B7A]/25">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span className="text-[11px] font-bold text-[#2d1f17] truncate">
+              {footerData.title}
+            </span>
+          </div>
+          <p className="text-[10px] text-[#705849] mt-0.5 truncate">
+            {footerData.subtitle}
+          </p>
+          <div className="mt-2 pt-2 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[10px] font-medium text-[#705849]">
+            <span className="font-mono text-[#8C5B3E]">{footerData.badge}</span>
+            <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+          </div>
+        </div>
+      ) : (
+        <div className="py-3 flex justify-center border-t border-[#BF9B7A]/20">
+          <span
+            className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"
+            title={footerData.title}
+          />
         </div>
       )}
     </aside>
