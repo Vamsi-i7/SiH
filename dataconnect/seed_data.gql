@@ -1,0 +1,25 @@
+mutation SeedDatabase @transaction {
+  user_insertMany(data: [
+    {id: "550e8400-e29b-41d4-a716-446655440000", email: "alice@example.com", displayName: "Alice"},
+    {id: "550e8400-e29b-41d4-a716-446655440001", email: "bob@example.com", displayName: "Bob"},
+    {id: "550e8400-e29b-41d4-a716-446655440002", email: "charlie@example.com", displayName: "Charlie"}
+  ])
+  project_insertMany(data: [
+    {id: "770e8400-e29b-41d4-a716-446655440000", name: "Alpha Project", ownerId: "550e8400-e29b-41d4-a716-446655440000"},
+    {id: "770e8400-e29b-41d4-a716-446655440001", name: "Beta Project", ownerId: "550e8400-e29b-41d4-a716-446655440001"}
+  ])
+  task_insertMany(data: [
+    {id: "990e8400-e29b-41d4-a716-446655440000", title: "Task 1", status: "Open", projectId: "770e8400-e29b-41d4-a716-446655440000", assigneeId: "550e8400-e29b-41d4-a716-446655440001"},
+    {id: "990e8400-e29b-41d4-a716-446655440001", title: "Task 2", status: "Done", projectId: "770e8400-e29b-41d4-a716-446655440000", assigneeId: "550e8400-e29b-41d4-a716-446655440002"},
+    {id: "990e8400-e29b-41d4-a716-446655440002", title: "Task 3", status: "In Progress", projectId: "770e8400-e29b-41d4-a716-446655440001", assigneeId: "550e8400-e29b-41d4-a716-446655440000"}
+  ])
+  comment_insertMany(data: [
+    {content: "Great progress!", authorId: "550e8400-e29b-41d4-a716-446655440001", taskId: "990e8400-e29b-41d4-a716-446655440000"},
+    {content: "Need clarification", authorId: "550e8400-e29b-41d4-a716-446655440002", taskId: "990e8400-e29b-41d4-a716-446655440002"}
+  ])
+  projectMember_insertMany(data: [
+    {projectId: "770e8400-e29b-41d4-a716-446655440000", userId: "550e8400-e29b-41d4-a716-446655440001", role: "Manager"},
+    {projectId: "770e8400-e29b-41d4-a716-446655440000", userId: "550e8400-e29b-41d4-a716-446655440002", role: "Developer"},
+    {projectId: "770e8400-e29b-41d4-a716-446655440001", userId: "550e8400-e29b-41d4-a716-446655440000", role: "Viewer"}
+  ])
+}
