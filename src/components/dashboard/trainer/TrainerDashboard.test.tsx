@@ -51,4 +51,23 @@ describe('TrainerDashboard Component', () => {
     expect(html).toContain('Ingested MoSPI Manuals');
     expect(html).toContain('PLFS 2026 Instructions Vol. 1');
   });
+
+  it('renders multi-deck operational tab navigation', () => {
+    const html = renderToString(<TrainerDashboard user={mockUserTrainer} />);
+    expect(html).toContain('Faculty Command Desk');
+    expect(html).toContain('Academy Cohorts &amp; Progression');
+    expect(html).toContain('Curriculum &amp; Question Studio');
+    expect(html).toContain('Item Diagnostics &amp; Zonal Disparities');
+  });
+
+  it('renders dual horizontal carousels in command deck', () => {
+    const html = renderToString(<TrainerDashboard user={mockUserTrainer} />);
+    expect(html).toContain('Active Training Cohorts &amp; Academy Batches');
+    expect(html).toContain('Curated MoSPI Question Bank Decks');
+  });
+
+  it('renders faculty dossier action in hero strip', () => {
+    const html = renderToString(<TrainerDashboard user={mockUserTrainer} />);
+    expect(html).toContain('Faculty Dossier');
+  });
 });
