@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import { DocumentService } from '@/services/documentService';
+import { getAuthenticatedUser } from '@/lib/auth';
 
 export async function GET() {
   try {
-    const docs = await DocumentService.getDocuments();
+    const user = await getAuthenticatedUser();
+    const userId = user?.id || 'demo-user-1';
+
+    const docs = await DocumentService.getDocuments(userId);
     return NextResponse.json({
       success: true,
       documents: docs,
