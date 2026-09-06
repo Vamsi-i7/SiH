@@ -106,10 +106,18 @@
      BASE TYPOGRAPHY & TEXT STYLES
      ════════════════════════════════════════════════════════════════ */
 
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
   }
 
   /* Tabular numbers for all numeric scores, percentages, IDs */
