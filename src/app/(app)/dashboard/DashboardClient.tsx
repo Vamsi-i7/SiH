@@ -39,7 +39,6 @@ interface DashboardProps {
     };
     app_metadata?: {
       role?: string;
-      [key: string]: unknown;
     };
   };
 }
@@ -58,6 +57,7 @@ interface CompetencyGapCard {
   recommendedCourseLink: string;
 }
 
+// Demo competencies aligned with FRAC framework
 const DEMO_COMPETENCIES = [
   { id: 'comp-capi', name: 'CAPI Tablet Operation', category: 'Functional', current: 2, target: 4, priority: 'critical' as const, activity: 'Household Listing & Census Enumeration', course: 'Advanced CAPI Tablet Operations & Synchronization' },
   { id: 'comp-nsso', name: 'NSSO Protocol Mastery', category: 'Domain', current: 3, target: 3, priority: 'critical' as const, activity: 'PLFS Schedule Canvassing', course: 'Periodic Labour Force Survey (PLFS) Concepts & Definitions' },
@@ -123,7 +123,6 @@ export default function DashboardClient({ user }: DashboardProps) {
       target: c.target,
     }));
   }, []);
-
   // Format catalog courses for the CourseCard component
   const recommendedCourses: CourseData[] = OFFICIAL_COURSE_CATALOG.map((course) => {
     let whyRec = 'Recommended by statistical training council to build institutional competency.';

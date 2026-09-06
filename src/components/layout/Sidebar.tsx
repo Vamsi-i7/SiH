@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { KarmayogiEmblemIcon } from '@/components/auth/KarmayogiEmblem';
 import {
   LayoutDashboard,
   Target,
@@ -14,7 +15,6 @@ import {
   BarChart3,
   ChevronLeft,
   ChevronRight,
-  GraduationCap,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -55,8 +55,8 @@ export function Sidebar() {
       <div className="flex h-16 items-center justify-between px-4">
         {!collapsed ? (
           <Link href="/dashboard" className="flex items-center gap-3 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#555934] text-white shadow-xs transition-transform group-hover:scale-105">
-              <GraduationCap className="h-5 w-5" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-xs transition-transform group-hover:scale-105 p-1 shrink-0">
+              <KarmayogiEmblemIcon className="h-7 w-7" />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-base text-[#2d1f17] tracking-tight">
@@ -68,8 +68,8 @@ export function Sidebar() {
             </div>
           </Link>
         ) : (
-          <Link href="/dashboard" className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-[#555934] text-white shadow-xs">
-            <GraduationCap className="h-5 w-5" />
+          <Link href="/dashboard" className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-xs p-1">
+            <KarmayogiEmblemIcon className="h-7 w-7" />
           </Link>
         )}
 
