@@ -1,12 +1,13 @@
 /**
  * src/services/documentService.ts
  *
- * Document ingestion, chunking, and metadata extraction service.
+ * Document ingestion, chunking, and metadata extraction service backed by Firebase Storage & Firestore.
  * Supports MoSPI survey manuals, CAPI guidelines, and FRAC curriculum ingestion.
  */
 
-import { uploadToR2, PUBLIC_URL } from '@/lib/r2';
-import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
+import { db, storage } from '@/lib/firebase';
+import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export interface DocumentChunk {
   id: string;
@@ -31,13 +32,13 @@ export interface IngestedDocument {
   chunkCount: number;
   targetCompetencies: string[];
   chunks?: DocumentChunk[];
-  r2Url?: string;
-  r2Key?: string;
+  storageUrl?: string;
+  storagePath?: string;
 }
 
 export class DocumentService {
   /**
-   * Process document: Upload file binary to Cloudflare R2 and save metadata in Supabase
+   * Process document: Upload file binary to Firebase Storage and save metadata in Firestore
    */
   static async processDocument(
     filename: string,
@@ -46,14 +47,18 @@ export class DocumentService {
   ): Promise<IngestedDocument> {
     const docId = `doc-${Date.now()}`;
     const fileBuffer = typeof fileContent === 'string' ? Buffer.from(fileContent) : fileContent;
-    const r2Key = `documents/${Date.now()}-${filename.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+    const storagePath = `documents/${Date.now()}-${filename.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
 
-    // 1. Upload to Cloudflare R2 Storage ($0 egress)
-    const { url: r2Url } = await uploadToR2({
-      key: r2Key,
-      body: fileBuffer,
-      contentType: 'application/pdf',
-    });
+    let storageUrl = `https://storage.googleapis.com/statvidya.appspot.com/${storagePath}`;
+
+    // 1. Upload to Firebase Storage
+    try {
+      const storageRef = ref(storage, storagePath);
+      await uploadBytes(storageRef, fileBuffer, { contentType: 'application/pdf' });
+      storageUrl = await getDownloadURL(storageRef);
+    } catch {
+      // In mock/local dev mode without active Firebase storage credentials
+    }
 
     const textContent = typeof fileContent === 'string' ? fileContent : fileBuffer.toString('utf-8');
     const paragraphs = textContent.split(/\n\s*\n/).filter((p) => p.trim().length > 0);
@@ -84,56 +89,55 @@ export class DocumentService {
       chunkCount: chunks.length || 1,
       targetCompetencies,
       chunks,
-      r2Url,
-      r2Key,
+      storageUrl,
+      storagePath,
     };
 
-    // 2. Map metadata to Supabase DB if client available
+    // 2. Map metadata to Firestore DB
     try {
-      const supabase = getSupabaseBrowserClient();
-      if (supabase) {
-        await supabase.from('documents').insert({
-          title: docRecord.title,
-          file_name: filename,
-          r2_key: r2Key,
-          r2_url: r2Url,
-          file_size_bytes: fileBuffer.length,
-          status: 'processed',
-        });
-      }
+      await addDoc(collection(db, 'documents'), {
+        title: docRecord.title,
+        filename,
+        storagePath,
+        storageUrl,
+        sizeBytes: fileBuffer.length,
+        status: 'INDEXED',
+        chunkCount: chunks.length || 1,
+        targetCompetencies,
+        createdAt: docRecord.uploadedAt,
+      });
     } catch {
-      // Graceful fallback to local in-memory if Supabase offline
+      // Local fallback if Firestore offline
     }
 
     return docRecord;
   }
 
   /**
-   * Retrieves documents from Supabase DB or sample pre-loaded MoSPI official manuals
+   * Retrieves documents from Firestore DB or sample pre-loaded MoSPI official manuals
    */
   static async getDocuments(): Promise<IngestedDocument[]> {
     try {
-      const supabase = getSupabaseBrowserClient();
-      if (supabase) {
-        const { data, error } = await supabase
-          .from('documents')
-          .select('*')
-          .order('created_at', { ascending: false });
+      const docsRef = collection(db, 'documents');
+      const q = query(docsRef, orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
 
-        if (!error && data && data.length > 0) {
-          return data.map((d: any) => ({
-            id: d.id,
-            title: d.title,
-            filename: d.file_name,
-            sizeBytes: Number(d.file_size_bytes || 0),
-            uploadedAt: d.created_at,
-            status: d.status === 'processed' ? 'INDEXED' : 'PROCESSING',
-            chunkCount: 16,
-            targetCompetencies: ['comp-capi', 'comp-nsso'],
-            r2Url: d.r2_url,
-            r2Key: d.r2_key,
-          }));
-        }
+      if (!snapshot.empty) {
+        return snapshot.docs.map((docSnap) => {
+          const data = docSnap.data();
+          return {
+            id: docSnap.id,
+            title: data.title || 'Untitled Document',
+            filename: data.filename || 'manual.pdf',
+            sizeBytes: Number(data.sizeBytes || 0),
+            uploadedAt: data.createdAt || new Date().toISOString(),
+            status: data.status || 'INDEXED',
+            chunkCount: data.chunkCount || 16,
+            targetCompetencies: data.targetCompetencies || ['comp-capi', 'comp-nsso'],
+            storageUrl: data.storageUrl,
+            storagePath: data.storagePath,
+          };
+        });
       }
     } catch {
       // Fallback
@@ -156,7 +160,7 @@ export class DocumentService {
         status: 'INDEXED',
         chunkCount: 24,
         targetCompetencies: ['comp-capi', 'comp-nsso'],
-        r2Url: `${PUBLIC_URL}/documents/PLFS_Instruction_Manual_2024.pdf`,
+        storageUrl: 'https://storage.googleapis.com/statvidya.appspot.com/documents/PLFS_Instruction_Manual_2024.pdf',
       },
       {
         id: 'doc-capi-handbook',
@@ -167,7 +171,7 @@ export class DocumentService {
         status: 'INDEXED',
         chunkCount: 16,
         targetCompetencies: ['comp-capi', 'comp-data'],
-        r2Url: `${PUBLIC_URL}/documents/CAPI_Tablet_Guide_v3.2.pdf`,
+        storageUrl: 'https://storage.googleapis.com/statvidya.appspot.com/documents/CAPI_Tablet_Guide_v3.2.pdf',
       },
     ];
   }

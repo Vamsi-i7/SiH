@@ -1,4 +1,3 @@
-import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import type { UserRole } from '@/lib/types';
 
@@ -24,7 +23,7 @@ export async function middleware(request: NextRequest) {
 
   let user: any = null;
 
-  // 1. Check demo_user cookie FIRST to ensure instant routing in local dev
+  // 1. Check demo_user cookie FIRST for instant local dev authentication
   const demoCookie = request.cookies.get('demo_user')?.value;
   if (demoCookie) {
     try {
@@ -46,50 +45,38 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 2. Only hit Supabase if we don't have a valid demo cookie
+  // 2. Check firebase_user cookie
   if (!user) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (supabaseUrl && supabaseAnonKey) {
+    const firebaseCookie = request.cookies.get('firebase_user')?.value;
+    if (firebaseCookie) {
       try {
-        const supabase = createServerClient(
-          supabaseUrl,
-          supabaseAnonKey,
-          {
-            cookies: {
-              get(name: string) {
-                return request.cookies.get(name)?.value;
-              },
-              set(name: string, value: string, options: Record<string, unknown>) {
-                response.cookies.set({ name, value, ...options });
-              },
-              remove(name: string, options: Record<string, unknown>) {
-                response.cookies.set({ name, value: '', ...options });
-              },
+        const parsed = JSON.parse(decodeURIComponent(firebaseCookie));
+        if (parsed && parsed.email) {
+          user = {
+            id: parsed.uid || parsed.id,
+            email: parsed.email,
+            app_metadata: { role: parsed.role || 'learner' },
+            user_metadata: {
+              name: parsed.displayName || parsed.name,
+              organization_id: parsed.organization_id || 'org-mospi',
+              preferred_language: parsed.preferred_language || 'en',
             },
-          }
-        );
-        const { data } = await supabase.auth.getUser();
-        user = data.user;
+          };
+        }
       } catch {
-        // Supabase unreachable or initialization error
+        // Parse error
       }
     }
   }
 
+  // 3. Fallback auto-authenticate demo persona for app routes in dev
   if (!user) {
     const { pathname } = request.nextUrl;
 
-    if (pathname.startsWith('/api/sso')) {
+    if (pathname.startsWith('/api/sso') || pathname.startsWith('/auth') || pathname === '/') {
       return response;
     }
 
-    if (pathname.startsWith('/auth') || pathname === '/') {
-      return response;
-    }
-
-    // Auto-authenticate as default demo persona in development if accessing app routes
     const defaultPersona = {
       id: 'demo-amit',
       name: 'Amit Sharma',

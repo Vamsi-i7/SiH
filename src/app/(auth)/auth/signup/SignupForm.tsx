@@ -3,7 +3,9 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
+import { auth, db } from '@/lib/firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function SignupForm() {
   const t = useTranslations('auth');
@@ -26,25 +28,30 @@ export default function SignupForm() {
     }
 
     try {
-      const supabase = getSupabaseBrowserClient();
-      const { error: authError } = await supabase.auth.signUp({
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await updateProfile(user, { displayName: name });
+
+      // Save user profile in Firestore
+      await setDoc(doc(db, 'profiles', user.uid), {
+        uid: user.uid,
         email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-          data: {
-            name,
-            organization_id: 'org-mospi',
-            preferred_language: 'en',
-            role: 'learner',
-          },
-        },
+        name,
+        role: 'learner',
+        organization_id: 'org-mospi',
+        preferred_language: 'en',
+        createdAt: new Date().toISOString(),
       });
 
-      if (authError) {
-        setError(t('error'));
-        return;
-      }
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: name,
+        role: 'learner',
+        organization_id: 'org-mospi',
+      };
+      document.cookie = `firebase_user=${encodeURIComponent(JSON.stringify(userData))}; path=/; max-age=604800`;
 
       router.push('/onboarding');
     } catch {

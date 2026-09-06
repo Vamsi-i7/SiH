@@ -8,7 +8,6 @@
 
 import { redirect } from 'next/navigation';
 import { getAuthenticatedUser } from '@/lib/auth';
-import { getSupabaseServerClient } from '@/lib/supabase';
 import { isDummyAssessment } from '@/data/assessments';
 import AssessmentClient from './AssessmentClient';
 
@@ -26,7 +25,6 @@ export default async function AssessmentPage({ params }: PageProps) {
 
   // For real competency IDs — existing adaptive engine
   const user = await getAuthenticatedUser();
-  const supabase = await getSupabaseServerClient();
 
   // Demo/fallback competencies lookup
   const DEMO_COMPETENCIES: Record<string, { name: string; name_hi: string }> = {
@@ -62,51 +60,7 @@ export default async function AssessmentPage({ params }: PageProps) {
     difficulty: 'easy' | 'medium' | 'hard';
   }
 
-  try {
-    const res = await fastQuery<{ data: CompetencyRecord | null }>(
-      supabase.from('competencies').select('*').eq('id', competencyId).single()
-    );
-
-    if (res?.data) {
-      const competency = res.data;
-      competencyName = competency.name;
-      competencyNameHi = competency.name_hi || competency.name;
-    }
-  } catch {
-    // Graceful fallback to demo competency metadata
-  }
-
-  // Fetch Stage 1 question (Medium difficulty calibration)
   let firstQuestion = null;
-
-  try {
-    const res = await fastQuery<{ data: QuestionRecord[] | null }>(
-      supabase
-        .from('questions')
-        .select('*')
-        .eq('competency_id', competencyId)
-        .eq('difficulty', 'medium')
-        .limit(1)
-    );
-
-    if (res?.data && res.data.length > 0) {
-      const q = res.data[0];
-      const optionsEn = Array.isArray(q.options?.en) ? q.options.en : ['Option A', 'Option B', 'Option C', 'Option D'];
-      const optionsHi = Array.isArray(q.options?.hi) ? q.options.hi : optionsEn;
-
-      firstQuestion = {
-        id: q.id,
-        question_text: q.stem,
-        question_text_hi: q.stem_hi || q.stem,
-        answer_choices: optionsEn,
-        answer_choices_hi: optionsHi,
-        difficulty: q.difficulty,
-        stage: 1,
-      };
-    }
-  } catch {
-    // Database query failed, use seeded fallback
-  }
 
   // Fallback question if database doesn't have it yet (e.g. offline or unseeded)
   if (!firstQuestion) {

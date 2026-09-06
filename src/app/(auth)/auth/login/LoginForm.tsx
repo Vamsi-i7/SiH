@@ -3,7 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
+import { auth } from '@/lib/firebase';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 export default function LoginForm() {
   const t = useTranslations('auth');
@@ -19,16 +20,16 @@ export default function LoginForm() {
     setError('');
 
     try {
-      const supabase = getSupabaseBrowserClient();
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (authError) {
-        setError(t('error'));
-        return;
-      }
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Store user cookie for middleware
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || 'User',
+      };
+      document.cookie = `firebase_user=${encodeURIComponent(JSON.stringify(userData))}; path=/; max-age=604800`;
 
       router.push('/dashboard');
     } catch {
@@ -43,17 +44,18 @@ export default function LoginForm() {
     setError('');
 
     try {
-      const supabase = getSupabaseBrowserClient();
-      const { error: authError } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
 
-      if (authError) {
-        setError(t('error'));
-      }
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || 'User',
+      };
+      document.cookie = `firebase_user=${encodeURIComponent(JSON.stringify(userData))}; path=/; max-age=604800`;
+
+      router.push('/dashboard');
     } catch {
       setError(t('error'));
     } finally {
