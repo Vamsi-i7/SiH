@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { type RecommendedCourse } from '@/lib/types';
 import { ProvenanceBadge } from './ProvenanceBadge';
 import {
   BookOpen,
