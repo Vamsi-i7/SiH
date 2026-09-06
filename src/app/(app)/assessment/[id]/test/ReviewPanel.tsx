@@ -59,12 +59,12 @@ export default function ReviewPanel({
       <div className="grid grid-cols-3 gap-4">
         {[
           { label: 'Total', value: total, cls: 'text-foreground' },
-          { label: 'Answered', value: answered, cls: 'text-emerald-700' },
-          { label: 'Unanswered', value: unanswered, cls: unanswered > 0 ? 'text-rose-600' : 'text-emerald-700' },
+          { label: 'Answered', value: answered, cls: 'text-[#555934]' },
+          { label: 'Unanswered', value: unanswered, cls: unanswered > 0 ? 'text-[#8C5B3E]' : 'text-[#555934]' },
         ].map(({ label, value, cls }) => (
           <div
             key={label}
-            className="rounded-xl border border-border bg-white p-4 text-center shadow-sm"
+            className="rounded-2xl bg-white p-4 text-center shadow-card hover:shadow-card-hover transition-all"
           >
             <p className={`text-3xl font-bold font-mono ${cls}`}>{value}</p>
             <p className="text-xs text-muted-foreground mt-1">{label}</p>
@@ -73,7 +73,7 @@ export default function ReviewPanel({
       </div>
 
       {/* Question grid */}
-      <div className="rounded-xl border border-border bg-white p-6 shadow-sm space-y-4">
+      <div className="rounded-2xl bg-white p-6 shadow-card space-y-4">
         <h2 className="text-base font-semibold text-foreground">Question Status</h2>
         <div className="flex flex-wrap gap-2" role="list" aria-label="Question statuses">
           {questions.map((q, idx) => {
@@ -85,7 +85,7 @@ export default function ReviewPanel({
                 role="listitem"
                 title={`Q${idx + 1}: ${label}`}
                 aria-label={`Question ${idx + 1}: ${label}`}
-                className={`h-9 w-9 rounded-md border-2 flex items-center justify-center text-sm font-semibold ${cls}`}
+                className={`h-9 w-9 rounded-xl flex items-center justify-center text-sm font-semibold shadow-2xs ${cls}`}
               >
                 {idx + 1}
               </div>
@@ -96,12 +96,12 @@ export default function ReviewPanel({
         {/* Legend */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground pt-1">
           {[
-            { label: 'Unseen', cls: 'bg-white border-stone-300 border-2' },
-            { label: 'Visited', cls: 'bg-rose-100 border-rose-400 border-2' },
-            { label: 'Answered', cls: 'bg-emerald-100 border-emerald-400 border-2' },
+            { label: 'Unseen', cls: 'bg-white shadow-2xs' },
+            { label: 'Visited', cls: 'bg-[#BF9B7A]/20 text-[#593E2E]' },
+            { label: 'Answered', cls: 'bg-[#555934]/15 text-[#555934]' },
           ].map(({ label, cls }) => (
             <span key={label} className="flex items-center gap-1.5">
-              <span className={`inline-block h-3.5 w-3.5 rounded-sm ${cls}`} aria-hidden="true" />
+              <span className={`inline-block h-3.5 w-3.5 rounded-full ${cls}`} aria-hidden="true" />
               {label}
             </span>
           ))}
@@ -113,7 +113,7 @@ export default function ReviewPanel({
         <button
           id="submit-assessment"
           onClick={onSubmit}
-          className="flex-1 rounded-xl bg-[#8b9a6e] hover:bg-[#6e7d56] text-white font-bold py-3.5 transition-colors text-sm sm:text-base"
+          className="flex-1 rounded-xl bg-[#555934] hover:bg-[#3e4225] text-white font-bold py-3.5 transition-all shadow-xs active:scale-98 text-sm sm:text-base"
         >
           Submit Assessment
         </button>
@@ -121,7 +121,7 @@ export default function ReviewPanel({
           <button
             id="review-continue-test"
             onClick={onContinueTest}
-            className="flex-1 rounded-xl border border-border hover:bg-stone-50 text-foreground font-semibold py-3.5 transition-colors text-sm sm:text-base"
+            className="flex-1 rounded-xl bg-white shadow-card hover:bg-[#E8DACB]/30 text-foreground font-semibold py-3.5 transition-all active:scale-98 text-sm sm:text-base"
           >
             Continue Test
           </button>

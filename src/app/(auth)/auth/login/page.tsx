@@ -11,18 +11,18 @@ export default async function LoginPage() {
   return (
     <div className="flex-1 flex flex-col">
       {/* Institutional Header */}
-      <header className="border-b border-border bg-card sticky top-0 z-30 shadow-sm">
+      <header className="bg-white/95 backdrop-blur-xs sticky top-0 z-30 shadow-xs">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3.5">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#555934] text-white shadow-xs">
               <BarChart3 className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-tight text-lg text-foreground">
+                <span className="font-bold tracking-tight text-lg text-[#2d1f17]">
                   StatVidya
                 </span>
-                <span className="rounded-md bg-secondary border border-border px-2 py-0.5 text-xs font-semibold text-primary">
+                <span className="rounded-full bg-[#BF9B7A]/25 px-2.5 py-0.5 text-xs font-semibold text-[#593E2E]">
                   MoSPI • NSSTA
                 </span>
               </div>
@@ -32,8 +32,8 @@ export default async function LoginPage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-1.5 text-xs text-muted-foreground bg-secondary/50 px-3 py-1.5 rounded-full">
-              <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+            <div className="hidden md:flex items-center gap-1.5 text-xs text-[#555934] bg-[#555934]/10 px-3 py-1.5 rounded-full font-medium">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#555934]" />
               <span>Mission Karmayogi FRAC Aligned</span>
             </div>
           </div>
@@ -45,8 +45,8 @@ export default async function LoginPage() {
         <div className="w-full max-w-6xl mx-auto space-y-8">
           {/* Hero Heading */}
           <div className="text-center space-y-2.5 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary border border-border text-xs font-semibold text-primary-dark">
-              <Sparkles className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-xs font-semibold text-[#2d1f17] shadow-card">
+              <Sparkles className="h-3.5 w-3.5 text-[#555934]" />
               <span>Official Statistical Workforce Competency Platform</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
@@ -60,7 +60,7 @@ export default async function LoginPage() {
           {/* 2-Column Responsive Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Column: Official Login Form */}
-            <div className="lg:col-span-5 bg-card rounded-xl border border-border p-6 sm:p-7 shadow-card">
+            <div className="lg:col-span-5 bg-white rounded-2xl p-6 sm:p-7 shadow-card">
               <div className="mb-5">
                 <h2 className="text-lg font-bold text-foreground">
                   {t('login')}
@@ -75,13 +75,13 @@ export default async function LoginPage() {
             </div>
 
             {/* Right Column: Demo Persona Evaluation Grid */}
-            <div className="lg:col-span-7 bg-card rounded-xl border border-border p-6 sm:p-7 shadow-card space-y-4">
+            <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-7 shadow-card space-y-4">
               <div>
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-bold text-foreground">
                     {t('demoPersona')}
                   </h2>
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-secondary text-primary-dark border border-border">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#555934]/12 text-[#555934]">
                     1-Click Simulation
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export default async function LoginPage() {
       </main>
 
       {/* Institutional Footer */}
-      <footer className="border-t border-border bg-card py-4 text-center text-xs text-muted-foreground">
+      <footer className="bg-white py-4 text-center text-xs text-muted-foreground shadow-[0_-2px_12px_-4px_rgba(89,62,46,0.03)]">
         <p>Ministry of Statistics and Programme Implementation (MoSPI) • National Statistical Systems Training Academy (NSSTA)</p>
       </footer>
     </div>
@@ -170,21 +170,21 @@ function DemoPersonaCard({
   lang: 'en' | 'hi';
 }) {
   const badgeStyles = {
-    primary: 'bg-primary/10 text-primary-dark border-primary/20',
-    secondary: 'bg-secondary text-foreground border-border',
-    destructive: 'bg-destructive/10 text-destructive border-destructive/20',
+    primary: 'bg-[#555934]/12 text-[#555934]',
+    secondary: 'bg-[#BF9B7A]/25 text-[#593E2E]',
+    destructive: 'bg-[#8C5B3E]/15 text-[#8C5B3E]',
   };
 
   const iconStyles = {
-    primary: 'bg-primary/10 text-primary-dark',
-    secondary: 'bg-secondary text-foreground',
-    destructive: 'bg-destructive/10 text-destructive',
+    primary: 'bg-[#555934]/12 text-[#555934]',
+    secondary: 'bg-[#BF9B7A]/25 text-[#593E2E]',
+    destructive: 'bg-[#8C5B3E]/15 text-[#8C5B3E]',
   };
 
   return (
     <a
       href={`/api/sso/demo-persona?email=${encodeURIComponent(email)}&lang=${lang}`}
-      className="group flex flex-col justify-between p-4 rounded-xl border border-border bg-card hover:border-primary/40 hover:bg-secondary/20 transition-all text-left"
+      className="group flex flex-col justify-between p-4 rounded-2xl bg-[#F2E6D8]/40 hover:bg-[#F2E6D8]/75 hover:shadow-xs transition-all text-left"
     >
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-2">

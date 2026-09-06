@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Workforce competency assessment and intelligence platform for MoSPI',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#0f172a',
+    background_color: '#F2E6D8',
+    theme_color: '#555934',
     icons: [
       {
         src: '/favicon.ico',

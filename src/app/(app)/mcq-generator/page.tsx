@@ -93,7 +93,7 @@ export default function MCQGeneratorPage() {
               <button
                 onClick={handleGenerate}
                 disabled={isGenerating}
-                className="w-full py-2.5 bg-[#8b9a6e] hover:bg-[#7a885f] text-white text-sm font-semibold rounded-md flex items-center justify-center gap-2 shadow-xs transition"
+                className="w-full py-2.5 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-semibold rounded-md flex items-center justify-center gap-2 shadow-xs transition"
               >
                 {isGenerating ? (
                   <>

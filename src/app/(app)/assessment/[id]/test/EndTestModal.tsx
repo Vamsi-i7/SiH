@@ -47,7 +47,7 @@ export default function EndTestModal({
         {/* Stats */}
         <div
           id="end-modal-desc"
-          className="rounded-xl border border-border bg-stone-50 p-4 space-y-2 text-sm"
+          className="rounded-2xl bg-[#F2E6D8]/50 p-4 space-y-2 text-sm"
         >
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Total questions</span>

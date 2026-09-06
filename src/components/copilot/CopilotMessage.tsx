@@ -29,7 +29,7 @@ function renderInlineContent(text: string) {
     // Bold
     if (seg.startsWith('**') && seg.endsWith('**')) {
       return (
-        <strong key={idx} className="font-semibold text-[#1a1a1a]">
+        <strong key={idx} className="font-semibold text-[#2d1f17]">
           {seg.slice(2, -2)}
         </strong>
       );
@@ -45,7 +45,7 @@ function renderInlineContent(text: string) {
           <Link
             key={idx}
             href={codeVal}
-            className="inline-flex items-center gap-0.5 rounded-md bg-[--color-primary]/15 border border-[--color-primary]/30 px-1.5 py-0.5 text-[11px] font-mono font-semibold text-[--color-primary-dark] hover:bg-[#8b9a6e] hover:text-white transition-all shadow-2xs mx-0.5"
+            className="inline-flex items-center gap-0.5 rounded-md bg-[--color-primary]/15 border border-[--color-primary]/30 px-1.5 py-0.5 text-[11px] font-mono font-semibold text-[#555934] hover:bg-[#555934] hover:text-white transition-all shadow-2xs mx-0.5"
           >
             {codeVal}
             <ArrowUpRight className="h-3 w-3 opacity-70" />
@@ -56,7 +56,7 @@ function renderInlineContent(text: string) {
       return (
         <code
           key={idx}
-          className="rounded bg-[--color-secondary] px-1.5 py-0.5 text-xs font-mono text-[#1a1a1a]"
+          className="rounded bg-[#E8DACB]/60 px-1.5 py-0.5 text-xs font-mono text-[#2d1f17]"
         >
           {codeVal}
         </code>
@@ -74,10 +74,10 @@ function renderInlineContent(text: string) {
           key={idx}
           className={`ml-1.5 inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
             isCritical
-              ? 'bg-[--color-destructive]/10 text-[--color-destructive] border border-[--color-destructive]/20'
+              ? 'bg-[#8C5B3E]/15 text-[#8C5B3E]'
               : isImportant
-              ? 'bg-[--color-severity-moderate]/10 text-[--color-severity-moderate] border border-[--color-severity-moderate]/20'
-              : 'bg-[--color-accent] text-[--color-foreground] border border-[--color-border]'
+              ? 'bg-[#BF9B7A]/25 text-[#593E2E]'
+              : 'bg-[#F2E6D8] text-[#2d1f17]'
           }`}
         >
           {label}
@@ -130,7 +130,7 @@ function renderStructuredMessage(content: string) {
     // Horizontal Rule (--- or ***)
     if (/^(---|\*\*\*|___)$/.test(trimmed)) {
       flushList();
-      elements.push(<hr key={`hr-${lineIdx}`} className="my-2 border-t border-[#e3dbcf]/80" />);
+      elements.push(<hr key={`hr-${lineIdx}`} className="my-2 border-0 h-px bg-[#BF9B7A]/30" />);
       return;
     }
 
@@ -141,9 +141,9 @@ function renderStructuredMessage(content: string) {
       elements.push(
         <h4
           key={`h-${lineIdx}`}
-          className="mt-3 mb-1 text-[11px] font-bold uppercase tracking-wider text-[#728056] flex items-center gap-1.5"
+          className="mt-3 mb-1 text-[11px] font-bold uppercase tracking-wider text-[#555934] flex items-center gap-1.5"
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-[#8b9a6e]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#555934]" />
           {headerText}
         </h4>
       );
@@ -155,7 +155,7 @@ function renderStructuredMessage(content: string) {
       const itemText = trimmed.replace(/^[-*•]\s+/, '');
       currentList.push(
         <li key={`li-${lineIdx}`} className="flex items-start gap-2 text-[13px] leading-relaxed">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#8b9a6e] shrink-0 mt-2" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#555934] shrink-0 mt-2" />
           <div className="flex-1">{renderInlineContent(itemText)}</div>
         </li>
       );
@@ -170,7 +170,7 @@ function renderStructuredMessage(content: string) {
         const itemText = match[2];
         currentList.push(
           <li key={`nli-${lineIdx}`} className="flex items-start gap-2 text-[13px] leading-relaxed">
-            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#8b9a6e]/15 text-[10px] font-bold text-[#728056] shrink-0 mt-0.5">
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#555934]/15 text-[10px] font-bold text-[#555934] shrink-0 mt-0.5">
               {num}
             </span>
             <div className="flex-1">{renderInlineContent(itemText)}</div>
@@ -183,7 +183,7 @@ function renderStructuredMessage(content: string) {
     // Regular Paragraph
     flushList();
     elements.push(
-      <p key={`p-${lineIdx}`} className="my-1 text-[13px] leading-relaxed text-[#1a1a1a]">
+      <p key={`p-${lineIdx}`} className="my-1 text-[13px] leading-relaxed text-[#2d1f17]">
         {renderInlineContent(trimmed)}
       </p>
     );
@@ -203,7 +203,7 @@ function CopilotMessageInner({ role, content, isStreaming, timestamp }: CopilotM
     >
       {/* Bot Avatar */}
       {isBot && (
-        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#8b9a6e] shadow-xs">
+        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#555934] shadow-xs">
           <Bot className="h-3.5 w-3.5 text-white" />
         </div>
       )}
@@ -212,15 +212,15 @@ function CopilotMessageInner({ role, content, isStreaming, timestamp }: CopilotM
       <div
         className={`group relative max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${
           isBot
-            ? 'rounded-tl-md bg-white border border-[#e3dbcf] text-[#1a1a1a] shadow-xs'
-            : 'rounded-tr-md bg-[#8b9a6e] text-white'
+            ? 'rounded-tl-md bg-white text-[#2d1f17] shadow-xs'
+            : 'rounded-tr-md bg-[#555934] text-white'
         }`}
       >
         {isBot ? (
           <div className="space-y-0.5">
             {renderStructuredMessage(content)}
             {isStreaming && (
-              <span className="ml-1 inline-block h-3 w-0.5 animate-pulse bg-[#8b9a6e]" />
+              <span className="ml-1 inline-block h-3 w-0.5 animate-pulse bg-[#555934]" />
             )}
           </div>
         ) : (
@@ -237,8 +237,8 @@ function CopilotMessageInner({ role, content, isStreaming, timestamp }: CopilotM
 
       {/* User Avatar */}
       {!isBot && (
-        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[--color-secondary] shadow-xs">
-          <User className="h-3.5 w-3.5 text-[#8b9a6e]" />
+        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#E8DACB] shadow-xs">
+          <User className="h-3.5 w-3.5 text-[#555934]" />
         </div>
       )}
     </div>

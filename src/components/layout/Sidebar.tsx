@@ -14,7 +14,7 @@ import {
   BarChart3,
   ChevronLeft,
   ChevronRight,
-  Building2,
+  GraduationCap,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -47,27 +47,36 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col border-r border-border bg-card transition-all duration-200 ${
-        collapsed ? 'w-16' : 'w-56'
+      className={`flex flex-col bg-white transition-all duration-200 select-none z-20 shadow-[2px_0_16px_-4px_rgba(89,62,46,0.04)] ${
+        collapsed ? 'w-18' : 'w-64'
       }`}
     >
-      <div className="flex h-14 items-center border-b border-border px-4">
-        {!collapsed && (
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-white shadow-sm">
-              <Building2 className="h-4 w-4" />
+      {/* Brand Header */}
+      <div className="flex h-16 items-center justify-between px-4">
+        {!collapsed ? (
+          <Link href="/dashboard" className="flex items-center gap-3 group">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#555934] text-white shadow-xs transition-transform group-hover:scale-105">
+              <GraduationCap className="h-5 w-5" />
             </div>
-            <span className="font-bold text-sm text-foreground">StatVidya</span>
-          </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-base text-[#2d1f17] tracking-tight">
+                StatVidya
+              </span>
+              <span className="text-[10px] font-medium text-[#705849] uppercase tracking-widest -mt-0.5">
+                MoSPI • NSSTA
+              </span>
+            </div>
+          </Link>
+        ) : (
+          <Link href="/dashboard" className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-[#555934] text-white shadow-xs">
+            <GraduationCap className="h-5 w-5" />
+          </Link>
         )}
-        {collapsed && (
-          <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-md bg-primary text-white shadow-sm">
-            <Building2 className="h-4 w-4" />
-          </div>
-        )}
+
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#F2E6D8]/50 text-[#705849] hover:bg-[#E8DACB] hover:text-[#2d1f17] transition-colors"
         >
           {collapsed ? (
             <ChevronRight className="h-4 w-4" />
@@ -77,82 +86,135 @@ export function Sidebar() {
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-2">
-        <div className="mb-2">
-          <p className={`text-[10px] font-semibold uppercase tracking-wider text-muted-foreground pb-1 ${collapsed ? 'text-center' : ''}`}>
-            Main
-          </p>
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  collapsed ? 'justify-center px-0' : ''
-                } ${
-                  isActive(item.href)
-                    ? 'bg-primary text-white'
-                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                }`}
-              >
-                <Icon className="h-5 w-5 shrink-0" />
-                {!collapsed && <span className="truncate">{t(item.label)}</span>}
-              </Link>
-            );
-          })}
+      {/* Navigation Groups */}
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+        {/* Main Section */}
+        <div>
+          {!collapsed ? (
+            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-2">
+              Main Platform
+            </p>
+          ) : (
+            <div className="h-px bg-[#F2E6D8] my-2 mx-1" />
+          )}
+          <div className="space-y-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  title={collapsed ? t(item.label) : undefined}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                    collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
+                  } ${
+                    active
+                      ? 'bg-[#555934] text-white shadow-xs font-semibold'
+                      : 'text-[#593E2E] hover:bg-[#EAE0D0]/60 hover:text-[#2d1f17]'
+                  }`}
+                >
+                  <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-white' : 'text-[#705849]'}`} />
+                  {!collapsed && <span className="truncate">{t(item.label)}</span>}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="mb-2">
-          <p className={`text-[10px] font-semibold uppercase tracking-wider text-muted-foreground pb-1 ${collapsed ? 'text-center' : ''}`}>
-            Content
-          </p>
-          {trainerItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  collapsed ? 'justify-center px-0' : ''
-                } ${
-                  isActive(item.href)
-                    ? 'bg-primary text-white'
-                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                }`}
-              >
-                <Icon className="h-5 w-5 shrink-0" />
-                {!collapsed && <span className="truncate">{t(item.label)}</span>}
-              </Link>
-            );
-          })}
+        {/* Content & Curation */}
+        <div>
+          {!collapsed ? (
+            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-2">
+              Curriculum & AI
+            </p>
+          ) : (
+            <div className="h-px bg-[#F2E6D8] my-2 mx-1" />
+          )}
+          <div className="space-y-1">
+            {trainerItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  title={collapsed ? t(item.label) : undefined}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                    collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
+                  } ${
+                    active
+                      ? 'bg-[#555934] text-white shadow-xs font-semibold'
+                      : 'text-[#593E2E] hover:bg-[#EAE0D0]/60 hover:text-[#2d1f17]'
+                  }`}
+                >
+                  <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-white' : 'text-[#705849]'}`} />
+                  {!collapsed && <span className="truncate">{t(item.label)}</span>}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="mb-2">
-          <p className={`text-[10px] font-semibold uppercase tracking-wider text-muted-foreground pb-1 ${collapsed ? 'text-center' : ''}`}>
-            Admin
-          </p>
-          {adminItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  collapsed ? 'justify-center px-0' : ''
-                } ${
-                  isActive(item.href)
-                    ? 'bg-primary text-white'
-                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                }`}
-              >
-                <Icon className="h-5 w-5 shrink-0" />
-                {!collapsed && <span className="truncate">{t(item.label)}</span>}
-              </Link>
-            );
-          })}
+        {/* Governance & Admin */}
+        <div>
+          {!collapsed ? (
+            <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-2">
+              Workforce Governance
+            </p>
+          ) : (
+            <div className="h-px bg-[#F2E6D8] my-2 mx-1" />
+          )}
+          <div className="space-y-1">
+            {adminItems.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  title={collapsed ? t(item.label) : undefined}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                    collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
+                  } ${
+                    active
+                      ? 'bg-[#555934] text-white shadow-xs font-semibold'
+                      : 'text-[#593E2E] hover:bg-[#EAE0D0]/60 hover:text-[#2d1f17]'
+                  }`}
+                >
+                  <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-white' : 'text-[#705849]'}`} />
+                  {!collapsed && <span className="truncate">{t(item.label)}</span>}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </nav>
+
+      {/* Cadre Status Footer */}
+      {!collapsed && (
+        <div className="p-3 bg-[#F2E6D8]/40">
+          <div className="rounded-xl bg-white p-3 shadow-sm">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#705849]">
+                Active Cadre
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#555934]/12 px-2 py-0.5 text-[9px] font-bold text-[#555934]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#555934] animate-pulse" />
+                FRAC L1-L5
+              </span>
+            </div>
+            <p className="text-xs font-semibold text-[#2d1f17] truncate">
+              Subordinate Statistical Service
+            </p>
+            <p className="text-[10px] text-[#705849] truncate">
+              Junior Statistical Officer (JSO)
+            </p>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
+
+export default Sidebar;
