@@ -166,7 +166,7 @@ export function useQueueSync(): QueueSyncState {
         return result;
       }
 
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://demo.supabase.co';
       const edgeFnUrl = `${supabaseUrl}${EDGE_FN_PATH}`;
 
       // Fetch pending + failed (below retry cap) assessments
