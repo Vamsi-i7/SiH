@@ -35,8 +35,19 @@ GPS coordinates must be captured within 10 metres accuracy.
     expect(result.chunks![1].text).toContain('Chapter 2');
   });
 
+  it('attaches userId to processed document', async () => {
+    const doc = await DocumentService.processDocument(
+      'User_Specific_Notes.txt',
+      'Notes for regional FOD audit.',
+      ['comp-nsso'],
+      'user-456'
+    );
+    expect(doc.userId).toBe('user-456');
+    expect(doc.title).toBe('User_Specific_Notes');
+  });
+
   it('handles getDocuments fallback gracefully when offline', async () => {
-    const docs = await DocumentService.getDocuments();
+    const docs = await DocumentService.getDocuments('user-123');
     expect(docs.length).toBeGreaterThanOrEqual(2);
   });
 });
