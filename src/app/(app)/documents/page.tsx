@@ -1,20 +1,82 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { DocumentService, type IngestedDocument } from '@/services/documentService';
-import { Upload, FileText, CheckCircle2, RefreshCw, Layers, Brain, Eye, X, BookOpen } from 'lucide-react';
+import {
+  Upload,
+  FileText,
+  CheckCircle2,
+  RefreshCw,
+  Layers,
+  Brain,
+  Eye,
+  X,
+  BookOpen,
+  Trash2,
+  Download,
+  Database,
+} from 'lucide-react';
 
 export default function DocumentsPage() {
-  const [documents, setDocuments] = useState<IngestedDocument[]>(
+  const [documents, setDocuments] = useState<IngestedDocument[]>(() =>
     DocumentService.getSampleDocuments()
   );
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoadingDocs, setIsLoadingDocs] = useState(false);
   const [selectedCompetency, setSelectedCompetency] = useState('comp-capi');
   const [uploadMessage, setUploadMessage] = useState<string | null>(null);
   const [selectedChunkDoc, setSelectedChunkDoc] = useState<IngestedDocument | null>(null);
+
+  // Manual refresh handler
+  const handleRefresh = async () => {
+    setIsLoadingDocs(true);
+    try {
+      const res = await fetch('/api/documents');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.documents && data.documents.length > 0) {
+          setDocuments(data.documents);
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch from /api/documents:', err);
+    } finally {
+      setIsLoadingDocs(false);
+    }
+  };
+
+  // Initial load from backend Firestore
+  useEffect(() => {
+    let active = true;
+    fetch('/api/documents')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (active && data?.documents?.length > 0) {
+          setDocuments(data.documents);
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not fetch from /api/documents:', err);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const handleDeleteDocument = async (id: string, title: string) => {
+    if (!confirm(`Are you sure you want to remove "${title}" from the repository?`)) return;
+    try {
+      await fetch(`/api/documents?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      setDocuments((prev) => prev.filter((d) => d.id !== id));
+      setUploadMessage(`Removed "${title}" from document repository.`);
+    } catch (err) {
+      console.error('Failed to delete document:', err);
+    }
+  };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -123,11 +185,28 @@ export default function DocumentsPage() {
 
       {/* Document Library Table */}
       <Card className="rounded-2xl bg-white shadow-card">
-        <CardHeader>
-          <CardTitle className="text-lg text-[#2d1f17]">Ingested Document Repository</CardTitle>
-          <CardDescription className="text-[#705849]">
-            Indexed reference documents available for grounding Multi-AI Question Generation.
-          </CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-lg text-[#2d1f17]">Ingested Document Repository</CardTitle>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#555934]/12 text-[#555934]">
+                <Database className="h-3 w-3" />
+                Firestore Synced
+              </span>
+            </div>
+            <CardDescription className="text-[#705849] mt-0.5">
+              {documents.length} reference manuals indexed for grounding Multi-AI Question Generation.
+            </CardDescription>
+          </div>
+          <button
+            onClick={handleRefresh}
+            disabled={isLoadingDocs}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#555934] bg-[#555934]/10 hover:bg-[#555934]/20 transition disabled:opacity-50"
+            title="Refresh documents from Firestore"
+          >
+            <RefreshCw className={`h-3.5 w-3.5 ${isLoadingDocs ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
         </CardHeader>
         <CardContent>
           <div className="divide-y divide-[#F2E6D8]">
@@ -152,10 +231,22 @@ export default function DocumentsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 self-end md:self-auto">
+                <div className="flex items-center gap-2 self-end md:self-auto">
                   <span className="text-xs px-3 py-1 font-semibold rounded-full bg-[#555934]/12 text-[#555934]">
                     {doc.status}
                   </span>
+
+                  {doc.storageUrl && (
+                    <a
+                      href={doc.storageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-[#F2E6D8]/60 hover:bg-[#E8DACB] text-[#593E2E] text-xs font-semibold rounded-xl transition-all shadow-2xs"
+                      title="Download document from cloud storage"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </a>
+                  )}
 
                   <button
                     onClick={() => setSelectedChunkDoc(doc)}
@@ -172,6 +263,14 @@ export default function DocumentsPage() {
                     <Brain className="w-3.5 h-3.5" />
                     Generate MCQs
                   </Link>
+
+                  <button
+                    onClick={() => handleDeleteDocument(doc.id, doc.title)}
+                    className="p-2 text-[#8C5B3E] hover:bg-[#8C5B3E]/10 rounded-xl transition"
+                    title="Delete document"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             ))}
@@ -202,47 +301,54 @@ export default function DocumentsPage() {
               <p className="text-xs text-slate-500">
                 Extracted MoSPI chapter sections and paragraph chunks mapped for AI grounding:
               </p>
-              {[
-                {
-                  section: 'Chapter 1: General Description & Scope',
-                  page: 'Page 4, Para 1.2',
-                  text: 'The Field Operations Division (FOD) with its headquarters at New Delhi and Faridabad and a network of Zonal, Regional, and Sub-Regional offices across India is responsible for the collection of primary field data.',
-                },
-                {
-                  section: 'Chapter 2: Concepts, Definitions & Operational Protocols',
-                  page: 'Page 12, Para 2.4',
-                  text: 'When the approximate present population of a sample village or UFS block is 1,200 or more, it is divided into a suitable number of sub-divisions called hamlet-groups in rural areas and sub-blocks in urban areas.',
-                },
-                {
-                  section: 'Chapter 3: Schedule 0.0 Listing of Households',
-                  page: 'Page 18, Para 3.1',
-                  text: 'Enumeration must begin from the North-West corner of the FSU and proceed in a clockwise or continuous serpentine sweep to ensure complete coverage without omission or duplication.',
-                },
-                {
-                  section: 'Chapter 4: CAPI Tablet Ingestion & Validation Rules',
-                  page: 'Page 24, Para 4.3',
-                  text: 'All coordinates must achieve a GPS accuracy threshold within ±10 metres with 4 active satellite locks before committing Schedule 0.0 records to the encrypted local SQLite database.',
-                },
-              ].map((chunk, idx) => (
-                <div key={idx} className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              {(selectedChunkDoc.chunks && selectedChunkDoc.chunks.length > 0
+                ? selectedChunkDoc.chunks.map((c) => ({
+                    section: c.metadata?.section || `Chunk #${c.chunkIndex}`,
+                    page: `Page ${c.metadata?.pageNumber || 1} • ${c.metadata?.wordCount || 0} words`,
+                    text: c.text,
+                  }))
+                : [
+                    {
+                      section: 'Chapter 1: General Description & Scope',
+                      page: 'Page 4, Para 1.2',
+                      text: 'The Field Operations Division (FOD) with its headquarters at New Delhi and Faridabad and a network of Zonal, Regional, and Sub-Regional offices across India is responsible for the collection of primary field data.',
+                    },
+                    {
+                      section: 'Chapter 2: Concepts, Definitions & Operational Protocols',
+                      page: 'Page 12, Para 2.4',
+                      text: 'When the approximate present population of a sample village or UFS block is 1,200 or more, it is divided into a suitable number of sub-divisions called hamlet-groups in rural areas and sub-blocks in urban areas.',
+                    },
+                    {
+                      section: 'Chapter 3: Schedule 0.0 Listing of Households',
+                      page: 'Page 18, Para 3.1',
+                      text: 'Enumeration must begin from the North-West corner of the FSU and proceed in a clockwise or continuous serpentine sweep to ensure complete coverage without omission or duplication.',
+                    },
+                    {
+                      section: 'Chapter 4: CAPI Tablet Ingestion & Validation Rules',
+                      page: 'Page 24, Para 4.3',
+                      text: 'All coordinates must achieve a GPS accuracy threshold within ±10 metres with 4 active satellite locks before committing Schedule 0.0 records to the encrypted local SQLite database.',
+                    },
+                  ]
+              ).map((chunk, idx) => (
+                <div key={idx} className="p-3 bg-[#F2E6D8]/25 border border-[#F2E6D8] rounded-xl space-y-1">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-slate-800">{chunk.section}</span>
-                    <span className="text-[11px] font-mono font-semibold text-blue-600">{chunk.page}</span>
+                    <span className="font-bold text-[#2d1f17]">{chunk.section}</span>
+                    <span className="text-[11px] font-mono font-semibold text-[#555934]">{chunk.page}</span>
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed italic">
+                  <p className="text-xs text-[#593E2E] leading-relaxed italic">
                     &ldquo;{chunk.text}&rdquo;
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="p-4 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-xs text-slate-500">
+            <div className="p-4 border-t border-[#F2E6D8] flex items-center justify-between">
+              <span className="text-xs text-[#705849]">
                 Tagged Competency: {selectedChunkDoc.targetCompetencies.join(', ')}
               </span>
               <Link
                 href={`/mcq-generator?docId=${selectedChunkDoc.id}&competency=${selectedChunkDoc.targetCompetencies[0] || 'comp-capi'}`}
-                className="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-lg transition"
+                className="px-4 py-2 bg-[#555934] hover:bg-[#3e4225] text-white text-xs font-bold rounded-xl transition"
               >
                 Proceed to MCQ Generation →
               </Link>
