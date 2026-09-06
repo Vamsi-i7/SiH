@@ -22,10 +22,11 @@ export function AdminOverviewClient({
   initialDepartments,
   initialPriorities,
 }: AdminOverviewClientProps) {
-  const [departments] = useState<DepartmentSummary[]>(initialDepartments);
+  const [departments, setDepartments] = useState<DepartmentSummary[]>(initialDepartments);
   const [priorities, setPriorities] = useState<TrainingPriority[]>(initialPriorities);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDeptForModal, setSelectedDeptForModal] = useState<string>('');
+  const [deptSearch, setDeptSearch] = useState<string>('');
 
   // Firestore Realtime Subscription
   useEffect(() => {
@@ -56,8 +57,37 @@ export function AdminOverviewClient({
   }, []);
 
   const handleFlagSuccess = (newPriority: unknown) => {
-    setPriorities((prev) => [newPriority as TrainingPriority, ...prev]);
+    const pri = newPriority as TrainingPriority;
+    setPriorities((prev) => [pri, ...prev.filter((p) => p.id !== pri.id)]);
+    setDepartments((prev) =>
+      prev.map((d) =>
+        d.department.toLowerCase() === pri.department.toLowerCase()
+          ? { ...d, isPriorityFlagged: true }
+          : d
+      )
+    );
   };
+
+  const handleResolveFlag = (id: string, departmentName: string) => {
+    setPriorities((prev) => prev.filter((p) => p.id !== id));
+    setDepartments((prev) => {
+      const remainingForDept = priorities.filter(
+        (p) => p.id !== id && p.department.toLowerCase() === departmentName.toLowerCase()
+      );
+      if (remainingForDept.length === 0) {
+        return prev.map((d) =>
+          d.department.toLowerCase() === departmentName.toLowerCase()
+            ? { ...d, isPriorityFlagged: false }
+            : d
+        );
+      }
+      return prev;
+    });
+  };
+
+  const filteredDepartments = departments.filter((d) =>
+    d.department.toLowerCase().includes(deptSearch.toLowerCase())
+  );
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto py-6">
@@ -72,6 +102,7 @@ export function AdminOverviewClient({
         <div className="flex items-center gap-3">
           <Link
             href="/admin/analytics/correlation"
+            prefetch={true}
             className="px-4 py-2 bg-primary text-primary-foreground font-semibold text-xs rounded-lg hover:opacity-90 transition-opacity shadow-sm flex items-center gap-1.5"
           >
             📊 View Outcome Correlation →
@@ -130,27 +161,42 @@ export function AdminOverviewClient({
         {/* Left 2 Cols: Department Table */}
         <div className="lg:col-span-2">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
-              <CardTitle className="text-base font-bold text-foreground">
-                Cadre & Department Breakdown
-              </CardTitle>
-              <button
-                onClick={() => {
-                  setSelectedDeptForModal(departments[0]?.department || '');
-                  setIsModalOpen(true);
-                }}
-                className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors shadow-xs"
-              >
-                🚩 Flag Department
-              </button>
+            <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3">
+              <div>
+                <CardTitle className="text-base font-bold text-foreground">
+                  Cadre & Department Breakdown
+                </CardTitle>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Showing {filteredDepartments.length} of {departments.length} regional wings
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Filter departments..."
+                  value={deptSearch}
+                  onChange={(e) => setDeptSearch(e.target.value)}
+                  className="px-2.5 py-1 text-xs border border-border rounded-lg bg-card focus:outline-none focus:ring-1 focus:ring-primary w-36 sm:w-44"
+                />
+                <button
+                  onClick={() => {
+                    setSelectedDeptForModal(departments[0]?.department || '');
+                    setIsModalOpen(true);
+                  }}
+                  className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors shadow-xs shrink-0"
+                >
+                  🚩 Flag Department
+                </button>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="divide-y divide-border">
-                {departments.map((dept) => (
+                {filteredDepartments.map((dept) => (
                   <div key={dept.department} className="py-3.5 first:pt-0 last:pb-0 space-y-2">
                     <div className="flex items-center justify-between">
                       <Link
                         href={`/admin/analytics/departments/${encodeURIComponent(dept.department)}`}
+                        prefetch={true}
                         className="font-bold text-sm text-foreground hover:text-primary transition-colors flex items-center gap-2"
                       >
                         <span>{dept.department}</span>
@@ -191,7 +237,7 @@ export function AdminOverviewClient({
                   {priorities.map((item) => (
                     <div
                       key={item.id}
-                      className="p-3 rounded-lg border border-border bg-card space-y-1 text-xs"
+                      className="p-3 rounded-lg border border-border bg-card space-y-1.5 text-xs"
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-foreground">{item.department}</span>
@@ -200,6 +246,14 @@ export function AdminOverviewClient({
                         </span>
                       </div>
                       <p className="text-muted-foreground">{item.reason}</p>
+                      <div className="pt-1 flex justify-end">
+                        <button
+                          onClick={() => handleResolveFlag(item.id, item.department)}
+                          className="text-[10px] font-semibold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 transition"
+                        >
+                          Mark Resolved ✓
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
