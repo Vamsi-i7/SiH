@@ -21,7 +21,7 @@ import { useState } from 'react';
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'nav.dashboard' },
   { href: '/skill-gap', icon: Target, label: 'nav.skillGap' },
-  { href: '/assessment/comp-capi', icon: ClipboardCheck, label: 'nav.assessment' },
+  { href: '/assignments', icon: ClipboardCheck, label: 'nav.assessment' },
   { href: '/pathways', icon: Flag, label: 'nav.pathways' },
   { href: '/profile', icon: UserCircle, label: 'nav.profile' },
 ];

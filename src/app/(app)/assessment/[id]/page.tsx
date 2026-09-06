@@ -1,11 +1,15 @@
 /**
  * src/app/(app)/assessment/[id]/page.tsx
  *
- * Assessment page: Server component that fetches assessment and passes to client
+ * Assessment page: Server component.
+ * - For dummy/local assessment IDs (problem-solving, etc.): redirect to instructions.
+ * - For real competency IDs (comp-capi, etc.): existing adaptive engine behaviour.
  */
 
+import { redirect } from 'next/navigation';
 import { getAuthenticatedUser } from '@/lib/auth';
 import { getSupabaseServerClient } from '@/lib/supabase';
+import { isDummyAssessment } from '@/data/assessments';
 import AssessmentClient from './AssessmentClient';
 
 interface PageProps {
@@ -14,7 +18,13 @@ interface PageProps {
 
 export default async function AssessmentPage({ params }: PageProps) {
   const { id: competencyId } = await params;
-  // Get user session
+
+  // Redirect dummy assessment IDs to the new instructions + test flow
+  if (isDummyAssessment(competencyId)) {
+    redirect(`/assessment/${competencyId}/instructions`);
+  }
+
+  // For real competency IDs — existing adaptive engine
   const user = await getAuthenticatedUser();
   const supabase = await getSupabaseServerClient();
 
