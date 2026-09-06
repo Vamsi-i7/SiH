@@ -9,7 +9,7 @@
  * saving API quota while providing a lightning-fast, delightful experience.
  */
 
-import type { CopilotUserContext } from '@/lib/types';
+import type { CopilotUserContext } from '@/lib/copilotPrompt';
 
 export interface PreMadeFaq {
   id: string;
