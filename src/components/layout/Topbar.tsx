@@ -28,6 +28,8 @@ import { getInitialNotifications } from '@/components/notifications/notification
 import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
 import { DEMO_PERSONAS } from '@/lib/demoPersonas';
 import type { DemoPersona, UserRole } from '@/lib/types';
+import { LearnerKarmaLedgerModal } from '@/components/dashboard/learner/modals/LearnerKarmaLedgerModal';
+import { CAPIConnectivityModal } from '@/components/dashboard/learner/modals/CAPIConnectivityModal';
 
 function getInitialPersona(): DemoPersona {
   if (typeof document === 'undefined') return DEMO_PERSONAS[0];
@@ -86,6 +88,9 @@ export function Topbar({ initialRole }: TopbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [karmaModalOpen, setKarmaModalOpen] = useState(false);
+  const [capiModalOpen, setCapiModalOpen] = useState(false);
+  const [isOfflineSimulated, setIsOfflineSimulated] = useState(false);
 
   const [activePersona, setActivePersona] = useState<DemoPersona>(() => {
     const fromCookie = getInitialPersona();
@@ -248,19 +253,39 @@ export function Topbar({ initialRole }: TopbarProps) {
         <div className="flex items-center gap-2 overflow-x-auto py-1">
           {role === 'learner' && (
             <>
-              {/* Karma Points Counter */}
-              <div className="flex items-center gap-1.5 rounded-xl bg-[#F8C858]/20 border border-[#F8C858]/35 px-3 py-1.5 text-xs font-bold text-[#8C5B3E]">
+              {/* Interactive Karma Points Counter */}
+              <button
+                type="button"
+                onClick={() => setKarmaModalOpen(true)}
+                title="View Karma Points Ledger & Badges"
+                className="flex items-center gap-1.5 rounded-xl bg-[#F8C858]/20 border border-[#F8C858]/35 px-3 py-1.5 text-xs font-bold text-[#8C5B3E] hover:bg-[#F8C858]/30 transition-all cursor-pointer shadow-2xs active:scale-95"
+              >
                 <Award className="h-3.5 w-3.5 text-[#8C5B3E]" />
                 <span className="font-mono">+550</span>
                 <span className="text-[10px] text-[#705849]">Karma Points</span>
-              </div>
+              </button>
 
-              {/* CAPI Offline Engine */}
-              <div className="hidden sm:flex items-center gap-1.5 rounded-xl bg-emerald-500/12 border border-emerald-500/25 px-3 py-1.5 text-xs font-bold text-emerald-800">
-                <Wifi className="h-3.5 w-3.5 text-emerald-600 animate-pulse" />
-                <span>CAPI Active</span>
-                <span className="text-[10px] font-mono text-emerald-700 hidden md:inline">(38 Cached)</span>
-              </div>
+              {/* Interactive CAPI Offline Engine */}
+              <button
+                type="button"
+                onClick={() => setCapiModalOpen(true)}
+                title="Inspect CAPI Storage & Field Connectivity"
+                className={`hidden sm:flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all cursor-pointer shadow-2xs active:scale-95 ${
+                  isOfflineSimulated
+                    ? 'bg-amber-500/15 border-amber-500/30 text-amber-800 hover:bg-amber-500/25'
+                    : 'bg-emerald-500/12 border-emerald-500/25 text-emerald-800 hover:bg-emerald-500/20'
+                }`}
+              >
+                <Wifi
+                  className={`h-3.5 w-3.5 ${
+                    isOfflineSimulated ? 'text-amber-600' : 'text-emerald-600 animate-pulse'
+                  }`}
+                />
+                <span>{isOfflineSimulated ? 'CAPI Offline' : 'CAPI Active'}</span>
+                <span className="text-[10px] font-mono text-emerald-700 hidden md:inline">
+                  (38 Cached)
+                </span>
+              </button>
             </>
           )}
 
@@ -564,6 +589,24 @@ export function Topbar({ initialRole }: TopbarProps) {
           )}
         </div>
       </div>
+
+      {/* Interactive Learner Modals */}
+      {role === 'learner' && (
+        <>
+          <LearnerKarmaLedgerModal
+            isOpen={karmaModalOpen}
+            onClose={() => setKarmaModalOpen(false)}
+            isHindi={locale === 'hi'}
+          />
+          <CAPIConnectivityModal
+            isOpen={capiModalOpen}
+            onClose={() => setCapiModalOpen(false)}
+            isHindi={locale === 'hi'}
+            isOfflineSimulated={isOfflineSimulated}
+            onToggleOfflineSimulated={() => setIsOfflineSimulated((prev) => !prev)}
+          />
+        </>
+      )}
     </header>
   );
 }

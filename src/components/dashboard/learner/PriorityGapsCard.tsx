@@ -9,11 +9,15 @@ import Link from 'next/link';
 interface PriorityGapsCardProps {
   competencies: FRACCompetencyDef[];
   isHindi?: boolean;
+  onBridgeGap?: (competencyId: string) => void;
+  onViewAllGaps?: () => void;
 }
 
 export function PriorityGapsCard({
   competencies,
   isHindi = false,
+  onBridgeGap,
+  onViewAllGaps,
 }: PriorityGapsCardProps) {
   // Sort competencies by gap severity descending
   const sortedGaps = [...competencies].sort((a, b) => {
@@ -39,13 +43,24 @@ export function PriorityGapsCard({
           </p>
         </div>
 
-        <Link
-          href="/skill-gap"
-          className="text-xs font-bold text-[#555934] hover:text-[#434728] inline-flex items-center gap-1 shrink-0"
-        >
-          <span>{isHindi ? 'सभी अंतर देखें' : 'View Detailed Matrix'}</span>
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </Link>
+        {onViewAllGaps ? (
+          <button
+            type="button"
+            onClick={onViewAllGaps}
+            className="text-xs font-bold text-[#555934] hover:text-[#434728] inline-flex items-center gap-1 shrink-0 cursor-pointer"
+          >
+            <span>{isHindi ? 'सभी अंतर देखें' : 'View Detailed Matrix'}</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </button>
+        ) : (
+          <Link
+            href="/skill-gap"
+            className="text-xs font-bold text-[#555934] hover:text-[#434728] inline-flex items-center gap-1 shrink-0"
+          >
+            <span>{isHindi ? 'सभी अंतर देखें' : 'View Detailed Matrix'}</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
+        )}
       </div>
 
       <div className="mt-5 space-y-4">
@@ -119,13 +134,24 @@ export function PriorityGapsCard({
 
                 {/* Direct CTA */}
                 <div className="shrink-0 flex items-center gap-2">
-                  <Link
-                    href={`/assessment/${comp.id}`}
-                    className="px-3.5 py-2 rounded-xl bg-[#555934] text-white text-xs font-bold hover:bg-[#434728] transition-colors shadow-2xs inline-flex items-center gap-1"
-                  >
-                    <span>{isHindi ? 'मूल्यांकन दें' : 'Bridge Gap'}</span>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </Link>
+                  {onBridgeGap ? (
+                    <button
+                      type="button"
+                      onClick={() => onBridgeGap(comp.id)}
+                      className="px-3.5 py-2 rounded-xl bg-[#555934] text-white text-xs font-bold hover:bg-[#434728] transition-colors shadow-2xs inline-flex items-center gap-1 cursor-pointer active:scale-95"
+                    >
+                      <span>{isHindi ? 'मूल्यांकन दें' : 'Bridge Gap'}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </button>
+                  ) : (
+                    <Link
+                      href={`/assessment/${comp.id}`}
+                      className="px-3.5 py-2 rounded-xl bg-[#555934] text-white text-xs font-bold hover:bg-[#434728] transition-colors shadow-2xs inline-flex items-center gap-1"
+                    >
+                      <span>{isHindi ? 'मूल्यांकन दें' : 'Bridge Gap'}</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
                 </div>
               </div>
 

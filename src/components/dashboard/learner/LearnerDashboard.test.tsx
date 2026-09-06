@@ -68,4 +68,15 @@ describe('LearnerDashboard Component', () => {
     expect(html).toContain('Recommended Modules');
     expect(html).toContain('Advanced CAPI Tablet Operations');
   });
+
+  it('renders workspace navigation tabs and priority horizontal drills deck', () => {
+    const html = renderToString(<LearnerDashboard user={mockUserAmit} />);
+    expect(html).toContain('Operational Workspace');
+    expect(html).toContain('Field Manuals Shelf');
+    expect(html).toContain('FRAC Competency Gaps');
+    expect(html).toContain('Karmayogi Pathways');
+    expect(html).toContain('CAPI Field Station');
+    expect(html).toContain('Priority Field &amp; Desk Drills');
+    expect(html).toContain('Start Drill');
+  });
 });

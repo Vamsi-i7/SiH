@@ -4,13 +4,16 @@ import React from 'react';
 import type { DashboardUserProps } from '../RoleDashboardRouter';
 import type { PersonaFRACProfile } from '@/data/fracCadres';
 import { ShieldCheck, Wifi, MapPin, Calendar, ArrowRight, CheckCircle, Clock } from 'lucide-react';
-import Link from 'next/link';
 
 interface LearnerHeroBentoProps {
   user: DashboardUserProps;
   profile: PersonaFRACProfile;
   isHindi: boolean;
   readinessIndex: number;
+  onOpenDossier?: () => void;
+  onOpenCapiModal?: () => void;
+  onStartDrill?: (drillId: string) => void;
+  onViewGaps?: () => void;
 }
 
 export function LearnerHeroBento({
@@ -18,6 +21,10 @@ export function LearnerHeroBento({
   profile,
   isHindi,
   readinessIndex,
+  onOpenDossier,
+  onOpenCapiModal,
+  onStartDrill,
+  onViewGaps,
 }: LearnerHeroBentoProps) {
   const isFieldCadre =
     profile.cadre.toLowerCase().includes('field') ||
@@ -53,8 +60,17 @@ export function LearnerHeroBento({
           </div>
 
           {/* Name and Designation */}
-          <div className="flex items-start gap-4">
-            <div className="h-14 w-14 rounded-2xl bg-[#555934] text-white flex items-center justify-center text-xl font-bold font-serif shadow-xs shrink-0">
+          <div
+            onClick={onOpenDossier}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') onOpenDossier?.();
+            }}
+            title="Click to view Official Civil Service Dossier"
+            className="flex items-start gap-4 cursor-pointer group"
+          >
+            <div className="h-14 w-14 rounded-2xl bg-[#555934] text-white flex items-center justify-center text-xl font-bold font-serif shadow-xs shrink-0 group-hover:scale-105 transition-transform">
               {profile.name
                 .split(' ')
                 .map((n) => n[0])
@@ -62,7 +78,7 @@ export function LearnerHeroBento({
                 .slice(0, 2)}
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2d1f17] tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2d1f17] tracking-tight group-hover:text-[#555934] transition-colors">
                 {displayName}
               </h1>
               <p className="text-sm font-semibold text-[#8C5B3E] mt-0.5">
@@ -98,12 +114,13 @@ export function LearnerHeroBento({
                   </p>
                 </div>
               </div>
-              <Link
-                href="/field-sync"
-                className="px-3.5 py-1.5 rounded-xl bg-[#555934] text-white text-xs font-bold hover:bg-[#434728] transition-colors shrink-0"
+              <button
+                type="button"
+                onClick={onOpenCapiModal}
+                className="px-3.5 py-1.5 rounded-xl bg-[#555934] text-white text-xs font-bold hover:bg-[#434728] transition-colors shrink-0 cursor-pointer shadow-2xs"
               >
                 {isHindi ? 'सिंक स्थिति' : 'Sync Status'}
-              </Link>
+              </button>
             </div>
           ) : (
             <div className="rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/30 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -122,12 +139,13 @@ export function LearnerHeroBento({
                   </p>
                 </div>
               </div>
-              <Link
-                href="/skill-gap"
-                className="px-3.5 py-1.5 rounded-xl bg-[#555934] text-white text-xs font-bold hover:bg-[#434728] transition-colors shrink-0"
+              <button
+                type="button"
+                onClick={onViewGaps}
+                className="px-3.5 py-1.5 rounded-xl bg-[#555934] text-white text-xs font-bold hover:bg-[#434728] transition-colors shrink-0 cursor-pointer shadow-2xs"
               >
                 {isHindi ? 'कौशल अंतर देखें' : 'View Gap Analysis'}
-              </Link>
+              </button>
             </div>
           )}
         </div>
@@ -211,13 +229,18 @@ export function LearnerHeroBento({
           <span className="text-[11px] text-[#FAF6F0]/70 font-medium">
             {isHindi ? 'मानक संचालन प्रक्रिया (SOP) देखें' : 'Review Field SOP Guidelines'}
           </span>
-          <Link
-            href="/assignments"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F8C858] text-[#2d1f17] text-xs font-bold hover:bg-[#e6b94e] transition-colors"
+          <button
+            type="button"
+            onClick={() => {
+              if (onStartDrill) {
+                onStartDrill('drill-schedule-0');
+              }
+            }}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F8C858] text-[#2d1f17] text-xs font-bold hover:bg-[#e6b94e] transition-colors cursor-pointer shadow-2xs active:scale-95"
           >
             <span>{isHindi ? 'अभ्यास आरंभ करें' : 'Start Field Drill'}</span>
             <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+          </button>
         </div>
       </div>
     </div>
