@@ -236,6 +236,19 @@
     "pendingSync": "1 मूल्यांकन सिंक लंबित",
     "synced": "परिणाम सफलतापूर्वक सिंक हुए"
   },
+  "assignments": {
+    "title": "असाइनमेंट",
+    "subtitle": "शुरू करने के लिए एक मूल्यांकन चुनें",
+    "takeAssessment": "मूल्यांकन लें",
+    "questions": "प्रश्न",
+    "minutes": "मिनट",
+    "startTest": "परीक्षा शुरू करें",
+    "endTest": "परीक्षा समाप्त करें",
+    "continueTest": "परीक्षा जारी रखें",
+    "submitAssessment": "मूल्यांकन जमा करें",
+    "reviewAssessment": "मूल्यांकन की समीक्षा करें",
+    "timerNote": "टाइमर केवल तभी शुरू होता है जब आप परीक्षा शुरू करें पर क्लिक करते हैं"
+  },
   "admin": {
     "title": "कार्यक्षमता बुद्धिमत्ता",
     "overview": "संगठन अवलोकन",
@@ -327,6 +340,9 @@
     "profile": "प्रोफ़ाइल",
     "onboarding": "ऑनबोर्डिंग",
     "assessment": "मूल्यांकन",
+    "assignments": "असाइनमेंट",
+    "instructions": "निर्देश",
+    "test": "परीक्षा",
     "documents": "दस्तावेज़",
     "admin": "प्रशासन",
     "adminAnalytics": "विश्लेषण",

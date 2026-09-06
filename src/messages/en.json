@@ -236,6 +236,19 @@
     "pendingSync": "1 Assessment Pending Sync",
     "synced": "Results synced successfully"
   },
+  "assignments": {
+    "title": "Assignments",
+    "subtitle": "Select an assessment to begin",
+    "takeAssessment": "Take Assessment",
+    "questions": "Questions",
+    "minutes": "Minutes",
+    "startTest": "Start Test",
+    "endTest": "End Test",
+    "continueTest": "Continue Test",
+    "submitAssessment": "Submit Assessment",
+    "reviewAssessment": "Review Assessment",
+    "timerNote": "Timer starts only when you click Start Test"
+  },
   "admin": {
     "title": "Workforce Intelligence",
     "overview": "Organization Overview",
@@ -327,6 +340,9 @@
     "profile": "Profile",
     "onboarding": "Onboarding",
     "assessment": "Assessment",
+    "assignments": "Assignments",
+    "instructions": "Instructions",
+    "test": "Test",
     "documents": "Documents",
     "admin": "Admin",
     "adminAnalytics": "Analytics",
