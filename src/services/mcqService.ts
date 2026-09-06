@@ -192,7 +192,7 @@ Target JSON Structure:
                 rationaleHi: item.rationaleHi || item.rationaleEn || 'दस्तावेज़ के संदर्भ पर आधारित।',
                 citation: item.citation || docTitle || request.citationSource || 'MoSPI Guidelines',
                 consensusScore: 0.98,
-                modelsEvaluated: ['Groq AI (openai/gpt-oss-20b)', 'MoSPI Scrutiny Engine'],
+                modelsEvaluated: ['MoSPI Primary Calibrator', 'Psychometric Verification Engine'],
                 status: 'DRAFT',
                 createdAt: new Date().toISOString(),
               });
@@ -295,7 +295,7 @@ Target JSON Structure:
       rationaleHi: parsed.rationaleHi || parsed.rationaleEn || 'आधिकारिक दस्तावेज़ पर आधारित।',
       citation: parsed.citation || docTitle || request.citationSource || 'MoSPI Guidelines',
       consensusScore: 0.98,
-      modelsEvaluated: ['Groq AI (openai/gpt-oss-20b)', 'MoSPI Scrutiny Engine'],
+      modelsEvaluated: ['MoSPI Primary Calibrator', 'Psychometric Verification Engine'],
       status: 'DRAFT',
       createdAt: new Date().toISOString(),
     };
@@ -406,7 +406,7 @@ Target JSON Structure:
       rationaleHi,
       citation,
       consensusScore: 0.96,
-      modelsEvaluated: ['Claude 3.5 Sonnet', 'GPT-4o', 'Llama-3-70B'],
+      modelsEvaluated: ['MoSPI Primary Calibrator', 'MoSPI Cross-Validation Engine', 'MoSPI Scrutiny Engine'],
       status: 'DRAFT',
       createdAt: new Date().toISOString(),
     };
