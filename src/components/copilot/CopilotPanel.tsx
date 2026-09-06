@@ -315,7 +315,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
 
         {/* ─── Offline Banner ─── */}
         {isOffline && (
-          <div className="flex items-center gap-2 bg-amber-50 border-b border-amber-200 px-3 py-1.5 text-[11px] text-amber-800">
+          <div className="flex items-center gap-2 bg-[--color-severity-moderate]/10 border-b border-[--color-severity-moderate]/20 px-3 py-1.5 text-[11px] text-[--color-severity-moderate]">
             <WifiOff className="h-3 w-3 shrink-0" />
             <span>Offline — using built-in navigation assistance</span>
           </div>

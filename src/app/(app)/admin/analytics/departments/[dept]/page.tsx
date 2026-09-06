@@ -95,7 +95,7 @@ export default async function DepartmentDrilldownPage({ params }: PageProps) {
         <Card>
           <CardHeader>
             <CardTitle className="text-xs font-semibold text-muted-foreground">Capability Action</CardTitle>
-            <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-2">
+            <div className="text-sm font-bold text-[--color-primary] mt-2">
               Cohort Scheduled on iGOT
             </div>
           </CardHeader>

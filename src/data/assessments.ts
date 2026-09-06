@@ -4,7 +4,7 @@
  * Static assessment catalog for the StatVidya assessment engine.
  * Four functional assessments for the MVP / SIH demo.
  *
- * Structure is designed to be drop-in replaceable with Supabase queries:
+ * Structure is designed to be drop-in replaceable with Cloud Firestore queries:
  * each Assessment mirrors what a backend API would return.
  *
  * IMPORTANT: correctAnswer is a 0-based index and must NEVER be surfaced

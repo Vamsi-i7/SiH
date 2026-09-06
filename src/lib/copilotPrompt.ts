@@ -27,7 +27,7 @@ export const STATVIDYA_MANIFESTO = [
   '- Profile (/profile): Official cadre details, growth timeline. Badges: Assessment-Verified vs Self-Assessed.',
   '',
   '[CONTENT SECTION - Trainers]',
-  '- Documents (/documents): Upload MoSPI PDFs directly to Cloudflare R2 ($0 egress).',
+  '- Documents (/documents): Upload MoSPI PDFs directly to Firebase Storage.',
   '- MCQ Generator (/mcq-generator): AI batch generation, stage 5a competency sanity check.',
   '- Review Queue (/review-queue): Triage AI questions, sorted low-confidence first.',
   '',
@@ -113,7 +113,7 @@ export function getOfflineFallbackResponse(message: string): string {
     return '👤 **Profile** → Navigate to **/profile** in the sidebar or click your avatar in the top-right.\n\nView your official cadre details, growth timeline, and badges: 🛡️ Assessment-Verified vs ✍️ Self-Assessed.';
   }
   if (/\b(upload|document.*upload|upload.*pdf|mospi.*pdf)\b/.test(lower)) {
-    return '📄 **Documents** → Navigate to **/documents** under the Content section.\n\nUpload MoSPI PDFs directly. Files are stored on Cloudflare R2 with zero egress costs.';
+    return '📄 **Documents** → Navigate to **/documents** under the Content section.\n\nUpload MoSPI PDFs directly. Files are stored on Firebase Storage.';
   }
   if (/\b(mcq|generate.*question|question.*generat)\b/.test(lower)) {
     return '🧠 **MCQ Generator** → Navigate to **/mcq-generator** under the Content section.\n\nAI generates questions in batch from your uploaded materials, with a Stage 5a competency sanity check.';

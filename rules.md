@@ -6,9 +6,9 @@
 |---|---|
 | Companion docs | PRD.md, Architecture.md, Phases.md, Design.md, memory.md |
 | Purpose | Codify what we do, what we avoid, and where every boundary is — libraries, error handling, AI, naming, security |
-| Status | **Active v2.0 — Architecture Pivot (Supabase + Cloudflare + Next.js)** |
+| Status | **Active v3.0 — Firebase Architecture (Auth, Firestore, Storage, Security Rules)** |
 
-> **Read this before writing any code.** Every rule here exists because of a specific architectural decision in **PRD.md v2.0** or **Architecture.md v2.0**. If a rule conflicts with an ad-hoc implementation shortcut, the rule wins until it is formally amended.
+> **Read this before writing any code.** Every rule here exists because of a specific architectural decision in **PRD.md** and **Architecture.md**. If a rule conflicts with an ad-hoc implementation shortcut, the rule wins until it is formally amended.
 
 ---
 
@@ -20,7 +20,7 @@
 4. [Library & Dependency Rules](#4-library--dependency-rules)
 5. [TypeScript & Code Style](#5-typescript--code-style)
 6. [Error Handling & Boundaries](#6-error-handling--boundaries)
-7. [Security & RLS Rules](#7-security--rls-rules)
+7. [Security & Firestore Rules](#7-security--firestore-rules)
 8. [AI Boundaries & Multi-Provider Rules](#8-ai-boundaries--multi-provider-rules)
 9. [Data & Provenance Rules](#9-data--provenance-rules)
 10. [Testing Rules](#10-testing-rules)
@@ -32,18 +32,18 @@
 ## 1. General Principles
 
 1. **Server Enforces, Client Suggests**:
-   - Any value that affects a competency level, assessment score, or audit record is computed and written server-side (Supabase Edge Functions or database triggers).
+   - Any value that affects a competency level, assessment score, or audit record is computed and written server-side via Firebase Auth token verification and Security Rules.
    - Client-side checks are UI/UX conveniences, never security boundaries.
 2. **Offline is a First-Class State, Not an Error**:
-   - The application must handle offline operation gracefully. Never throw an unhandled exception or display a generic network error modal when connectivity drops.
+   - The application must handle offline operation gracefully via IndexedDB + Firestore offline persistence. Never throw an unhandled exception or display a generic network error modal when connectivity drops.
 3. **Structural Provenance Over Convention**:
-   - Every domain-data record (competencies, roles, activities, courses, questions) must carry a `provenance` field enforced at the TypeScript type level and validated in PostgreSQL constraints.
+   - Every domain-data record (competencies, roles, activities, courses, questions) must carry a `provenance` field enforced at the TypeScript type level.
 4. **Zero-Trust Multi-Tenancy**:
-   - All database tables holding user data must include `organization_id`. Every PostgreSQL Row Level Security (RLS) policy must strictly isolate queries by organization.
-5. **Multi-Provider Cloud Optimization**:
-   - Large PDFs (>50MB) stream directly to Cloudflare R2 ($0 egress fees) via presigned URLs.
-   - Relational data and transactional mutations live in Supabase PostgreSQL.
-   - Application shell and SSR/SSG rendering run on Vercel Edge.
+   - All database documents holding user data must include `organization_id`. Every Firestore Security Rule policy must strictly isolate queries by organization.
+5. **Unified Firebase Platform Topology**:
+   - Large PDFs stream directly to Firebase Storage (`storage.rules`).
+   - Real-time document data and transactional mutations live in Cloud Firestore (`firestore.rules`).
+   - Authentication and identity management run through Firebase Authentication.
 
 ---
 
@@ -64,7 +64,7 @@
 
 ### 2.2 Data & State
 
-- **Supabase PostgreSQL is the Source of Truth**:
+- **Cloud Firestore is the Source of Truth**:
   - Derived values (gap severity, readiness index) are calculated fresh via service formulas or database views to prevent state drift.
 - **Offline Writes Queue Locally**:
   - Assessment submissions generated while offline are written immediately to IndexedDB (`pending_assessments`) using a deterministic `local_id` UUID, and auto-synced upon reconnect.
@@ -89,9 +89,9 @@
 | Hooks | camelCase, `use` prefix | `useOfflineStatus.ts`, `useCompetencies.ts` |
 | Types / Interfaces | PascalCase | `CompetencyRecord`, `AssessmentResult` |
 | Enums | PascalCase | `Provenance.VerifiedOfficial` |
-| Database Tables | snake_case, plural | `competency_records`, `audit_log` |
-| Database Columns | snake_case | `organization_id`, `is_offline_sync` |
-| Environment Variables | UPPER_SNAKE_CASE | `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` |
+| Firestore Collections | camelCase, plural | `competencyRecords`, `auditLogs` |
+| Firestore Fields | camelCase | `organizationId`, `isOfflineSync` |
+| Environment Variables | UPPER_SNAKE_CASE | `NEXT_PUBLIC_FIREBASE_API_KEY`, `FIREBASE_ADMIN_PRIVATE_KEY` |
 
 ---
 
@@ -101,12 +101,12 @@
 
 | ❌ Don't | Why |
 |---|---|
-| Don't expose AI API keys or `SUPABASE_SERVICE_ROLE_KEY` in client code or `.env` | Catastrophic security breach; credentials get leaked in bundle. All AI calls route through Cloudflare Workers; admin operations run in Edge Functions. |
+| Don't expose AI API keys or `FIREBASE_ADMIN_PRIVATE_KEY` in client code or `.env` | Catastrophic security breach; credentials get leaked in bundle. All privileged operations route through Firebase Cloud Functions or Next.js server actions. |
 | Don't write to `competency_records` or `assessment_results` from the client | Server-side only. Client tampering must never fabricate competency scores or levels. |
-| Don't omit `organization_id` on any multi-tenant database table | Violates tenant isolation and breaks PostgreSQL Row Level Security (RLS). |
+| Don't omit `organization_id` on any multi-tenant database entity | Violates tenant isolation and breaks security rules. |
 | Don't omit `provenance` on any domain data entity | Breaks government trust and PRD FR-TRUST-1 compliance. |
 | Don't use `any` in TypeScript | Use `unknown` and narrow with type guards, or define a concrete interface. |
-| Don't route large PDF uploads through Next.js or Supabase servers | Wastes bandwidth, chokes server memory, and incurs unnecessary egress charges. Stream directly to Cloudflare R2 via presigned URLs. |
+| Don't route large PDF uploads through Next.js server memory | Wastes bandwidth, chokes server memory, and incurs unnecessary egress charges. Stream directly to Firebase Storage. |
 | Don't hardcode strings in JSX | Prevents complete Hindi localization for field investigators. |
 
 ### 3.2 Architectural Anti-Patterns
@@ -130,8 +130,8 @@
 | **UI Primitives** | shadcn/ui + Radix UI | Accessible, unstyled primitives, customizable |
 | **PWA / Service Worker** | `@serwist/next` | Workbox-based service worker built specifically for Next.js App Router |
 | **Offline Storage** | `idb` | Lightweight, typed wrapper around browser IndexedDB |
-| **Database Client** | `@supabase/supabase-js`, `@supabase/ssr` | Native connection to Supabase PostgreSQL, Auth & Realtime |
-| **Object Storage SDK** | `@aws-sdk/client-s3`, `@aws-sdk/s3-request-presigner` | Used inside Cloudflare Workers for R2 presigned URL generation |
+| **Database Client** | `firebase`, `firebase-admin` | Native connection to Cloud Firestore, Auth & Realtime |
+| **Object Storage SDK** | `firebase/storage` | Managed zero-egress document and PDF storage |
 | **PDF Extraction** | `pdf.js` + `tesseract.js` | Client-side chunking and OCR fallback for scanned training manuals |
 | **Charts** | Recharts + Bespoke SVG | Recharts for scatter/trendlines; bespoke SVG for radar charts and progress rings |
 | **Icons** | Lucide React | Clean, modern, accessible vector iconography |
@@ -143,7 +143,6 @@
 - `moment.js` (use native `Intl` or lightweight `date-fns`)
 - `styled-components` / `emotion` (Tailwind CSS v4 is the exclusive styling system)
 - Full `lodash` bundle (use vanilla TypeScript or tree-shaken helpers)
-- `firebase` client SDK (statvidya is built on Supabase + Cloudflare)
 
 ---
 
@@ -196,7 +195,7 @@
 |---|---|
 | **Next.js Pages** | Wrap routes in `error.tsx` displaying localized fallback UI with a retry affordance. |
 | **Service Modules** | Throw structured `AppError` instances with error code, translatable message, and debug context. |
-| **Supabase Edge Functions** | Return HTTP 4xx/5xx with structured JSON `{ error: { code, message } }`. Never expose database stack traces. |
+| **Firebase Functions** | Return HTTP 4xx/5xx with structured JSON `{ error: { code, message } }`. Never expose database stack traces. |
 | **Offline Sync** | Failed network submissions stay in IndexedDB with incremented `attempts` count and exponential backoff retry. |
 | **AI Invocations** | Wrap external AI requests in automated fallback chain: Gemini → Claude → GPT → Rule-based engine. |
 
@@ -204,7 +203,7 @@
 
 ```typescript
 export interface AppError {
-  code: string;           // e.g., "ASSESSMENT_SYNC_FAILED", "R2_UPLOAD_ERROR"
+  code: string;           // e.g., "ASSESSMENT_SYNC_FAILED", "STORAGE_UPLOAD_ERROR"
   message: string;        // Localized, user-safe message
   context?: Record<string, unknown>; // Internal debugging metadata
   retryable: boolean;     // Drives UI retry button display
@@ -213,19 +212,19 @@ export interface AppError {
 
 ---
 
-## 7. Security & RLS Rules
+## 7. Security & Firestore Rules
 
-1. **Row Level Security (RLS) is Mandatory**:
-   - Every single PostgreSQL table must run `ALTER TABLE ... ENABLE ROW LEVEL SECURITY;`.
-   - Table reads are filtered by `organization_id = auth.org_id()`.
+1. **Firestore Security Rules are Mandatory**:
+   - Every collection must enforce strict access control in `firestore.rules`.
+   - Reads and writes are filtered by `request.auth != null` and tenant boundaries.
 2. **Deny Client Writes on Critical Entities**:
-   - Tables `competency_records`, `assessment_results`, and `audit_log` must reject direct client inserts and updates (`WITH CHECK (false)`). Mutations execute solely through Supabase Edge Functions using the `service_role` key.
+   - Collections `competencyRecords`, `assessmentResults`, and `auditLogs` reject direct client writes. Mutations execute solely through Firebase Admin SDK in trusted contexts.
 3. **Immutable Audit Trails**:
-   - `audit_log` is strictly append-only. Any attempt to update or delete rows is rejected by RLS and database triggers.
+   - `auditLogs` is strictly append-only. Any attempt to update or delete documents is rejected by `firestore.rules`.
 4. **Secrets Separation**:
-   - `NEXT_PUBLIC_*` variables are exposed to the browser. Never place API keys, database connection strings, or service tokens in variables with this prefix.
-5. **Session Verification via Edge Middleware**:
-   - All protected routes validate the Supabase auth cookie at the edge before rendering or routing to internal layouts.
+   - `NEXT_PUBLIC_FIREBASE_*` variables are exposed to the browser. Never place admin private keys in variables with this prefix.
+5. **Session Verification via Auth Tokens**:
+   - Protected routes validate Firebase ID tokens / auth state before rendering protected layouts.
 
 ---
 
@@ -241,11 +240,11 @@ export interface AppError {
 ### 8.2 Fallback Execution Order
 
 ```
-1. Google Gemini 2.5 Flash (Cloudflare AI Gateway)
+1. Google Gemini 2.5 Flash / Firebase AI Logic
    ↓ (on rate-limit, timeout, or error)
-2. Anthropic Claude 3.5 Sonnet (Cloudflare AI Gateway)
+2. Anthropic Claude 3.5 Sonnet
    ↓ (on failure)
-3. OpenAI GPT-4o-mini (Cloudflare AI Gateway)
+3. OpenAI GPT-4o-mini
    ↓ (if all cloud providers are unreachable)
 4. Local Rule-Based Question Generator (`services/questionGenerator.ts`)
 ```
@@ -286,11 +285,11 @@ The following core algorithms must have 100% test coverage via Vitest:
 
 ## 11. Git & Workflow Rules
 
-- **Branch Naming**: `feature/phase{N}-{feature-name}` (e.g., `feature/p1-supabase-auth`).
+- **Branch Naming**: `feature/phase{N}-{feature-name}` (e.g., `feature/p1-firebase-auth`).
 - **Commit Messages**: Follow [Conventional Commits](https://www.conventionalcommits.org/):
   - `feat(auth): integrate simulated Parichay SSO persona switcher [FR-AUTH-2]`
   - `fix(offline): resolve IndexedDB sync retry idempotency [FR-OFFLINE-2]`
-  - `docs(arch): update 3-provider cloud topology to v2.0`
+  - `docs(arch): update to Firebase-only topology`
 - **Release Gating**: Merges to `main` require all Vitest suites to pass and TypeScript compilation with zero errors.
 
 ---
@@ -300,7 +299,7 @@ The following core algorithms must have 100% test coverage via Vitest:
 - **Lighthouse Performance Score**: $\ge 90$ on desktop and mobile.
 - **Initial Dashboard Load Time**: $< 3.0$ seconds on simulated 4G mobile network.
 - **PWA Cached Shell Load Time**: $< 1.5$ seconds in offline mode.
-- **Large Document Uploads**: Chunks must not exceed memory bounds; direct streaming to Cloudflare R2 via presigned URLs.
+- **Large Document Uploads**: Chunks must not exceed memory bounds; direct streaming to Firebase Storage.
 - **Bundle Budget**: Initial client JavaScript bundle $< 250$ KB gzipped.
 
 ---

@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Flag } from 'lucide-react';
 
 interface FlagDepartmentModalProps {
   isOpen: boolean;
@@ -53,11 +55,12 @@ export function FlagDepartmentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/50 backdrop-blur-sm p-4">
       <Card className="w-full max-w-lg bg-card border-border shadow-xl">
         <CardHeader>
-          <CardTitle className="text-lg font-bold text-foreground">
-            🚩 Flag Department for Priority Training
+          <CardTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+            <Flag className="h-5 w-5 text-destructive" />
+            Flag Department for Priority Training
           </CardTitle>
           <p className="text-xs text-muted-foreground">
             This administrative write-back alerts trainers and triggers iGOT cohort scheduling.
@@ -66,7 +69,7 @@ export function FlagDepartmentModal({
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
-              <div className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs rounded-lg">
+              <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs rounded-md">
                 {error}
               </div>
             )}
@@ -75,7 +78,7 @@ export function FlagDepartmentModal({
               <select
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                className="w-full h-10 px-3 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary"
+                className="w-full h-10 px-3 rounded-md border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 {departments.map((dept) => (
                   <option key={dept} value={dept}>
@@ -93,25 +96,28 @@ export function FlagDepartmentModal({
                 placeholder="e.g. Schedule 0.0 listing error rate exceeds 15% threshold in Q1 inspection."
                 rows={3}
                 required
-                className="w-full p-3 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary"
+                className="w-full p-3 rounded-md border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
           </CardContent>
           <CardFooter className="flex justify-end gap-2 border-t border-border pt-4">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="default"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground"
+              disabled={loading}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
+              variant="destructive"
+              size="default"
               disabled={loading}
-              className="px-4 py-2 text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-colors shadow-sm disabled:opacity-50"
             >
               {loading ? 'Submitting...' : 'Flag Department'}
-            </button>
+            </Button>
           </CardFooter>
         </form>
       </Card>

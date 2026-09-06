@@ -7,7 +7,8 @@ import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { BarChart } from '@/components/BarChart';
 import { SparkLine } from '@/components/SparkLine';
 import { FlagDepartmentModal } from '@/components/FlagDepartmentModal';
-import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
+import { db } from '@/lib/firebase';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import Link from 'next/link';
 
 interface AdminOverviewClientProps {
@@ -26,24 +27,32 @@ export function AdminOverviewClient({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDeptForModal, setSelectedDeptForModal] = useState<string>('');
 
-  // Supabase Realtime Subscription
+  // Firestore Realtime Subscription
   useEffect(() => {
-    const supabase = getSupabaseBrowserClient();
-    const channel = supabase
-      .channel('training_priorities_realtime')
-      .on(
-        'postgres_changes' as any,
-        { event: 'INSERT', schema: 'public', table: 'training_priorities' },
-        (payload: { new: unknown }) => {
-          const newPriority = payload.new as TrainingPriority;
-          setPriorities((prev) => [newPriority, ...prev]);
+    try {
+      const q = query(collection(db, 'department_flags'), orderBy('flagged_at', 'desc'));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const livePriorities: TrainingPriority[] = snapshot.docs.map((docSnap) => {
+          const d = docSnap.data();
+          return {
+            id: docSnap.id,
+            department: d.department || 'NSSO (FOD)',
+            organization_id: d.organization_id || 'org-mospi',
+            reason: d.reason || '',
+            flagged_by: d.flagged_by || 'admin',
+            flagged_at: d.flagged_at || new Date().toISOString(),
+            resolved: d.resolved || false,
+          };
+        });
+        if (livePriorities.length > 0) {
+          setPriorities(livePriorities);
         }
-      )
-      .subscribe();
+      });
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+      return () => unsubscribe();
+    } catch {
+      // Local fallback mode
+    }
   }, []);
 
   const handleFlagSuccess = (newPriority: unknown) => {
@@ -90,7 +99,7 @@ export function AdminOverviewClient({
           <CardHeader>
             <CardTitle className="text-xs font-semibold text-muted-foreground">Average Readiness Index</CardTitle>
             <div className="text-3xl font-black text-foreground mt-1">{initialOverview.avgReadiness}%</div>
-            <div className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 font-semibold">
+            <div className="text-[11px] text-[--color-primary] mt-1 font-semibold">
               ↗ +4.2% from baseline
             </div>
           </CardHeader>
@@ -99,8 +108,8 @@ export function AdminOverviewClient({
         <Card>
           <CardHeader>
             <CardTitle className="text-xs font-semibold text-muted-foreground">Critical Gaps Identified</CardTitle>
-            <div className="text-3xl font-black text-rose-600 mt-1">{initialOverview.criticalGaps}</div>
-            <div className="text-[11px] text-rose-500 mt-1 font-semibold">Requires immediate training</div>
+            <div className="text-3xl font-black text-[--color-destructive] mt-1">{initialOverview.criticalGaps}</div>
+            <div className="text-[11px] text-[--color-destructive] mt-1 font-semibold">Requires immediate training</div>
           </CardHeader>
         </Card>
 

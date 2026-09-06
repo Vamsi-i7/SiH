@@ -45,7 +45,7 @@ function renderInlineContent(text: string) {
           <Link
             key={idx}
             href={codeVal}
-            className="inline-flex items-center gap-0.5 rounded-md bg-[#8b9a6e]/15 border border-[#8b9a6e]/30 px-1.5 py-0.5 text-[11px] font-mono font-semibold text-[#617045] hover:bg-[#8b9a6e] hover:text-white transition-all shadow-2xs mx-0.5"
+            className="inline-flex items-center gap-0.5 rounded-md bg-[--color-primary]/15 border border-[--color-primary]/30 px-1.5 py-0.5 text-[11px] font-mono font-semibold text-[--color-primary-dark] hover:bg-[#8b9a6e] hover:text-white transition-all shadow-2xs mx-0.5"
           >
             {codeVal}
             <ArrowUpRight className="h-3 w-3 opacity-70" />
@@ -56,7 +56,7 @@ function renderInlineContent(text: string) {
       return (
         <code
           key={idx}
-          className="rounded bg-[#eae2d6] px-1.5 py-0.5 text-xs font-mono text-[#1a1a1a]"
+          className="rounded bg-[--color-secondary] px-1.5 py-0.5 text-xs font-mono text-[#1a1a1a]"
         >
           {codeVal}
         </code>
@@ -74,10 +74,10 @@ function renderInlineContent(text: string) {
           key={idx}
           className={`ml-1.5 inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
             isCritical
-              ? 'bg-rose-100 text-rose-700 border border-rose-200'
+              ? 'bg-[--color-destructive]/10 text-[--color-destructive] border border-[--color-destructive]/20'
               : isImportant
-              ? 'bg-amber-100 text-amber-800 border border-amber-200'
-              : 'bg-blue-100 text-blue-700 border border-blue-200'
+              ? 'bg-[--color-severity-moderate]/10 text-[--color-severity-moderate] border border-[--color-severity-moderate]/20'
+              : 'bg-[--color-accent] text-[--color-foreground] border border-[--color-border]'
           }`}
         >
           {label}
@@ -237,7 +237,7 @@ function CopilotMessageInner({ role, content, isStreaming, timestamp }: CopilotM
 
       {/* User Avatar */}
       {!isBot && (
-        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eae2d6] shadow-xs">
+        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[--color-secondary] shadow-xs">
           <User className="h-3.5 w-3.5 text-[#8b9a6e]" />
         </div>
       )}

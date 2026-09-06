@@ -21,7 +21,7 @@ export function ScatterChart({
 
   if (!dataPoints || dataPoints.length < 2) {
     return (
-      <div className="w-full flex items-center justify-center p-8 bg-amber-500/5 border border-amber-500/20 rounded-xl text-amber-700 dark:text-amber-300 text-sm">
+      <div className="w-full flex items-center justify-center p-8 bg-[--color-severity-moderate]/5 border border-[--color-severity-moderate]/20 rounded-xl text-[--color-severity-moderate] text-sm">
         ⚠️ Insufficient data points to compute regression trendline (minimum 2 required).
       </div>
     );
@@ -166,7 +166,7 @@ export function ScatterChart({
               y1={lineY1}
               x2={lineX2}
               y2={lineY2}
-              className="stroke-rose-500 stroke-2"
+              className="stroke-[--color-destructive] stroke-2"
               strokeDasharray="4 4"
             />
           </g>
@@ -191,8 +191,8 @@ export function ScatterChart({
                 r={isHovered ? 8 : 6}
                 className={`transition-all ${
                   isHovered
-                    ? 'fill-rose-600 stroke-background stroke-2 shadow-lg'
-                    : 'fill-primary stroke-background stroke-1.5 hover:fill-rose-500'
+                    ? 'fill-[--color-destructive-dark] stroke-background stroke-2 shadow-lg'
+                    : 'fill-primary stroke-background stroke-1.5 hover:fill-[--color-destructive]'
                 }`}
               />
             </g>
@@ -209,7 +209,7 @@ export function ScatterChart({
               Competency Level: <span className="font-medium text-foreground">L{hoveredPoint.competencyLevel}</span>
             </p>
             <p>
-              Scrutiny Error Rate: <span className="font-bold text-rose-500">{hoveredPoint.errorRatePercent}%</span>
+              Scrutiny Error Rate: <span className="font-bold text-[--color-destructive]">{hoveredPoint.errorRatePercent}%</span>
             </p>
             <p>
               Audited Schedules: <span className="text-foreground">{hoveredPoint.sampleSize}</span>
