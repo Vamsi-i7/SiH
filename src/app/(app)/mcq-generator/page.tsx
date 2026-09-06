@@ -203,14 +203,14 @@ function MCQGeneratorInner() {
             </div>
           </div>
 
-          <div className="pt-2 flex items-center justify-between border-t border-stone-100">
-            <span className="text-xs text-stone-500">
-              Pipeline: 3 Independent Generations $\rightarrow$ Agreement Matrix $\rightarrow$ MoSPI Fact Scrutiny
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-[#705849]">
+              Pipeline: 3 Independent Generations → Agreement Matrix → MoSPI Fact Scrutiny
             </span>
             <button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="px-5 py-2.5 bg-[#8b9a6e] hover:bg-[#7a885f] text-white text-sm font-semibold rounded-lg flex items-center gap-2 shadow-xs transition active:scale-[0.99] disabled:opacity-60"
+              className="w-full sm:w-auto px-5 py-2.5 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 shadow-xs transition active:scale-95 disabled:opacity-60"
             >
               {isGenerating ? (
                 <>

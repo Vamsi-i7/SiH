@@ -157,166 +157,168 @@ export default function ReviewQueuePage() {
   const publishedCount = items.filter((i) => i.status === 'PUBLISHED').length;
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto py-6">
+    <div className="space-y-6 max-w-6xl mx-auto py-4">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-5">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
-              NSSTA Faculty Portal
-            </span>
-            <span className="text-xs text-stone-500">• Clause 4.3 Human-in-the-Loop Verification</span>
+      <div className="rounded-2xl bg-white p-7 shadow-card">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#555934]/12 text-[#555934]">
+                NSSTA Faculty Portal
+              </span>
+              <span className="text-xs text-[#705849]">• Clause 4.3 Human-in-the-Loop Verification</span>
+            </div>
+            <h1 className="text-2xl font-bold text-[#2d1f17] tracking-tight">Faculty Review & Calibration Queue</h1>
+            <p className="text-sm text-[#705849] mt-0.5">
+              NSSTA faculty portal to audit, calibrate, and approve consensus-generated items before live deployment.
+            </p>
           </div>
-          <h1 className="text-2xl font-bold text-stone-900 tracking-tight">Faculty Review & Calibration Queue</h1>
-          <p className="text-sm text-stone-600">
-            NSSTA faculty portal to audit, calibrate, and approve consensus-generated items before live deployment.
-          </p>
+          <ProvenanceBadge provenance="VERIFIED_OFFICIAL" />
         </div>
-        <ProvenanceBadge provenance="VERIFIED_OFFICIAL" />
       </div>
 
       {/* Stats Ribbon */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-xl bg-white border border-stone-200 shadow-xs">
-          <span className="text-[11px] font-semibold text-stone-500 block uppercase">Pending Review</span>
-          <span className="text-xl font-bold text-amber-700">{pendingCount}</span>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="p-5 rounded-2xl bg-white shadow-card">
+          <span className="text-[11px] font-semibold text-[#705849] block uppercase tracking-wider">Pending Review</span>
+          <span className="text-2xl font-bold text-[#8C5B3E] font-mono mt-1 block">{pendingCount}</span>
         </div>
-        <div className="p-3.5 rounded-xl bg-white border border-stone-200 shadow-xs">
-          <span className="text-[11px] font-semibold text-stone-500 block uppercase">Faculty Approved</span>
-          <span className="text-xl font-bold text-blue-700">{approvedCount}</span>
+        <div className="p-5 rounded-2xl bg-white shadow-card">
+          <span className="text-[11px] font-semibold text-[#705849] block uppercase tracking-wider">Faculty Approved</span>
+          <span className="text-2xl font-bold text-[#555934] font-mono mt-1 block">{approvedCount}</span>
         </div>
-        <div className="p-3.5 rounded-xl bg-white border border-stone-200 shadow-xs">
-          <span className="text-[11px] font-semibold text-stone-500 block uppercase">Active In Bank</span>
-          <span className="text-xl font-bold text-emerald-700">{publishedCount}</span>
+        <div className="p-5 rounded-2xl bg-white shadow-card">
+          <span className="text-[11px] font-semibold text-[#705849] block uppercase tracking-wider">Active In Bank</span>
+          <span className="text-2xl font-bold text-[#593E2E] font-mono mt-1 block">{publishedCount}</span>
         </div>
-        <div className="p-3.5 rounded-xl bg-white border border-stone-200 shadow-xs">
-          <span className="text-[11px] font-semibold text-stone-500 block uppercase">Avg Consensus</span>
-          <span className="text-xl font-bold text-stone-900">96.4%</span>
+        <div className="p-5 rounded-2xl bg-white shadow-card">
+          <span className="text-[11px] font-semibold text-[#705849] block uppercase tracking-wider">Avg Consensus</span>
+          <span className="text-2xl font-bold text-[#2d1f17] font-mono mt-1 block">96.4%</span>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center justify-between gap-3 border-b border-stone-200 pb-2">
-        <div className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-3 px-1">
+        <div className="flex items-center gap-2">
           {(['ALL', 'PENDING', 'APPROVED', 'PUBLISHED'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
+              className={`px-4 py-2 text-xs font-semibold rounded-xl transition ${
                 filter === tab
-                  ? 'bg-stone-900 text-white shadow-xs'
-                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                  ? 'bg-[#555934] text-white shadow-sm'
+                  : 'bg-[#F2E6D8]/50 text-[#705849] hover:bg-[#F2E6D8] hover:text-[#2d1f17]'
               }`}
             >
               {tab === 'ALL' ? 'All Items' : tab.charAt(0) + tab.slice(1).toLowerCase()}
             </button>
           ))}
         </div>
-        <span className="text-xs text-stone-500">
+        <span className="text-xs text-[#705849] font-medium">
           Showing {filteredItems.length} of {items.length} items
         </span>
       </div>
 
       {/* Toast */}
       {publishedToast && (
-        <div className="p-3.5 bg-emerald-50 border border-emerald-300 text-emerald-950 text-xs rounded-xl flex items-center gap-2 shadow-xs animate-in fade-in-50">
-          <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
+        <div className="p-4 bg-[#555934]/15 text-[#2d1f17] text-xs font-medium rounded-2xl flex items-center gap-2.5 shadow-sm animate-in fade-in-50">
+          <CheckCircle className="h-4 w-4 text-[#555934] shrink-0" />
           <span>{publishedToast}</span>
         </div>
       )}
 
       {/* Review List */}
-      <div className="space-y-5">
+      <div className="space-y-6">
         {filteredItems.length === 0 ? (
-          <div className="p-12 text-center bg-white rounded-xl border border-stone-200 text-stone-500">
-            <Layers className="h-8 w-8 mx-auto mb-2 text-stone-400" />
-            <p className="text-sm font-semibold">No items match the selected filter.</p>
-            <p className="text-xs text-stone-400 mt-1">Generate new items from the MCQ Generator or select another tab.</p>
+          <div className="p-12 text-center bg-white rounded-2xl shadow-card text-[#705849]">
+            <Layers className="h-8 w-8 mx-auto mb-2 text-[#BF9B7A]" />
+            <p className="text-sm font-semibold text-[#2d1f17]">No items match the selected filter.</p>
+            <p className="text-xs text-[#705849] mt-1">Generate new items from the MCQ Generator or select another tab.</p>
           </div>
         ) : (
           filteredItems.map((item) => {
             const lang = activeLang[item.id] || 'en';
             return (
-              <Card key={item.id} className="border-stone-200 bg-white shadow-xs hover:border-stone-300 transition">
-                <CardHeader className="border-b border-stone-100 pb-3 bg-stone-50/40">
+              <Card key={item.id} className="rounded-2xl bg-white shadow-card transition-all">
+                <CardHeader className="pb-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-stone-100 text-stone-800 border border-stone-200">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#F2E6D8] text-[#593E2E]">
                           {item.competency}
                         </span>
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200">
+                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#555934]/12 text-[#555934]">
                           Consensus: {(item.consensusScore * 100).toFixed(0)}%
                         </span>
 
                         {item.status === 'PENDING' && (
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-300">
+                          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#BF9B7A]/20 text-[#593E2E]">
                             Pending Audit
                           </span>
                         )}
                         {item.status === 'APPROVED' && (
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-300 flex items-center gap-1">
+                          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#555934]/15 text-[#555934] flex items-center gap-1">
                             <Check className="h-3 w-3" /> Faculty Approved
                           </span>
                         )}
                         {item.status === 'PUBLISHED' && (
-                          <span className="text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#555934] text-white flex items-center gap-1 shadow-2xs">
                             <FileCheck className="h-3 w-3" /> Live in Question Pool
                           </span>
                         )}
                         {item.status === 'REJECTED' && (
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200">
+                          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#8C5B3E]/20 text-[#8C5B3E]">
                             Rejected
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-stone-400 mt-1">
-                        Item ID: <strong className="font-mono text-stone-600">{item.id}</strong>
-                        {item.sourceDoc && <> • Grounded in: <span className="text-stone-600">{item.sourceDoc}</span></>}
+                      <p className="text-xs text-[#705849] font-mono mt-2">
+                        Item ID: <strong className="text-[#2d1f17]">{item.id}</strong>
+                        {item.sourceDoc && <> • Grounded in: <span className="text-[#2d1f17] font-sans font-medium">{item.sourceDoc}</span></>}
                       </p>
                     </div>
 
                     <button
                       onClick={() => toggleLanguage(item.id)}
-                      className="text-xs px-3 py-1 font-semibold rounded-lg border border-stone-200 bg-white hover:bg-stone-50 transition text-stone-700 self-start sm:self-auto shadow-2xs"
+                      className="text-xs px-3.5 py-1.5 font-semibold rounded-xl bg-[#F2E6D8]/60 hover:bg-[#E8DACB] transition text-[#2d1f17] self-start sm:self-auto"
                     >
                       View in: <strong>{lang === 'en' ? 'हिन्दी (Hindi)' : 'English'}</strong>
                     </button>
                   </div>
                 </CardHeader>
 
-                <CardContent className="space-y-4 pt-4">
+                <CardContent className="space-y-4 pt-1">
                   {/* Stem */}
-                  <div className="p-3.5 rounded-lg bg-stone-50 border border-stone-200">
-                    <h3 className="text-sm font-semibold text-stone-900 leading-relaxed">
+                  <div className="p-4 rounded-xl bg-[#F2E6D8]/30">
+                    <h3 className="text-base font-semibold text-[#2d1f17] leading-relaxed">
                       {lang === 'en' ? item.stem : item.stemHi}
                     </h3>
                   </div>
 
                   {/* Choices */}
-                  <div className="space-y-2">
+                  <div className="space-y-2.5">
                     {(lang === 'en' ? item.options : item.optionsHi).map((opt, idx) => {
                       const isCorrect = idx === item.correctIndex;
                       return (
                         <div
                           key={idx}
-                          className={`p-3 rounded-lg border text-xs sm:text-sm flex items-center justify-between ${
+                          className={`p-4 rounded-xl text-sm flex items-center justify-between transition-all ${
                             isCorrect
-                              ? 'border-emerald-300 bg-emerald-50/60 text-emerald-950 font-medium'
-                              : 'border-stone-200 bg-white text-stone-700'
+                              ? 'bg-[#555934]/12 text-[#2d1f17] font-medium shadow-2xs'
+                              : 'bg-[#F2E6D8]/30 hover:bg-[#F2E6D8]/60 text-[#2d1f17]'
                           }`}
                         >
-                          <span className="flex items-center gap-2">
-                            <span className={`h-5 w-5 rounded-full flex items-center justify-center text-[11px] font-bold ${
-                              isCorrect ? 'bg-emerald-700 text-white' : 'bg-stone-100 text-stone-700'
+                          <span className="flex items-center gap-3 pr-4 leading-snug">
+                            <span className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                              isCorrect ? 'bg-[#555934] text-white' : 'bg-[#E8DACB] text-[#593E2E]'
                             }`}>
                               {String.fromCharCode(65 + idx)}
                             </span>
                             <span>{opt}</span>
                           </span>
                           {isCorrect && (
-                            <span className="text-[11px] font-bold text-emerald-700 shrink-0 bg-emerald-100/80 px-2 py-0.5 rounded border border-emerald-300">
-                              Official Answer Key
+                            <span className="text-[11px] font-semibold text-white bg-[#555934] px-3 py-1 rounded-full shrink-0 shadow-2xs">
+                              Verified Answer
                             </span>
                           )}
                         </div>
@@ -325,17 +327,17 @@ export default function ReviewQueuePage() {
                   </div>
 
                   {/* Grounding Reference */}
-                  <div className="flex items-center gap-2 text-xs text-stone-600 bg-amber-50/60 p-2.5 rounded-lg border border-amber-200/70">
-                    <BookOpen className="h-4 w-4 text-amber-700 shrink-0" />
+                  <div className="flex items-center gap-2.5 text-xs text-[#705849] bg-[#F2E6D8]/40 p-3.5 rounded-xl">
+                    <BookOpen className="h-4 w-4 text-[#555934] shrink-0" />
                     <span>
-                      <strong className="text-amber-950">MoSPI Citation Grounding:</strong> {item.citation}
+                      <strong className="text-[#2d1f17]">MoSPI Citation Grounding:</strong> {item.citation}
                     </span>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-stone-100">
-                    <div className="text-[11px] text-stone-400">
-                      Audit Trail: Multi-Model Consensus $\rightarrow$ Faculty Sign-off
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-3">
+                    <div className="text-[11px] text-[#705849]">
+                      Audit Trail: Multi-Model Consensus → Faculty Sign-off
                     </div>
 
                     <div className="flex items-center gap-2.5">
@@ -343,16 +345,16 @@ export default function ReviewQueuePage() {
                         <>
                           <button
                             onClick={() => handleAction(item.id, 'REJECTED')}
-                            className="px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50 text-rose-700 text-xs font-semibold hover:bg-rose-100 transition flex items-center gap-1.5"
+                            className="px-4 py-2 rounded-xl bg-[#8C5B3E]/12 text-[#8C5B3E] text-xs font-semibold hover:bg-[#8C5B3E]/20 transition flex items-center gap-1.5"
                           >
-                            <XCircle className="h-3.5 w-3.5" />
+                            <XCircle className="h-4 w-4" />
                             Reject Item
                           </button>
                           <button
                             onClick={() => handleAction(item.id, 'APPROVED')}
-                            className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                            className="px-5 py-2 rounded-xl bg-[#555934] hover:bg-[#3e4225] text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-sm"
                           >
-                            <CheckCircle className="h-3.5 w-3.5" />
+                            <CheckCircle className="h-4 w-4" />
                             Approve Item
                           </button>
                         </>
@@ -361,16 +363,16 @@ export default function ReviewQueuePage() {
                       {item.status === 'APPROVED' && (
                         <button
                           onClick={() => handlePublish(item.id)}
-                          className="px-4 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                          className="px-5 py-2 rounded-xl bg-[#593E2E] hover:bg-[#452f23] text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-sm"
                         >
-                          <UploadCloud className="h-3.5 w-3.5" />
+                          <UploadCloud className="h-4 w-4" />
                           Publish to Live Question Bank
                         </button>
                       )}
 
                       {item.status === 'PUBLISHED' && (
-                        <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
-                          <CheckCircle className="h-3.5 w-3.5 text-emerald-700" />
+                        <span className="text-xs font-semibold text-[#555934] bg-[#555934]/15 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                          <CheckCircle className="h-4 w-4 text-[#555934]" />
                           Active in MoSPI Assessment Engine
                         </span>
                       )}
@@ -378,7 +380,7 @@ export default function ReviewQueuePage() {
                       {item.status === 'REJECTED' && (
                         <button
                           onClick={() => handleAction(item.id, 'PENDING')}
-                          className="px-3 py-1.5 rounded-lg border border-stone-300 text-stone-700 text-xs font-semibold hover:bg-stone-100 transition"
+                          className="px-4 py-2 rounded-xl bg-[#F2E6D8] text-[#2d1f17] text-xs font-semibold hover:bg-[#E8DACB] transition"
                         >
                           Reopen Audit
                         </button>

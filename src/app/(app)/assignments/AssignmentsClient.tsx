@@ -24,11 +24,10 @@ const iconByIndex = [
 ];
 
 const accentByIndex = [
-  { border: 'border-[#1b365d]/30', bg: 'bg-[#1b365d]/5', badge: 'bg-[#1b365d]/10 text-[#1b365d]', btn: 'bg-[#1b365d] hover:bg-[#132742]' },
-  { border: 'border-[#c9963a]/30', bg: 'bg-[#c9963a]/5', badge: 'bg-[#c9963a]/10 text-[#c9963a]', btn: 'bg-[#c9963a] hover:bg-[#a77930]' },
-  { border: 'border-[#5b7fa6]/30', bg: 'bg-[#5b7fa6]/5', badge: 'bg-[#5b7fa6]/10 text-[#5b7fa6]', btn: 'bg-[#5b7fa6] hover:bg-[#486786]' },
-  { border: 'border-[#8b9a6e]/30', bg: 'bg-[#8b9a6e]/5', badge: 'bg-[#8b9a6e]/10 text-[#8b9a6e]', btn: 'bg-[#8b9a6e] hover:bg-[#6e7d56]' },
-  { border: 'border-[#a05c9a]/30', bg: 'bg-[#a05c9a]/5', badge: 'bg-[#a05c9a]/10 text-[#a05c9a]', btn: 'bg-[#a05c9a] hover:bg-[#7d477a]' },
+  { badge: 'bg-[#555934]/12 text-[#555934]', btn: 'bg-[#555934] hover:bg-[#3e4225]' },
+  { badge: 'bg-[#BF9B7A]/25 text-[#593E2E]', btn: 'bg-[#8C5B3E] hover:bg-[#734830]' },
+  { badge: 'bg-[#8C5B3E]/15 text-[#8C5B3E]', btn: 'bg-[#8C5B3E] hover:bg-[#734830]' },
+  { badge: 'bg-[#593E2E]/15 text-[#593E2E]', btn: 'bg-[#593E2E] hover:bg-[#432d20]' },
 ];
 
 export default function AssignmentsClient() {
@@ -51,16 +50,16 @@ export default function AssignmentsClient() {
       {/* Stats strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Available Tests', value: metas.length.toString() },
-          { label: 'Questions Each', value: '10' },
-          { label: 'Time Limit', value: '5-10 min' },
-          { label: 'Question Type', value: 'MCQ' },
+          { label: 'Available Tests', value: metas.length.toString(), color: 'text-[#555934]' },
+          { label: 'Questions Each', value: '10', color: 'text-[#BF9B7A]' },
+          { label: 'Time Limit', value: '5-10 min', color: 'text-[#8C5B3E]' },
+          { label: 'Question Type', value: 'MCQ', color: 'text-[#593E2E]' },
         ].map((stat) => (
           <div
             key={stat.label}
-            className="rounded-xl border border-border bg-white p-4 shadow-sm text-center"
+            className="rounded-2xl bg-white p-4 shadow-card hover:shadow-card-hover transition-all text-center"
           >
-            <p className="text-2xl font-bold text-foreground font-mono">{stat.value}</p>
+            <p className={`text-2xl font-bold font-mono ${stat.color}`}>{stat.value}</p>
             <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
           </div>
         ))}
@@ -77,7 +76,7 @@ export default function AssignmentsClient() {
             return (
               <div
                 key={meta.id}
-                className={`rounded-xl border p-6 transition-all hover:shadow-md group ${accent.border} ${accent.bg}`}
+                className="rounded-2xl bg-white p-6 shadow-card hover:shadow-card-hover transition-all group"
               >
                 {/* Card Header */}
                 <div className="flex items-start justify-between gap-4 mb-4">
@@ -86,11 +85,11 @@ export default function AssignmentsClient() {
                       <span className="text-3xl" role="img" aria-label={meta.title}>
                         {iconByIndex[idx % iconByIndex.length]}
                       </span>
-                      <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                      <h3 className="text-xl font-bold text-foreground group-hover:text-[#555934] transition-colors">
                         {meta.title}
                       </h3>
                     </div>
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${accent.badge}`}>
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${accent.badge}`}>
                       <ClipboardCheck className="w-3 h-3" />
                       {meta.type}
                     </span>
@@ -108,7 +107,7 @@ export default function AssignmentsClient() {
                     <BookOpen className="w-4 h-4" />
                     <span className="font-medium text-foreground">{meta.totalQuestions}</span> Questions
                   </span>
-                  <span className="text-border">•</span>
+                  <span className="text-stone-300">•</span>
                   <span className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4" />
                     <span className="font-medium text-foreground">{durationMins}</span> Minutes
@@ -119,7 +118,7 @@ export default function AssignmentsClient() {
                 <button
                   id={`take-assessment-${meta.id}`}
                   onClick={() => router.push(`/assessment/${meta.id}/instructions`)}
-                  className={`w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold transition-colors ${accent.btn}`}
+                  className={`w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-semibold transition-all shadow-xs active:scale-95 ${accent.btn}`}
                 >
                   Take Assessment
                   <ChevronRight className="w-4 h-4" />
@@ -131,7 +130,7 @@ export default function AssignmentsClient() {
       </div>
 
       {/* Footer note */}
-      <div className="rounded-lg border border-border bg-secondary/40 px-5 py-4 text-sm text-muted-foreground">
+      <div className="rounded-2xl bg-[#BF9B7A]/15 px-5 py-4 text-sm text-[#593E2E]">
         <p>
           <strong className="text-foreground">Note:</strong> The timer for each assessment begins only after you read the instructions and click <em>Start Test</em>. You can review your answers before final submission.
         </p>

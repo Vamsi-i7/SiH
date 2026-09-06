@@ -29,33 +29,33 @@ const PROVENANCE_CONFIG: Record<
   VERIFIED_OFFICIAL: {
     label: 'Verified Official',
     IconComponent: ShieldCheck,
-    bgColor: 'bg-primary/10',
-    borderColor: 'border-primary/30',
-    textColor: 'text-primary-dark',
+    bgColor: 'bg-[#555934]/12',
+    borderColor: '',
+    textColor: 'text-[#555934]',
     description: 'Matches real government structure or fact from official sources (MoSPI, NSSTA, FRAC)',
   },
   PROPOSED_FRAMEWORK: {
     label: 'Proposed Framework',
     IconComponent: FileEdit,
-    bgColor: 'bg-[#c9963a]/10',
-    borderColor: 'border-[#c9963a]/30',
-    textColor: 'text-[#99671e]',
+    bgColor: 'bg-[#BF9B7A]/20',
+    borderColor: '',
+    textColor: 'text-[#593E2E]',
     description: 'Structurally grounded in official methodology, but specific content is our proposal',
   },
   PROPOSED_METHODOLOGY: {
     label: 'Proposed Methodology',
     IconComponent: FlaskConical,
-    bgColor: 'bg-[#c9963a]/10',
-    borderColor: 'border-[#c9963a]/30',
-    textColor: 'text-[#99671e]',
+    bgColor: 'bg-[#BF9B7A]/20',
+    borderColor: '',
+    textColor: 'text-[#593E2E]',
     description: 'Our team proposed formula or methodology (e.g., gap severity calculation)',
   },
   SYNTHETIC_DEMO_DATA: {
     label: 'Demo Data',
     IconComponent: AlertTriangle,
-    bgColor: 'bg-[#c9963a]/10',
-    borderColor: 'border-[#c9963a]/30',
-    textColor: 'text-[#99671e]',
+    bgColor: 'bg-[#8C5B3E]/12',
+    borderColor: '',
+    textColor: 'text-[#8C5B3E]',
     description: 'Fabricated for demonstration; no claim to real-world accuracy',
   },
 };
@@ -75,23 +75,23 @@ export function ProvenanceBadge({
   const IconComponent = config.IconComponent;
 
   const sizeClasses = {
-    sm: 'px-2 py-1 text-xs gap-1',
-    md: 'px-2.5 py-1.5 text-sm gap-1.5',
-    lg: 'px-3 py-2 text-base gap-2',
+    sm: 'px-2 py-0.5 text-[11px] gap-1',
+    md: 'px-2.5 py-1 text-xs gap-1.5',
+    lg: 'px-3 py-1.5 text-sm gap-2',
   };
 
   const iconSizes = {
     sm: 'w-3 h-3',
-    md: 'w-4 h-4',
-    lg: 'w-5 h-5',
+    md: 'w-3.5 h-3.5',
+    lg: 'w-4 h-4',
   };
 
   return (
     <span className="relative inline-block align-middle">
       <span
         className={`
-          inline-flex items-center rounded-md border
-          ${config.bgColor} ${config.borderColor} ${config.textColor}
+          inline-flex items-center rounded-full
+          ${config.bgColor} ${config.textColor}
           ${sizeClasses[size]}
           font-medium transition-colors duration-200
           ${showTooltip ? 'cursor-help hover:opacity-80' : ''}
@@ -158,7 +158,7 @@ export function ProvenanceIndicator({ provenance }: Pick<ProvenanceBadgeProps, '
  */
 export function ProvenanceDisclosure() {
   return (
-    <div className="space-y-4 rounded-xl border border-border bg-secondary/30 p-6">
+    <div className="space-y-4 rounded-2xl bg-[#F2E6D8]/50 p-6 shadow-card">
       <h3 className="text-lg font-semibold text-foreground">Data Provenance & Transparency</h3>
 
       <p className="text-sm text-muted-foreground">
@@ -174,7 +174,7 @@ export function ProvenanceDisclosure() {
             return (
               <div
                 key={type}
-                className={`rounded-md border p-4 ${cfg.bgColor} ${cfg.borderColor}`}
+                className={`rounded-xl p-4 shadow-2xs ${cfg.bgColor}`}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <IconComponent className="w-5 h-5 text-inherit" />
@@ -187,7 +187,7 @@ export function ProvenanceDisclosure() {
         )}
       </div>
 
-      <div className="text-xs text-muted-foreground border-t border-border pt-4">
+      <div className="text-xs text-muted-foreground pt-4">
         <p>
           <strong className="text-foreground">Questions?</strong> Read more about our framework alignment in the{' '}
           <a href="/docs/frac" className="font-medium text-primary hover:text-primary-dark transition-colors underline">

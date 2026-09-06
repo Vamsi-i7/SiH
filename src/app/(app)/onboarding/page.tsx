@@ -19,9 +19,9 @@ export default async function OnboardingPage() {
 
   return (
     <div className="mx-auto max-w-2xl py-8">
-      <div className="rounded-xl border border-[#e3dbcf] bg-white p-8 shadow-2xs">
+      <div className="rounded-2xl bg-white p-8 shadow-card">
         <div className="text-center mb-8">
-           <h1 className="text-2xl font-bold text-[#1a1a1a]">
+           <h1 className="text-2xl font-bold text-[#2d1f17]">
              {t('title')}
            </h1>
            <p className="mt-2 text-sm text-muted-foreground">

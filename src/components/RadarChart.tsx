@@ -82,8 +82,8 @@ export function RadarChart({
             <polygon
               key={`grid-${lvl}`}
               points={points}
-              fill={lvl === maxLevel ? '#f7f2eb' : 'none'}
-              stroke="#e3dbcf"
+              fill={lvl === maxLevel ? '#F2E6D8' : 'none'}
+              stroke="#ded1c1"
               strokeWidth={1}
             />
           );
@@ -99,28 +99,28 @@ export function RadarChart({
               y1={center}
               x2={x}
               y2={y}
-              stroke="#e3dbcf"
+              stroke="#ded1c1"
               strokeWidth={1}
               strokeDasharray="2,2"
             />
           );
         })}
 
-        {/* Target Level Polygon (Dashed / Ochre tint) */}
+        {/* Target Level Polygon (Dashed / Camel Tan tint) */}
         <polygon
           points={targetPath}
-          fill="rgba(201, 150, 58, 0.12)"
-          stroke="#c9963a"
+          fill="rgba(191, 155, 122, 0.16)"
+          stroke="#BF9B7A"
           strokeWidth={2}
           strokeDasharray="4,4"
           className="transition-all duration-300"
         />
 
-        {/* Current Level Polygon (Solid Sage Green) */}
+        {/* Current Level Polygon (Solid Deep Olive) */}
         <polygon
           points={currentPath}
-          fill="rgba(139, 154, 110, 0.22)"
-          stroke="#8b9a6e"
+          fill="rgba(85, 89, 52, 0.22)"
+          stroke="#555934"
           strokeWidth={2.5}
           className="transition-all duration-300"
         />
@@ -138,7 +138,7 @@ export function RadarChart({
                 cx={targetCoord.x}
                 cy={targetCoord.y}
                 r={3.5}
-                fill="#c9963a"
+                fill="#BF9B7A"
                 className="transition-transform duration-200"
               />
               {/* Current point */}
@@ -146,7 +146,7 @@ export function RadarChart({
                 cx={currentCoord.x}
                 cy={currentCoord.y}
                 r={isHovered ? 6 : 4.5}
-                fill="#8b9a6e"
+                fill="#555934"
                 stroke="#ffffff"
                 strokeWidth={2}
                 className="cursor-pointer transition-all duration-200"
@@ -179,7 +179,7 @@ export function RadarChart({
               textAnchor={textAnchor}
               className={`text-xs font-medium cursor-pointer transition-colors ${
                 isHovered
-                  ? 'fill-primary-dark font-semibold'
+                  ? 'fill-[#555934] font-semibold'
                   : 'fill-muted-foreground'
               }`}
               onMouseEnter={() => setHoveredIndex(idx)}
@@ -193,11 +193,11 @@ export function RadarChart({
 
       {/* Tooltip Overlay */}
       {hoveredIndex !== null && data[hoveredIndex] && (
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-[#1a1a1a] text-white px-3 py-1.5 rounded-md text-xs shadow-md pointer-events-none z-10 flex items-center gap-2 font-mono">
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-[#593E2E] text-white px-3 py-1.5 rounded-md text-xs shadow-md pointer-events-none z-10 flex items-center gap-2 font-mono">
           <span className="font-sans font-medium">{data[hoveredIndex].label}:</span>
           <span>Current: L{data[hoveredIndex].current}</span>
           <span>/</span>
-          <span className="text-[#c9963a]">Target: L{data[hoveredIndex].target}</span>
+          <span className="text-[#BF9B7A]">Target: L{data[hoveredIndex].target}</span>
         </div>
       )}
 
@@ -205,11 +205,11 @@ export function RadarChart({
       {showLegend && (
         <div className="mt-4 flex items-center justify-center gap-6 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-[#8b9a6e]"></span>
+            <span className="h-3 w-3 rounded-full bg-[#555934]"></span>
             <span>Current Proficiency</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full border border-dashed border-[#c9963a] bg-[#c9963a]/20"></span>
+            <span className="h-3 w-3 rounded-full border border-dashed border-[#BF9B7A] bg-[#BF9B7A]/20"></span>
             <span>Role Target Level</span>
           </div>
         </div>

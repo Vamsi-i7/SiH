@@ -39,9 +39,9 @@ interface PathwaysData {
 
 function CourseCard({ course }: { course: RecommendedCourse }) {
   const priorityColors = {
-    HIGH: 'border-[#c0574a]/30 bg-[#c0574a]/5 text-[#c0574a]',
-    MEDIUM: 'border-[#c9963a]/30 bg-[#c9963a]/5 text-[#c9963a]',
-    LOW: 'border-[#8b9a6e]/30 bg-[#8b9a6e]/5 text-[#8b9a6e]',
+    HIGH: 'bg-[#8C5B3E]/12 text-[#8C5B3E]',
+    MEDIUM: 'bg-[#BF9B7A]/20 text-[#593E2E]',
+    LOW: 'bg-[#555934]/12 text-[#555934]',
   };
 
   const priorityLabels = {
@@ -51,11 +51,11 @@ function CourseCard({ course }: { course: RecommendedCourse }) {
   };
 
   return (
-    <div className={`rounded-xl border p-6 transition-all hover:shadow-md ${priorityColors[course.priority]} group`}>
+    <div className="rounded-2xl bg-white p-6 shadow-card hover:shadow-card-hover transition-all group">
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-lg font-semibold text-foreground group-hover:text-primary">
+            <h3 className="text-lg font-semibold text-foreground group-hover:text-[#555934] transition-colors">
               {course.title}
             </h3>
             <ProvenanceBadge provenance="SYNTHETIC_DEMO_DATA" showLabel={false} size="sm" />
@@ -86,7 +86,7 @@ function CourseCard({ course }: { course: RecommendedCourse }) {
           {course.targetCompetencies.map((comp, idx) => (
             <span
               key={idx}
-              className="px-2 py-1 rounded bg-background text-xs font-medium text-foreground border border-border"
+              className="px-2.5 py-1 rounded-full bg-[#BF9B7A]/15 text-xs font-medium text-[#593E2E]"
             >
               {comp}
             </span>
@@ -101,12 +101,12 @@ function CourseCard({ course }: { course: RecommendedCourse }) {
           </h4>
           <div className="space-y-2">
             {course.competencyGaps.map((gap, idx) => (
-              <div key={idx} className="flex items-center justify-between text-sm bg-background/50 rounded-lg p-3 border border-border">
+              <div key={idx} className="flex items-center justify-between text-sm bg-[#F2E6D8]/50 rounded-xl p-3">
                 <span className="font-medium text-foreground">{gap.competency}</span>
                 <div className="flex items-center gap-2 text-xs">
                   <span className="text-muted-foreground">Current: L{gap.currentLevel}</span>
                   <span className="text-slate-400">→</span>
-                  <span className="font-bold text-primary">L{gap.targetLevel}</span>
+                  <span className="font-bold text-[#555934]">L{gap.targetLevel}</span>
                   <span className="text-muted-foreground ml-1">({gap.gap} level{gap.gap === 1 ? '' : 's'})</span>
                 </div>
               </div>
@@ -115,14 +115,14 @@ function CourseCard({ course }: { course: RecommendedCourse }) {
         </div>
       )}
 
-      <div className="flex items-center justify-between pt-4 border-t border-border">
+      <div className="flex items-center justify-between pt-4">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="w-2 h-2 rounded-full bg-primary"></span>
+          <span className="w-2 h-2 rounded-full bg-[#555934]"></span>
           <span>Live integration with iGOT Karmayogi</span>
         </div>
         <a
           href={course.iGotLink || "#"}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-semibold rounded-xl transition-all shadow-xs active:scale-95"
         >
           View Course
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -239,11 +239,11 @@ export default function PathwaysClient({ user }: { user?: AppUser | null }) {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Readiness Card */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-2xs">
+        <div className="rounded-2xl bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
           <h3 className="text-sm font-medium text-muted-foreground mb-2">
             Overall Readiness
           </h3>
-          <div className="text-3xl font-bold text-foreground mb-1 font-mono">
+          <div className="text-3xl font-bold text-[#555934] mb-1 font-mono">
             {data.readinessIndex}%
           </div>
           <p className="text-xs text-muted-foreground">
@@ -257,11 +257,11 @@ export default function PathwaysClient({ user }: { user?: AppUser | null }) {
         </div>
 
         {/* Gaps Card */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-2xs">
+        <div className="rounded-2xl bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
           <h3 className="text-sm font-medium text-muted-foreground mb-2">
             Total Competency Gaps
           </h3>
-          <div className="text-3xl font-bold text-foreground mb-1 font-mono">
+          <div className="text-3xl font-bold text-[#8C5B3E] mb-1 font-mono">
             {data.totalGaps}
           </div>
           <p className="text-xs text-muted-foreground">
@@ -275,11 +275,11 @@ export default function PathwaysClient({ user }: { user?: AppUser | null }) {
         </div>
 
         {/* Priority Courses Card */}
-        <div className="rounded-xl border border-border bg-white p-6 shadow-2xs">
+        <div className="rounded-2xl bg-white p-6 shadow-card hover:shadow-card-hover transition-all">
           <h3 className="text-sm font-medium text-muted-foreground mb-2">
             Recommended Courses
           </h3>
-          <div className="text-3xl font-bold text-foreground mb-1 font-mono">
+          <div className="text-3xl font-bold text-[#593E2E] mb-1 font-mono">
             {data.pathways.filter(c => c.priority === 'HIGH').length}
           </div>
           <p className="text-xs text-muted-foreground">
@@ -309,7 +309,7 @@ export default function PathwaysClient({ user }: { user?: AppUser | null }) {
 
       {/* Expandable Course Details */}
       {selectedCourse && data.pathways.find(c => c.id === selectedCourse) && (
-        <div className="rounded-lg bg-background/60 border border-border p-6">
+        <div className="rounded-2xl bg-white p-6 shadow-card">
           <h3 className="text-lg font-semibold text-foreground mb-4">
             Course Details
           </h3>

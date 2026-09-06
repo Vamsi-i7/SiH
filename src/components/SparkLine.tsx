@@ -13,7 +13,7 @@ export function SparkLine({
   data = [62, 64, 63, 67, 66, 68],
   width = 80,
   height = 24,
-  color = 'stroke-emerald-500',
+  color = 'stroke-[#555934]',
 }: SparkLineProps) {
   if (data.length < 2) return null;
 

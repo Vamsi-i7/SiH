@@ -42,16 +42,16 @@ function AppLayoutInner({ children }: AppLayoutProps) {
   }
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <Topbar />
-        <div className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-7xl px-6 py-6">
+        <main className="flex-1 overflow-y-auto bg-background">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
             <Breadcrumb />
             <div className="mt-4">{children}</div>
           </div>
-        </div>
+        </main>
       </div>
       <CopilotFAB userContext={userContext} />
     </div>

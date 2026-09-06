@@ -2,62 +2,63 @@
 
 @theme inline {
   /* ════════════════════════════════════════════════════════════════
-     LOCKED COLOR PALETTE (Design.md v2.1 — Non-negotiable)
-     Source: https://colorhunt.co/palette/8b9a6ef7f2ebeae2d6eeeeee
+     LOCKED COLOR PALETTE (New Theme)
+     Source: #555934 (Olive), #F2E6D8 (Cream Canvas), #BF9B7A (Camel Tan),
+             #8C5B3E (Warm Terracotta), #593E2E (Deep Espresso Brown)
      ════════════════════════════════════════════════════════════════ */
 
-  /* Primary Brand Color — Sage Green */
-  --color-primary: #8b9a6e;
+  /* Primary Brand Color — Deep Olive */
+  --color-primary: #555934;
   --color-primary-foreground: #ffffff;
-  --color-primary-dark: #728056;      /* hover / active state */
-  --color-primary-light: #d6ddc9;     /* active selection, subtle highlights */
+  --color-primary-dark: #3e4225;      /* hover / active state */
+  --color-primary-light: #d8dbcb;     /* active selection, subtle highlights */
 
-  /* Secondary / Muted — Soft Taupe */
-  --color-secondary: #eae2d6;
-  --color-secondary-foreground: #1a1a1a;
-  --color-secondary-hover: #d2c5b3;   /* taupe dark for hover fills */
+  /* Secondary / Muted — Camel Tan */
+  --color-secondary: #BF9B7A;
+  --color-secondary-foreground: #ffffff;
+  --color-secondary-hover: #a88564;   /* tan dark for hover fills */
 
   /* Page & Surface Backgrounds */
-  --color-background: #f7f2eb;        /* page canvas — warm cream */
-  --color-foreground: #1a1a1a;        /* primary text — near-black */
+  --color-background: #F2E6D8;        /* page canvas — warm cream */
+  --color-foreground: #2d1f17;        /* primary text — deep espresso */
   --color-card: #ffffff;              /* elevated surfaces */
-  --color-card-foreground: #1a1a1a;
+  --color-card-foreground: #2d1f17;
 
   /* Popover & Dropdowns */
   --color-popover: #ffffff;
-  --color-popover-foreground: #1a1a1a;
+  --color-popover-foreground: #2d1f17;
 
   /* Muted / Secondary Text */
-  --color-muted: #eae2d6;             /* soft taupe */
-  --color-muted-foreground: #5a5a5a;  /* gray — captions, secondary text */
+  --color-muted: #E8DACB;             /* soft cream-taupe */
+  --color-muted-foreground: #705849;  /* warm espresso taupe — captions, secondary text */
 
-  /* Accent — Light Gray (internal dividers, stripes, skeleton loaders) */
-  --color-accent: #eeeeee;
-  --color-accent-foreground: #1a1a1a;
+  /* Accent — Cream Accent (internal dividers, stripes, skeleton loaders) */
+  --color-accent: #EFE4D6;
+  --color-accent-foreground: #2d1f17;
 
-  /* Destructive / Error — Muted Brick Red (severity-high) */
-  --color-destructive: #c0574a;
+  /* Destructive / Error / Critical — Warm Terracotta / Russet */
+  --color-destructive: #8C5B3E;
   --color-destructive-foreground: #ffffff;
 
-  /* Border Strategy */
-  --color-border: #e3dbcf;            /* warm gray for card outlines */
-  --color-input: #e3dbcf;             /* input borders */
-  --color-ring: #8b9a6e;              /* focus ring = primary */
+  /* Border Strategy — Borderless Aesthetic */
+  --color-border: transparent;        /* borderless modern aesthetic */
+  --color-input: #ded1c1;             /* subtle input border if needed */
+  --color-ring: #555934;              /* focus ring = primary olive */
 
   /* ════════════════════════════════════════════════════════════════
-     SEVERITY & CHART COLORS (Muted, Never Decorative)
+     SEVERITY & CHART COLORS
      ════════════════════════════════════════════════════════════════ */
 
-  --color-severity-high: #c0574a;     /* muted brick red */
-  --color-severity-moderate: #c9963a; /* muted ochre */
-  --color-severity-moderate-hover: #a87830; /* muted ochre hover */
-  --color-severity-proficient: #8b9a6e; /* sage green = primary */
+  --color-severity-high: #8C5B3E;     /* warm terracotta */
+  --color-severity-moderate: #BF9B7A; /* camel tan */
+  --color-severity-moderate-hover: #a88564; /* camel tan hover */
+  --color-severity-proficient: #555934; /* deep olive */
 
-  --color-chart-1: #8b9a6e;           /* sage — primary / proficient */
-  --color-chart-2: #c9963a;           /* ochre — moderate */
-  --color-chart-3: #c0574a;           /* brick — high */
-  --color-chart-4: #eae2d6;           /* taupe — neutral */
-  --color-chart-5: #1a1a1a;           /* near-black — axis / labels */
+  --color-chart-1: #555934;           /* deep olive — primary / proficient */
+  --color-chart-2: #BF9B7A;           /* camel tan — moderate */
+  --color-chart-3: #8C5B3E;           /* terracotta — high */
+  --color-chart-4: #F2E6D8;           /* cream — neutral canvas */
+  --color-chart-5: #593E2E;           /* espresso brown — axis / labels */
 
   /* ════════════════════════════════════════════════════════════════
      TYPOGRAPHY
@@ -70,35 +71,35 @@
      COMPONENT RADII — Unified Scale
      ════════════════════════════════════════════════════════════════ */
 
-  --radius-card: 10px;                /* cards */
-  --radius-btn: 6px;                  /* buttons */
-  --radius-badge: 6px;                /* badges, pills, tags */
-  --radius-input: 6px;                /* inputs, selects */
+  --radius-card: 16px;                /* softer, modern card curves */
+  --radius-btn: 8px;                  /* buttons */
+  --radius-badge: 9999px;             /* organic rounded pills */
+  --radius-input: 8px;                /* inputs, selects */
 }
 
 @layer base {
   :root {
     /* CSS Custom Properties for shadcn/ui compatibility */
-    --background: #f7f2eb;
-    --foreground: #1a1a1a;
+    --background: #F2E6D8;
+    --foreground: #2d1f17;
     --card: #ffffff;
-    --card-foreground: #1a1a1a;
+    --card-foreground: #2d1f17;
     --popover: #ffffff;
-    --popover-foreground: #1a1a1a;
-    --primary: #8b9a6e;
+    --popover-foreground: #2d1f17;
+    --primary: #555934;
     --primary-foreground: #ffffff;
-    --secondary: #eae2d6;
-    --secondary-foreground: #1a1a1a;
-    --muted: #eae2d6;
-    --muted-foreground: #5a5a5a;
-    --accent: #eeeeee;
-    --accent-foreground: #1a1a1a;
-    --destructive: #c0574a;
+    --secondary: #BF9B7A;
+    --secondary-foreground: #ffffff;
+    --muted: #E8DACB;
+    --muted-foreground: #705849;
+    --accent: #EFE4D6;
+    --accent-foreground: #2d1f17;
+    --destructive: #8C5B3E;
     --destructive-foreground: #ffffff;
-    --border: #e3dbcf;
-    --input: #e3dbcf;
-    --ring: #8b9a6e;
-    --radius: 6px;
+    --border: transparent;
+    --input: #ded1c1;
+    --ring: #555934;
+    --radius: 8px;
   }
 
   /* ════════════════════════════════════════════════════════════════
@@ -200,16 +201,24 @@
   }
 
   /* ════════════════════════════════════════════════════════════════
-     SHADOWS — Minimal, Restrained
+     SHADOWS — Refined, Multi-layered, Premium
      ════════════════════════════════════════════════════════════════ */
 
+  .shadow-subtle {
+    box-shadow: 0 2px 8px -2px rgba(89, 62, 46, 0.04), 0 1px 2px rgba(89, 62, 46, 0.02);
+  }
+
   .shadow-card {
-    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04);
+    box-shadow: 0 4px 20px -2px rgba(89, 62, 46, 0.06), 0 2px 6px -1px rgba(89, 62, 46, 0.02);
   }
 
   .shadow-card-hover {
-    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.06);
-    transform: translateY(-1px);
+    box-shadow: 0 10px 28px -4px rgba(89, 62, 46, 0.10), 0 4px 10px -2px rgba(89, 62, 46, 0.04);
+    transform: translateY(-2px);
+  }
+
+  .shadow-card-elevated {
+    box-shadow: 0 16px 40px -6px rgba(89, 62, 46, 0.09), 0 6px 16px -2px rgba(89, 62, 46, 0.04);
   }
 
   /* ════════════════════════════════════════════════════════════════
@@ -303,7 +312,7 @@
   textarea:focus {
     outline: none;
     border-color: var(--ring);
-    box-shadow: inset 0 0 0 2px rgba(139, 154, 110, 0.1);
+    box-shadow: inset 0 0 0 2px rgba(85, 89, 52, 0.15);
   }
 
   input::placeholder,
@@ -322,7 +331,7 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #92400e; /* amber-900 */
+    color: #8C5B3E;
     font-size: 0.875rem;
   }
 
@@ -431,10 +440,10 @@
 
 @keyframes copilot-fab-glow {
   0%, 100% {
-    box-shadow: 0 4px 14px rgba(139, 154, 110, 0.3);
+    box-shadow: 0 4px 14px rgba(85, 89, 52, 0.35);
   }
   50% {
-    box-shadow: 0 4px 24px rgba(139, 154, 110, 0.55), 0 0 40px rgba(139, 154, 110, 0.15);
+    box-shadow: 0 4px 24px rgba(85, 89, 52, 0.55), 0 0 40px rgba(85, 89, 52, 0.2);
   }
 }
 
