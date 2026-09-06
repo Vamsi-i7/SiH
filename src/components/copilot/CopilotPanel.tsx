@@ -270,7 +270,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
         ref={panelRef}
         role="dialog"
         aria-label="StatVidya Copilot"
-        className="fixed bottom-20 right-4 z-999 flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl sm:right-6 sm:bottom-24"
+        className="fixed bottom-20 right-4 z-[999] flex flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:right-6 sm:bottom-24"
         style={{
           width: 'min(400px, calc(100vw - 2rem))',
           height: 'min(560px, calc(100vh - 10rem))',
@@ -278,7 +278,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
         }}
       >
         {/* ─── Header ─── */}
-        <div className="flex items-center justify-between border-b border-border bg-linear-to-r from-primary to-primary-dark px-4 py-3">
+        <div className="flex items-center justify-between bg-gradient-to-r from-[#555934] to-[#3e4225] px-4 py-3">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
               <Sparkles className="h-4 w-4 text-white" />
@@ -314,7 +314,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
 
         {/* ─── Offline Banner ─── */}
         {isOffline && (
-          <div className="flex items-center gap-2 bg-[--color-severity-moderate]/10 border-b border-[--color-severity-moderate]/20 px-3 py-1.5 text-[11px] text-[--color-severity-moderate]">
+          <div className="flex items-center gap-2 bg-[#BF9B7A]/15 px-3 py-1.5 text-[11px] text-[#593E2E]">
             <WifiOff className="h-3 w-3 shrink-0" />
             <span>Offline — using built-in navigation assistance</span>
           </div>
@@ -335,13 +335,13 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
           {/* Typing indicator */}
           {isLoading && messages[messages.length - 1]?.content === '' && (
             <div className="flex items-center gap-2 px-1">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#8b9a6e]">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#555934]">
                 <Sparkles className="h-3.5 w-3.5 text-white" />
               </div>
               <div className="flex gap-1">
-                <span className="h-2 w-2 rounded-full bg-[#8b9a6e] animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="h-2 w-2 rounded-full bg-[#8b9a6e] animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="h-2 w-2 rounded-full bg-[#8b9a6e] animate-bounce" style={{ animationDelay: '300ms' }} />
+                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           )}
@@ -351,9 +351,9 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
 
         {/* ─── Quick Actions ─── */}
         {showQuickActions && (
-          <div className="border-t border-accent px-3 py-2">
-            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-1">
-              <Zap className="h-3 w-3" /> Quick Actions
+          <div className="px-3 py-2 bg-[#F2E6D8]/30">
+            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#705849] flex items-center gap-1">
+              <Zap className="h-3 w-3 text-[#555934]" /> Quick Actions
             </p>
             <div className="flex flex-wrap gap-1.5">
               {QUICK_ACTIONS.map((action) => (
@@ -361,7 +361,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
                   key={action.label}
                   onClick={() => handleQuickAction(action.prompt)}
                   disabled={isLoading}
-                  className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground transition-all hover:border-primary hover:bg-primary-light hover:shadow-sm active:scale-95 disabled:opacity-50"
+                  className="rounded-full bg-[#F2E6D8] px-2.5 py-1 text-[11px] font-medium text-[#2d1f17] transition-all hover:bg-[#BF9B7A]/30 hover:shadow-xs active:scale-95 disabled:opacity-50"
                 >
                   {action.label}
                 </button>
@@ -373,7 +373,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
         {/* ─── Input ─── */}
         <form
           onSubmit={handleSubmit}
-          className="flex items-center gap-2 border-t border-border bg-background px-3 py-2.5"
+          className="flex items-center gap-2 bg-[#F2E6D8]/60 px-3 py-2.5"
         >
           <input
             ref={inputRef}
@@ -382,13 +382,13 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about FRAC, pathways, navigation..."
             disabled={isLoading}
-            className="flex-1 rounded-xl border border-border bg-card px-3 py-2 text-[13px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+            className="flex-1 rounded-xl bg-white px-3 py-2 text-[13px] text-[#2d1f17] placeholder:text-stone-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#555934]/20 disabled:opacity-50"
             style={{ minHeight: '36px' }}
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm transition-all hover:bg-primary-dark hover:shadow-md active:scale-95 disabled:opacity-40 disabled:hover:bg-primary disabled:hover:shadow-sm"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#555934] text-white shadow-sm transition-all hover:bg-[#3e4225] hover:shadow-md active:scale-95 disabled:opacity-40 disabled:hover:bg-[#555934] disabled:hover:shadow-sm"
           >
             <Send className="h-4 w-4" />
           </button>

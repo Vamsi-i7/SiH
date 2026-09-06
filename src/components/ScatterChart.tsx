@@ -56,7 +56,7 @@ export function ScatterChart({
   const lineY2 = scaleY(regression.slope * 5 + regression.intercept);
 
   return (
-    <div className="relative w-full overflow-hidden bg-card border border-border rounded-xl p-4 shadow-sm">
+    <div className="relative w-full overflow-hidden bg-card rounded-2xl p-4 shadow-card">
       <svg
         viewBox={`0 0 ${width} ${height}`}
         className="w-full h-auto select-none"
@@ -202,7 +202,7 @@ export function ScatterChart({
 
       {/* Hover Tooltip Overlay */}
       {hoveredPoint && (
-        <div className="absolute top-6 right-6 bg-popover text-popover-foreground border border-border px-3 py-2 rounded-lg shadow-md text-xs pointer-events-none transition-all">
+        <div className="absolute top-6 right-6 bg-popover text-popover-foreground px-3 py-2 rounded-xl shadow-lg text-xs pointer-events-none transition-all">
           <p className="font-bold text-foreground">{hoveredPoint.departmentName}</p>
           <div className="mt-1 space-y-0.5 text-muted-foreground">
             <p>

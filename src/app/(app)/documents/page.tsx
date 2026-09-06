@@ -55,8 +55,8 @@ export default function DocumentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">MoSPI Document Processing Hub</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-2xl font-bold text-[#2d1f17]">MoSPI Document Processing Hub</h1>
+          <p className="text-sm text-[#705849] mt-0.5">
             Upload statistical manuals, survey schedules, and FRAC curriculum guides for automated chunking.
           </p>
         </div>
@@ -64,23 +64,23 @@ export default function DocumentsPage() {
       </div>
 
       {/* Upload Box */}
-      <Card className="border-slate-200">
+      <Card className="rounded-2xl bg-white shadow-card">
         <CardHeader>
-          <CardTitle className="text-lg">Ingest New Manual or Schedule</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg text-[#2d1f17]">Ingest New Manual or Schedule</CardTitle>
+          <CardDescription className="text-[#705849]">
             Multi-modal extraction pipeline with automated semantic chunking and competency mapping.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">
+              <label className="block text-xs font-semibold text-[#705849] uppercase tracking-wider mb-1.5">
                 Target FRAC Competency
               </label>
               <select
                 value={selectedCompetency}
                 onChange={(e) => setSelectedCompetency(e.target.value)}
-                className="w-full text-sm border border-slate-300 rounded-md p-2 bg-white text-slate-800"
+                className="w-full text-sm rounded-xl p-3 bg-[#F2E6D8]/40 text-[#2d1f17] focus:outline-none focus:ring-2 focus:ring-[#555934]/20 transition-all shadow-2xs"
               >
                 <option value="comp-capi">CAPI Tablet Operation</option>
                 <option value="comp-demarcation">Block Demarcation & UFS (Schedule 0.0)</option>
@@ -91,10 +91,10 @@ export default function DocumentsPage() {
             </div>
           </div>
 
-          <label className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 p-8 text-center bg-slate-50/50 hover:bg-slate-50 transition cursor-pointer">
-            <Upload className="h-10 w-10 text-slate-400 mb-2" />
-            <p className="font-semibold text-slate-700">Click to browse or drop MoSPI documents</p>
-            <p className="text-xs text-slate-500 mt-1">
+          <label className="flex flex-col items-center justify-center rounded-2xl p-8 text-center bg-[#F2E6D8]/35 hover:bg-[#F2E6D8]/65 transition cursor-pointer">
+            <Upload className="h-10 w-10 text-[#555934] mb-2" />
+            <p className="font-semibold text-[#2d1f17]">Click to browse or drop MoSPI documents</p>
+            <p className="text-xs text-[#705849] mt-1">
               Supports PDF manuals, text extracts, survey instructions (PLFS, ASI, NSS)
             </p>
             <input
@@ -105,7 +105,7 @@ export default function DocumentsPage() {
               disabled={isUploading}
             />
             {isUploading && (
-              <div className="flex items-center gap-2 mt-4 text-xs font-semibold text-blue-600">
+              <div className="flex items-center gap-2 mt-4 text-xs font-semibold text-[#555934]">
                 <RefreshCw className="h-4 w-4 animate-spin" />
                 Parsing document chunks and assigning competency tags...
               </div>
@@ -113,8 +113,8 @@ export default function DocumentsPage() {
           </label>
 
           {uploadMessage && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-md flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+            <div className="p-3.5 bg-[#555934]/12 text-[#555934] text-xs rounded-xl flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-[#555934] shrink-0" />
               {uploadMessage}
             </div>
           )}
@@ -122,29 +122,29 @@ export default function DocumentsPage() {
       </Card>
 
       {/* Document Library Table */}
-      <Card className="border-slate-200">
+      <Card className="rounded-2xl bg-white shadow-card">
         <CardHeader>
-          <CardTitle className="text-lg">Ingested Document Repository</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg text-[#2d1f17]">Ingested Document Repository</CardTitle>
+          <CardDescription className="text-[#705849]">
             Indexed reference documents available for grounding Multi-AI Question Generation.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[#F2E6D8]">
             {documents.map((doc) => (
               <div key={doc.id} className="py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-slate-100 rounded-lg text-slate-600 shrink-0 mt-0.5">
+                  <div className="p-2.5 bg-[#555934]/10 rounded-xl text-[#555934] shrink-0 mt-0.5">
                     <FileText className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-900">{doc.title}</h4>
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-500 mt-0.5">
-                      <span>{doc.filename}</span>
+                    <h4 className="text-sm font-semibold text-[#2d1f17]">{doc.title}</h4>
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-[#705849] mt-0.5">
+                      <span className="font-mono">{doc.filename}</span>
                       <span>•</span>
                       <span>{(doc.sizeBytes / 1024 / 1024).toFixed(1)} MB</span>
                       <span>•</span>
-                      <span className="inline-flex items-center gap-1 font-medium text-blue-600">
+                      <span className="inline-flex items-center gap-1 font-semibold text-[#555934]">
                         <Layers className="h-3 w-3" />
                         {doc.chunkCount} Chunks
                       </span>
@@ -153,9 +153,13 @@ export default function DocumentsPage() {
                 </div>
 
                 <div className="flex items-center gap-2.5 self-end md:self-auto">
+                  <span className="text-xs px-3 py-1 font-semibold rounded-full bg-[#555934]/12 text-[#555934]">
+                    {doc.status}
+                  </span>
+
                   <button
                     onClick={() => setSelectedChunkDoc(doc)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-lg transition"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#F2E6D8]/60 hover:bg-[#E8DACB] text-[#593E2E] text-xs font-semibold rounded-xl transition-all shadow-2xs"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     View Chunks
@@ -163,7 +167,7 @@ export default function DocumentsPage() {
 
                   <Link
                     href={`/mcq-generator?docId=${doc.id}&competency=${doc.targetCompetencies[0] || 'comp-capi'}&docTitle=${encodeURIComponent(doc.title)}`}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-lg transition shadow-2xs"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#555934] hover:bg-[#3e4225] text-white text-xs font-semibold rounded-xl transition-all shadow-xs"
                   >
                     <Brain className="w-3.5 h-3.5" />
                     Generate MCQs
@@ -178,17 +182,17 @@ export default function DocumentsPage() {
       {/* Semantic Chunks Modal */}
       {selectedChunkDoc && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in duration-150">
-          <div className="bg-white rounded-2xl border border-slate-200 max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl">
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl">
+            <div className="p-4 bg-gradient-to-r from-[#555934] to-[#3e4225] rounded-t-2xl flex items-center justify-between text-white">
               <div className="flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-[#8b9a6e]" />
-                <h3 className="text-base font-bold text-slate-900">
+                <BookOpen className="w-5 h-5 text-white" />
+                <h3 className="text-base font-bold text-white">
                   Semantic Chunks: {selectedChunkDoc.title}
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedChunkDoc(null)}
-                className="p-1 text-slate-400 hover:text-slate-600 rounded-md"
+                className="p-1 text-white/80 hover:text-white rounded-md"
               >
                 <X className="w-5 h-5" />
               </button>

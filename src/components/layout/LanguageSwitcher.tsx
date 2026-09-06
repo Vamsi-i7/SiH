@@ -36,13 +36,13 @@ export function LanguageSwitcher() {
   );
 
   return (
-    <div className="fixed bottom-4 right-4 flex items-center gap-2 bg-white border border-accent rounded-lg shadow-md px-2 py-1 z-50">
+    <div className="fixed bottom-4 left-4 md:hidden flex items-center gap-1.5 bg-white rounded-full shadow-card px-2 py-1.5 z-40">
       <button
         onClick={() => handleLanguageChange('en')}
         className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
           currentLocale === 'en'
             ? 'bg-primary text-white'
-            : 'text-stone-600 hover:bg-background'
+            : 'text-[#705849] hover:bg-background'
         }`}
         aria-pressed={currentLocale === 'en'}
       >
@@ -53,13 +53,13 @@ export function LanguageSwitcher() {
         className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
           currentLocale === 'hi'
             ? 'bg-primary text-white'
-            : 'text-stone-600 hover:bg-background'
+            : 'text-[#705849] hover:bg-background'
         }`}
         aria-pressed={currentLocale === 'hi'}
       >
         HI
       </button>
-      <Globe className="h-3.5 w-3.5 text-stone-400" />
+      <Globe className="h-3.5 w-3.5 text-[#BF9B7A]" />
     </div>
   );
 }
