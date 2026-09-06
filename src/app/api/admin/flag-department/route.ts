@@ -11,12 +11,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const isDemoDev =
-      process.env.NODE_ENV !== 'production' ||
+    const isDemoPersona =
       user.id?.startsWith('demo-') ||
-      req.cookies.has('demo_user');
+      req.cookies.has('demo_user') ||
+      (user.user_metadata as Record<string, unknown> | undefined)?.isDemo === true;
 
-    if (user.app_metadata?.role !== 'admin' && !isDemoDev) {
+    if (user.app_metadata?.role !== 'admin' && !isDemoPersona) {
       return NextResponse.json(
         { error: 'Forbidden: Admin access required for priority training write-backs' },
         { status: 403 }
