@@ -40,11 +40,27 @@ const QUICK_ACTIONS = [
 // COMPONENT
 // ============================================================================
 
+function getWelcomeMessage(userContext?: CopilotUserContext): Message {
+  const greeting = userContext?.name
+    ? `🙏 Namaste, **${userContext.name}**! I'm your StatVidya Copilot.\n\nAs a **${userContext.designation || userContext.role || 'learner'}** in ${userContext.cadre || 'the Official Statistical System'}, I can help you navigate the platform, understand your competency gaps, and find relevant iGOT courses.\n\nWhat would you like to explore?`
+    : `🙏 **Namaste!** I'm your StatVidya Copilot.\n\nI can help you with FRAC competency tracking, iGOT learning pathways, and platform navigation.\n\nWhat would you like to explore?`;
+
+  return {
+    id: 'welcome',
+    role: 'assistant',
+    content: greeting,
+    timestamp: new Date(1730000000000),
+  };
+}
+
 export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => [getWelcomeMessage(userContext)]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(() =>
+    typeof navigator !== 'undefined' ? !navigator.onLine : false
+  );
+  const msgCounterRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -80,7 +96,6 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
   useEffect(() => {
     const goOnline = () => setIsOffline(false);
     const goOffline = () => setIsOffline(true);
-    setIsOffline(!navigator.onLine);
     window.addEventListener('online', goOnline);
     window.addEventListener('offline', goOffline);
     return () => {
@@ -89,36 +104,20 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
     };
   }, []);
 
-  // Welcome message on first open
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      const greeting = userContext?.name
-        ? `🙏 Namaste, **${userContext.name}**! I'm your StatVidya Copilot.\n\nAs a **${userContext.designation || userContext.role || 'learner'}** in ${userContext.cadre || 'the Official Statistical System'}, I can help you navigate the platform, understand your competency gaps, and find relevant iGOT courses.\n\nWhat would you like to explore?`
-        : `🙏 **Namaste!** I'm your StatVidya Copilot.\n\nI can help you with FRAC competency tracking, iGOT learning pathways, and platform navigation.\n\nWhat would you like to explore?`;
-
-      setMessages([
-        {
-          id: 'welcome',
-          role: 'assistant',
-          content: greeting,
-          timestamp: new Date(),
-        },
-      ]);
-    }
-  }, [isOpen, messages.length, userContext]);
-
   // ─── Send Message ───
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
 
+    msgCounterRef.current += 1;
     const userMsg: Message = {
-      id: `user-${Date.now()}`,
+      id: `user-${msgCounterRef.current}`,
       role: 'user',
       content: text.trim(),
       timestamp: new Date(),
     };
 
-    const assistantId = `assistant-${Date.now()}`;
+    msgCounterRef.current += 1;
+    const assistantId = `assistant-${msgCounterRef.current}`;
     const assistantMsg: Message = {
       id: assistantId,
       role: 'assistant',
@@ -250,7 +249,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
   };
 
   const clearChat = () => {
-    setMessages([]);
+    setMessages([getWelcomeMessage(userContext)]);
   };
 
   if (!isOpen) return null;
@@ -261,7 +260,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
     <>
       {/* Backdrop (mobile) */}
       <div
-        className="fixed inset-0 z-[998] bg-black/20 backdrop-blur-[2px] sm:hidden"
+        className="fixed inset-0 z-998 bg-black/20 backdrop-blur-xs sm:hidden"
         onClick={onClose}
         aria-hidden
       />
@@ -271,7 +270,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
         ref={panelRef}
         role="dialog"
         aria-label="StatVidya Copilot"
-        className="fixed bottom-20 right-4 z-[999] flex flex-col overflow-hidden rounded-2xl border border-[#e3dbcf] bg-white shadow-2xl sm:right-6 sm:bottom-24"
+        className="fixed bottom-20 right-4 z-999 flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl sm:right-6 sm:bottom-24"
         style={{
           width: 'min(400px, calc(100vw - 2rem))',
           height: 'min(560px, calc(100vh - 10rem))',
@@ -279,7 +278,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
         }}
       >
         {/* ─── Header ─── */}
-        <div className="flex items-center justify-between border-b border-[#e3dbcf] bg-gradient-to-r from-[#8b9a6e] to-[#728056] px-4 py-3">
+        <div className="flex items-center justify-between border-b border-border bg-linear-to-r from-primary to-primary-dark px-4 py-3">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
               <Sparkles className="h-4 w-4 text-white" />
@@ -352,7 +351,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
 
         {/* ─── Quick Actions ─── */}
         {showQuickActions && (
-          <div className="border-t border-[#eeeeee] px-3 py-2">
+          <div className="border-t border-accent px-3 py-2">
             <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-1">
               <Zap className="h-3 w-3" /> Quick Actions
             </p>
@@ -362,7 +361,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
                   key={action.label}
                   onClick={() => handleQuickAction(action.prompt)}
                   disabled={isLoading}
-                  className="rounded-full border border-[#e3dbcf] bg-[#f7f2eb] px-2.5 py-1 text-[11px] font-medium text-[#1a1a1a] transition-all hover:border-[#8b9a6e] hover:bg-[#d6ddc9] hover:shadow-sm active:scale-95 disabled:opacity-50"
+                  className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-medium text-foreground transition-all hover:border-primary hover:bg-primary-light hover:shadow-sm active:scale-95 disabled:opacity-50"
                 >
                   {action.label}
                 </button>
@@ -374,7 +373,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
         {/* ─── Input ─── */}
         <form
           onSubmit={handleSubmit}
-          className="flex items-center gap-2 border-t border-[#e3dbcf] bg-[#f7f2eb] px-3 py-2.5"
+          className="flex items-center gap-2 border-t border-border bg-background px-3 py-2.5"
         >
           <input
             ref={inputRef}
@@ -383,13 +382,13 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about FRAC, pathways, navigation..."
             disabled={isLoading}
-            className="flex-1 rounded-xl border border-[#e3dbcf] bg-white px-3 py-2 text-[13px] text-[#1a1a1a] placeholder:text-stone-400 focus:border-[#8b9a6e] focus:outline-none focus:ring-2 focus:ring-[#8b9a6e]/20 disabled:opacity-50"
+            className="flex-1 rounded-xl border border-border bg-card px-3 py-2 text-[13px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
             style={{ minHeight: '36px' }}
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#8b9a6e] text-white shadow-sm transition-all hover:bg-[#728056] hover:shadow-md active:scale-95 disabled:opacity-40 disabled:hover:bg-[#8b9a6e] disabled:hover:shadow-sm"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm transition-all hover:bg-primary-dark hover:shadow-md active:scale-95 disabled:opacity-40 disabled:hover:bg-primary disabled:hover:shadow-sm"
           >
             <Send className="h-4 w-4" />
           </button>

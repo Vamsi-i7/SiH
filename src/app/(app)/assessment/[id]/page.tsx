@@ -9,6 +9,7 @@
 import { redirect } from 'next/navigation';
 import { getAuthenticatedUser } from '@/lib/auth';
 import { isDummyAssessment } from '@/data/assessments';
+import { getPersonaFRAC } from '@/data/fracCadres';
 import AssessmentClient from './AssessmentClient';
 
 interface PageProps {
@@ -25,40 +26,24 @@ export default async function AssessmentPage({ params }: PageProps) {
 
   // For real competency IDs — existing adaptive engine
   const user = await getAuthenticatedUser();
+  const personaFrac = getPersonaFRAC(user);
+  const matchedComp = personaFrac.competencies.find((c) => c.id === competencyId);
 
   // Demo/fallback competencies lookup
   const DEMO_COMPETENCIES: Record<string, { name: string; name_hi: string }> = {
     'comp-capi': { name: 'CAPI Tablet Operation', name_hi: 'कैपी टैबलेट संचालन' },
+    'comp-demarcation': { name: 'Block Demarcation & Urban Frame Survey', name_hi: 'ब्लॉक सीमांकन और यूएफएस' },
     'comp-nsso': { name: 'NSSO Protocol Mastery', name_hi: 'एनएसएसओ प्रोटोकॉल निपुणता' },
     'comp-survey': { name: 'Survey Sampling & Design', name_hi: 'सर्वेक्षण नमूनाकरण और डिज़ाइन' },
-    'comp-data': { name: 'Data Entry & Scrutiny', name_hi: 'डेटा प्रविष्टि और जांच' },
+    'comp-data': { name: 'Data Entry & Scrutiny Rules', name_hi: 'डेटा प्रविष्टि और जांच नियम' },
+    'comp-scrutiny': { name: 'Field Scrutiny & Validation Rules', name_hi: 'क्षेत्र संवीक्षा और सत्यापन नियम' },
+    'comp-r-prog': { name: 'Statistical Computing with R & Python', name_hi: 'आर और पायथन के साथ सांख्यिकीय संगणना' },
     'comp-teamwork': { name: 'Teamwork & Collaboration', name_hi: 'टीम वर्क और सहयोग' },
   };
 
   // Fetch competency details
-  let competencyName = DEMO_COMPETENCIES[competencyId]?.name || 'Statistical Competency';
-  let competencyNameHi = DEMO_COMPETENCIES[competencyId]?.name_hi || 'सांख्यिकीय योग्यता';
-
-  // Helper for fast-timeout database query to prevent slow page loads
-  const fastQuery = async <T,>(promise: PromiseLike<T>, timeoutMs = 250): Promise<T | null> => {
-    return Promise.race([
-      Promise.resolve(promise),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs)),
-    ]);
-  };
-
-  interface CompetencyRecord {
-    name: string;
-    name_hi?: string;
-  }
-
-  interface QuestionRecord {
-    id: string;
-    stem: string;
-    stem_hi?: string;
-    options?: { en?: string[]; hi?: string[] };
-    difficulty: 'easy' | 'medium' | 'hard';
-  }
+  const competencyName = matchedComp?.name || DEMO_COMPETENCIES[competencyId]?.name || 'Statistical Competency';
+  const competencyNameHi = matchedComp?.name_hi || DEMO_COMPETENCIES[competencyId]?.name_hi || 'सांख्यिकीय योग्यता';
 
   let firstQuestion = null;
 

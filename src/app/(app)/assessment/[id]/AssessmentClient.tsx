@@ -18,6 +18,8 @@ import {
   type AssessmentResult,
 } from '@/services/assessmentService';
 import offlineQueueManager from '@/services/offlineService';
+import { getAdaptiveQuestion } from '@/data/adaptiveQuestionBank';
+import { saveCompetencyPromotion } from '@/data/fracCadres';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AssessmentQuestion from './AssessmentQuestion';
@@ -32,8 +34,9 @@ interface Question {
   question_text_hi: string;
   answer_choices: string[];
   answer_choices_hi: string[];
-  difficulty: 'easy' | 'medium' | 'hard';
-  stage: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  stage?: number | string;
+  correctAnswerIndex?: number;
 }
 
 interface AssessmentClientProps {
@@ -59,7 +62,10 @@ export default function AssessmentClient({
   const [assessmentState, setAssessmentState] = useState<AssessmentState>(
     initializeAssessment(competencyId, userId, firstQuestion.id)
   );
-  const [currentQuestion] = useState<Question>(firstQuestion);
+  const [currentQuestion, setCurrentQuestion] = useState<Question>(() => {
+    const adaptiveQ = getAdaptiveQuestion(competencyId, 'STAGE_1', null);
+    return adaptiveQ || firstQuestion;
+  });
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [timeRemaining, setTimeRemaining] = useState(30 * 60); // 30 minutes in seconds
   const [isAnimating, setIsAnimating] = useState(false);
@@ -101,12 +107,11 @@ export default function AssessmentClient({
       // Record answer
       let updatedState = recordAnswer(assessmentState, currentQuestion.id, selectedAnswer);
 
-      // Determine if answer was correct (simplified: assume API will verify)
-      // In production, compare against question.correct_answer_index
-      const answerCorrect = selectedAnswer === 0; // Mock: first choice is correct
+      // Determine if answer was correct
+      const answerCorrect = selectedAnswer === (currentQuestion.correctAnswerIndex ?? 0);
 
       // Transition to next stage
-      updatedState = nextStage(updatedState, answerCorrect, `q-${updatedState.stage + 1}`);
+      updatedState = nextStage(updatedState, answerCorrect, `q-${updatedState.stage}`);
 
       // If assessment complete, move to review
       if (updatedState.stage === 'COMPLETE') {
@@ -116,9 +121,9 @@ export default function AssessmentClient({
         return;
       }
 
-      // Otherwise, fetch next question and continue
-      // TODO: Fetch next question based on stage and branch_path
-      // For MVP, show review
+      // Fetch next adaptive question based on stage and branch_path
+      const nextQ = getAdaptiveQuestion(competencyId, updatedState.stage, updatedState.branch_path);
+      setCurrentQuestion(nextQ);
       setAssessmentState(updatedState);
       setSelectedAnswer(null);
       setError(null);
@@ -127,7 +132,7 @@ export default function AssessmentClient({
       setError((err as Error).message);
       setIsAnimating(false);
     }
-  }, [selectedAnswer, assessmentState, currentQuestion]);
+  }, [selectedAnswer, assessmentState, currentQuestion, competencyId]);
 
   // Handle assessment submission (final)
   const handleSubmitAssessment = useCallback(async () => {
@@ -140,6 +145,10 @@ export default function AssessmentClient({
         completed_at: new Date().toISOString(),
         final_level: assessmentState.final_level || 'L1',
       };
+
+      // Extract numeric level (e.g. 'L3' -> 3) and persist promotion locally
+      const numericLevel = parseInt((result.final_level || 'L1').replace(/\D/g, ''), 10) || 1;
+      saveCompetencyPromotion(userId, competencyId, numericLevel);
 
       // Queue for offline sync
       const local_id = await offlineQueueManager.queueAssessment({
@@ -154,8 +163,7 @@ export default function AssessmentClient({
       });
 
       // Try to sync immediately if online
-      if (navigator.onLine) {
-        // TODO: Call Edge Function to sync
+      if (typeof navigator !== 'undefined' && navigator.onLine) {
         await offlineQueueManager.markSyncing(local_id);
       }
 
@@ -252,7 +260,7 @@ export default function AssessmentClient({
       {/* Error Message */}
       {error && (
         <div className="mb-4 p-4 bg-destructive/10 text-destructive rounded-lg flex gap-2">
-          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <AlertCircle className="w-5 h-5 shrink-0" />
           <p>{error}</p>
         </div>
       )}
@@ -293,7 +301,7 @@ export default function AssessmentClient({
       {/* Accessibility & Offline Notice */}
       <div className="mt-8 text-xs text-muted-foreground text-center">
         <p>✓ No animation during assessment (accessibility: reduced motion supported)</p>
-        {!navigator.onLine && <p>🔴 Offline mode: Responses will sync when you reconnect</p>}
+        {typeof navigator !== 'undefined' && !navigator.onLine && <p>🔴 Offline mode: Responses will sync when you reconnect</p>}
       </div>
     </div>
   );
