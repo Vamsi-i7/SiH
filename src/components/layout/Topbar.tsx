@@ -109,7 +109,7 @@ export function Topbar() {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [router]);
 
   // Dropdown toggle handlers with mutual exclusivity
   const toggleNotifications = useCallback(() => {
