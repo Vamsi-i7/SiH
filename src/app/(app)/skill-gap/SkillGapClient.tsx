@@ -4,7 +4,20 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import Link from 'next/link';
 import { PlayCircle } from 'lucide-react';
-import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
+import dynamic from 'next/dynamic';
+import type { RadarDataPoint } from '@/components/RadarChart';
+
+const RadarChart = dynamic(
+  () => import('@/components/RadarChart').then((mod) => mod.RadarChart),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 w-64 items-center justify-center">
+        <div className="h-48 w-48 rounded-full bg-[#E8DACB]/40 animate-pulse" />
+      </div>
+    ),
+  }
+);
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { CompetencyService } from '@/services/competencyService';
 import { getPersonaFRAC } from '@/data/fracCadres';
