@@ -105,8 +105,9 @@ export function Sidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={true}
                   title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98] ${
                     collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
                   } ${
                     active
@@ -126,7 +127,7 @@ export function Sidebar() {
         <div>
           {!collapsed ? (
             <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-2">
-              Curriculum & AI
+              Curriculum & Question Bank
             </p>
           ) : (
             <div className="h-px bg-[#F2E6D8] my-2 mx-1" />
@@ -139,8 +140,9 @@ export function Sidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={true}
                   title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98] ${
                     collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
                   } ${
                     active
@@ -173,8 +175,9 @@ export function Sidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={true}
                   title={collapsed ? t(item.label) : undefined}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98] ${
                     collapsed ? 'justify-center px-0 h-10 w-10 mx-auto' : ''
                   } ${
                     active
