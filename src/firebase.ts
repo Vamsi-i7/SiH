@@ -17,3 +17,11 @@ export const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfi
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+
+export function isFirebaseConfigured(): boolean {
+  return Boolean(
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  );
+}
+
