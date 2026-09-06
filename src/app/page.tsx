@@ -26,6 +26,7 @@ import {
   HeroRadarVisual,
   AnimatedProgressBar,
 } from '@/components/LandingAnimations';
+import { KarmayogiEmblemIcon } from '@/components/auth/KarmayogiEmblem';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,8 +52,8 @@ export default async function LandingPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3.5">
           {/* Brand */}
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#555934] text-white shadow-xs">
-              <Building2 className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 shadow-xs p-1">
+              <KarmayogiEmblemIcon className="h-8 w-8" />
             </div>
             <div>
               <div className="flex items-center gap-2">
