@@ -1,0 +1,17 @@
+export type NotificationType =
+  | 'assessment'
+  | 'learning'
+  | 'system'
+  | 'achievement'
+  | 'announcement';
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  type: NotificationType;
+  href?: string;
+  role?: 'learner' | 'trainer' | 'admin' | 'all';
+}

@@ -1,5 +1,8 @@
 'use client';
 
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import {
   Bell,
@@ -9,15 +12,13 @@ import {
   Search,
   Award,
   ExternalLink,
-  CheckCircle2,
-  AlertTriangle,
   Globe,
   Sparkles,
   Check,
 } from 'lucide-react';
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { Notification } from '@/components/notifications/types';
+import { getInitialNotifications } from '@/components/notifications/notification-data';
+import { NotificationDropdown } from '@/components/notifications/NotificationDropdown';
 import { DEMO_PERSONAS } from '@/lib/demoPersonas';
 import type { DemoPersona } from '@/lib/types';
 
@@ -27,7 +28,9 @@ function getInitialPersona(): DemoPersona {
     const match = document.cookie.match(/(?:^|; )demo_user=([^;]*)/);
     if (match) {
       const decoded = JSON.parse(decodeURIComponent(match[1]));
-      const found = DEMO_PERSONAS.find((p) => p.email?.toLowerCase() === decoded.email?.toLowerCase());
+      const found = DEMO_PERSONAS.find(
+        (p) => p.email?.toLowerCase() === decoded.email?.toLowerCase()
+      );
       if (found) return found;
     }
   } catch {
@@ -38,8 +41,12 @@ function getInitialPersona(): DemoPersona {
 
 function setPersonaCookie(persona: DemoPersona) {
   if (typeof document === 'undefined') return;
-  document.cookie = `demo_user=${encodeURIComponent(JSON.stringify(persona))}; path=/; max-age=604800`;
-  document.cookie = `locale=${persona.preferred_language || 'en'}; path=/; max-age=31536000`;
+  document.cookie = `demo_user=${encodeURIComponent(
+    JSON.stringify(persona)
+  )}; path=/; max-age=604800`;
+  document.cookie = `locale=${
+    persona.preferred_language || 'en'
+  }; path=/; max-age=31536000`;
 }
 
 function clearPersonaCookie() {
@@ -53,30 +60,88 @@ export function Topbar() {
   const t = useTranslations('nav');
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
   const [switcherOpen, setSwitcherOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [activePersona, setActivePersona] = useState<DemoPersona>(getInitialPersona);
 
   const menuRef = useRef<HTMLDivElement>(null);
-  const notifRef = useRef<HTMLDivElement>(null);
   const switcherRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
 
-  // Close menus on click outside
+  // Notifications state initialized with active persona's role
+  const [notifications, setNotifications] = useState<Notification[]>(() =>
+    getInitialNotifications(getInitialPersona().role)
+  );
+
+  // Close menus on click outside or Escape
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(target)
+      ) {
+        setNotificationsOpen(false);
+      }
+      if (menuRef.current && !menuRef.current.contains(target)) {
         setMenuOpen(false);
       }
-      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
-        setNotifOpen(false);
+      if (switcherRef.current && !switcherRef.current.contains(target)) {
+        setSwitcherOpen(false);
       }
-      if (switcherRef.current && !switcherRef.current.contains(event.target as Node)) {
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setNotificationsOpen(false);
+        setMenuOpen(false);
         setSwitcherOpen(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // Dropdown toggle handlers with mutual exclusivity
+  const toggleNotifications = useCallback(() => {
+    setNotificationsOpen((prev) => !prev);
+    setMenuOpen(false);
+    setSwitcherOpen(false);
+  }, []);
+
+  const toggleMenu = useCallback(() => {
+    setMenuOpen((prev) => !prev);
+    setNotificationsOpen(false);
+    setSwitcherOpen(false);
+  }, []);
+
+  const toggleSwitcher = useCallback(() => {
+    setSwitcherOpen((prev) => !prev);
+    setNotificationsOpen(false);
+    setMenuOpen(false);
+  }, []);
+
+  // Notification action handlers
+  const handleNotificationClick = useCallback(
+    (notification: Notification) => {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n))
+      );
+      if (notification.href) {
+        setNotificationsOpen(false);
+        router.push(notification.href);
+      }
+    },
+    [router]
+  );
+
+  const handleMarkAllAsRead = useCallback(() => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   }, []);
 
   const handleLanguageToggle = useCallback(() => {
@@ -88,46 +153,36 @@ export function Topbar() {
   const handleSelectPersona = (persona: DemoPersona) => {
     setActivePersona(persona);
     setSwitcherOpen(false);
+    setNotifications(getInitialNotifications(persona.role));
     setPersonaCookie(persona);
     window.location.reload();
   };
 
-  const roleColors: Record<string, { bg: string; text: string; badge: string }> = {
-    learner: { bg: 'bg-[#555934]/15', text: 'text-[#555934]', badge: 'bg-[#555934]/12 text-[#555934]' },
-    trainer: { bg: 'bg-[#BF9B7A]/20', text: 'text-[#593E2E]', badge: 'bg-[#BF9B7A]/20 text-[#593E2E]' },
-    admin: { bg: 'bg-[#8C5B3E]/15', text: 'text-[#8C5B3E]', badge: 'bg-[#8C5B3E]/15 text-[#8C5B3E]' },
+  const roleColors: Record<
+    string,
+    { bg: string; text: string; badge: string }
+  > = {
+    learner: {
+      bg: 'bg-[#555934]/15',
+      text: 'text-[#555934]',
+      badge: 'bg-[#555934]/12 text-[#555934]',
+    },
+    trainer: {
+      bg: 'bg-[#BF9B7A]/20',
+      text: 'text-[#593E2E]',
+      badge: 'bg-[#BF9B7A]/20 text-[#593E2E]',
+    },
+    admin: {
+      bg: 'bg-[#8C5B3E]/15',
+      text: 'text-[#8C5B3E]',
+      badge: 'bg-[#8C5B3E]/15 text-[#8C5B3E]',
+    },
   };
 
-  const currentRoleStyle = roleColors[activePersona.role] || roleColors.learner;
-
-  const notifications = [
-    {
-      id: 'n-1',
-      title: 'New CAPI Field Operations Assessment',
-      time: '15m ago',
-      unread: true,
-      icon: <CheckCircle2 className="h-4 w-4 text-[#555934]" />,
-      desc: '10 practical questions based on NSS 79th Round manual.',
-    },
-    {
-      id: 'n-2',
-      title: 'Priority Training Flagged',
-      time: '2h ago',
-      unread: true,
-      icon: <AlertTriangle className="h-4 w-4 text-[#BF9B7A]" />,
-      desc: 'FOD Regional Unit flagged for CAPI tablet synchronization refresh.',
-    },
-    {
-      id: 'n-3',
-      title: 'Karma Milestone Reached',
-      time: '1d ago',
-      unread: false,
-      icon: <Award className="h-4 w-4 text-[#8C5B3E]" />,
-      desc: '+150 Karma Points for completing Data Scrutiny Module 3.',
-    },
-  ];
-
-  const unreadCount = notifications.filter((n) => n.unread).length;
+  const currentRoleStyle =
+    roleColors[activePersona.role] || roleColors.learner;
+  const unreadCount = notifications.filter((n) => !n.read).length;
+  const badgeLabel = unreadCount > 99 ? '99+' : unreadCount.toString();
 
   return (
     <header className="flex h-16 items-center justify-between bg-white px-4 sm:px-6 z-10 select-none shadow-[0_2px_12px_-4px_rgba(89,62,46,0.04)]">
@@ -151,16 +206,23 @@ export function Topbar() {
         <div className="relative" ref={switcherRef}>
           <button
             id="persona-switcher-button"
-            onClick={() => setSwitcherOpen(!switcherOpen)}
-            className="flex items-center gap-2 rounded-xl bg-[#F2E6D8]/50 px-3 py-1.5 text-xs font-semibold hover:bg-[#E8DACB] transition shadow-2xs"
+            type="button"
+            onClick={toggleSwitcher}
+            aria-label="Switch persona or cadre role"
+            aria-expanded={switcherOpen}
+            className="flex items-center gap-2 rounded-xl bg-[#F2E6D8]/50 px-3 py-1.5 text-xs font-semibold hover:bg-[#E8DACB] transition shadow-2xs cursor-pointer"
             title="Switch Persona / Cadre Role"
           >
             <span className="flex h-2 w-2 rounded-full bg-[#555934] animate-pulse" />
-            <span className="text-[#705849] hidden lg:inline">Cadre Persona:</span>
+            <span className="text-[#705849] hidden lg:inline">
+              Cadre Persona:
+            </span>
             <span className="font-bold text-[#2d1f17] truncate max-w-28 sm:max-w-40">
               {activePersona.name}
             </span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${currentRoleStyle.badge}`}>
+            <span
+              className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${currentRoleStyle.badge}`}
+            >
               {activePersona.role}
             </span>
             <ChevronDown className="h-3.5 w-3.5 text-[#705849]" />
@@ -190,14 +252,17 @@ export function Topbar() {
                   return (
                     <button
                       key={persona.id}
+                      type="button"
                       onClick={() => handleSelectPersona(persona)}
-                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition ${
+                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition cursor-pointer ${
                         isSelected
                           ? 'bg-[#555934]/10 text-[#2d1f17]'
                           : 'hover:bg-[#F2E6D8]/50'
                       }`}
                     >
-                      <div className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-bold text-xs ${style.bg} ${style.text}`}>
+                      <div
+                        className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-bold text-xs ${style.bg} ${style.text}`}
+                      >
                         {persona.name.charAt(0)}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -205,7 +270,9 @@ export function Topbar() {
                           <p className="text-xs font-bold text-[#2d1f17] truncate">
                             {persona.name}
                           </p>
-                          <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${style.badge}`}>
+                          <span
+                            className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${style.badge}`}
+                          >
                             {persona.role}
                           </span>
                         </div>
@@ -218,7 +285,9 @@ export function Topbar() {
                           </span>
                         )}
                       </div>
-                      {isSelected && <Check className="h-4 w-4 text-[#555934] mt-1 shrink-0" />}
+                      {isSelected && (
+                        <Check className="h-4 w-4 text-[#555934] mt-1 shrink-0" />
+                      )}
                     </button>
                   );
                 })}
@@ -229,9 +298,10 @@ export function Topbar() {
 
         {/* Language Switch Button */}
         <button
+          type="button"
           onClick={handleLanguageToggle}
           aria-label="Switch Language"
-          className="flex items-center gap-1.5 rounded-xl bg-[#F2E6D8]/60 px-3 py-1.5 text-xs font-semibold text-[#2d1f17] hover:bg-[#E8DACB] transition-colors"
+          className="flex items-center gap-1.5 rounded-xl bg-[#F2E6D8]/60 px-3 py-1.5 text-xs font-semibold text-[#2d1f17] hover:bg-[#E8DACB] transition-colors cursor-pointer"
         >
           <Globe className="h-3.5 w-3.5 text-[#555934]" />
           <span>{locale === 'en' ? 'हिन्दी' : 'English'}</span>
@@ -244,63 +314,47 @@ export function Topbar() {
           <span className="text-[10px] text-[#705849]">Karma</span>
         </div>
 
-        {/* Notifications Popover */}
-        <div className="relative" ref={notifRef}>
+        {/* Functional Notification Center Bell Button */}
+        <div className="relative" ref={notificationsRef}>
           <button
-            onClick={() => setNotifOpen(!notifOpen)}
-            aria-label="Notifications"
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#F2E6D8]/50 text-[#705849] hover:bg-[#E8DACB] hover:text-[#2d1f17] transition-colors"
+            type="button"
+            onClick={toggleNotifications}
+            aria-label={`Notifications${
+              unreadCount > 0 ? `, ${unreadCount} unread` : ''
+            }`}
+            aria-expanded={notificationsOpen}
+            className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#F2E6D8]/50 text-[#705849] hover:bg-[#E8DACB] hover:text-[#2d1f17] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#555934] cursor-pointer"
           >
             <Bell className="h-4 w-4" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#8C5B3E] text-[9px] font-bold text-white shadow-2xs">
-                {unreadCount}
+              <span
+                className="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#8C5B3E] px-1 text-[9px] font-bold text-white shadow-2xs"
+                aria-hidden="true"
+              >
+                {badgeLabel}
               </span>
             )}
           </button>
 
-          {notifOpen && (
-            <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-white p-2 shadow-card-elevated z-50 animate-in fade-in zoom-in-95 duration-100">
-              <div className="flex items-center justify-between px-3 py-2 border-b border-[#F2E6D8]">
-                <span className="text-xs font-bold text-[#2d1f17]">Institutional Alerts</span>
-                <span className="text-[10px] text-[#705849] font-mono">{unreadCount} unread</span>
-              </div>
-              <div className="divide-y divide-[#F2E6D8] max-h-72 overflow-y-auto">
-                {notifications.map((item) => (
-                  <div
-                    key={item.id}
-                    className={`p-3 text-left rounded-xl transition-colors hover:bg-[#F2E6D8]/60 ${
-                      item.unread ? 'bg-[#555934]/5' : ''
-                    }`}
-                  >
-                    <div className="flex items-start gap-2.5">
-                      <div className="mt-0.5 shrink-0">{item.icon}</div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs font-semibold text-[#2d1f17] truncate">
-                            {item.title}
-                          </p>
-                          <span className="text-[10px] text-[#705849] shrink-0 font-mono">
-                            {item.time}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-[#705849] mt-0.5 line-clamp-2">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {notificationsOpen && (
+            <NotificationDropdown
+              notifications={notifications}
+              unreadCount={unreadCount}
+              onNotificationClick={handleNotificationClick}
+              onMarkAllAsRead={handleMarkAllAsRead}
+              onClose={() => setNotificationsOpen(false)}
+            />
           )}
         </div>
 
         {/* User Account Menu */}
         <div className="relative" ref={menuRef}>
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center gap-2 rounded-xl bg-white px-2.5 py-1 text-[#2d1f17] shadow-xs hover:bg-[#E8DACB]/50 transition-all active:scale-98"
+            type="button"
+            onClick={toggleMenu}
+            aria-label="User account menu"
+            aria-expanded={menuOpen}
+            className="flex items-center gap-2 rounded-xl bg-white px-2.5 py-1 text-[#2d1f17] shadow-xs hover:bg-[#E8DACB]/50 transition-all active:scale-98 cursor-pointer"
           >
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#555934] text-white text-xs font-bold shadow-2xs">
               {activePersona.name.charAt(0)}
@@ -319,7 +373,9 @@ export function Topbar() {
           {menuOpen && (
             <div className="absolute right-0 mt-2 w-60 rounded-2xl bg-white p-2 shadow-card-elevated z-50 animate-in fade-in zoom-in-95 duration-100">
               <div className="px-3 py-2 border-b border-[#F2E6D8]">
-                <p className="text-xs font-bold text-[#2d1f17]">{activePersona.name}</p>
+                <p className="text-xs font-bold text-[#2d1f17]">
+                  {activePersona.name}
+                </p>
                 <p className="text-[11px] text-[#705849] truncate">
                   {activePersona.email}
                 </p>
@@ -338,7 +394,7 @@ export function Topbar() {
                   className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-[#2d1f17] hover:bg-[#F2E6D8] transition-colors"
                 >
                   <User className="h-3.5 w-3.5 text-[#555934]" />
-                  {t('profile')}
+                  <span>{t('profile')}</span>
                 </Link>
 
                 <Link
@@ -347,7 +403,7 @@ export function Topbar() {
                   className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-[#2d1f17] hover:bg-[#F2E6D8] transition-colors"
                 >
                   <Sparkles className="h-3.5 w-3.5 text-[#BF9B7A]" />
-                  My Learning Pathways
+                  <span>My Learning Pathways</span>
                 </Link>
 
                 <a
@@ -366,15 +422,16 @@ export function Topbar() {
 
               <div className="pt-1 border-t border-[#F2E6D8]">
                 <button
+                  type="button"
                   onClick={() => {
                     clearPersonaCookie();
                     setMenuOpen(false);
                     router.push('/auth/login');
                   }}
-                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-[#8C5B3E] hover:bg-[#8C5B3E]/10 transition-colors"
+                  className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-[#8C5B3E] hover:bg-[#8C5B3E]/10 transition-colors cursor-pointer"
                 >
                   <LogOut className="h-3.5 w-3.5" />
-                  {t('logout')}
+                  <span>{t('logout')}</span>
                 </button>
               </div>
             </div>
