@@ -121,7 +121,13 @@ export async function middleware(request: NextRequest) {
   // even if exploring as a learner, so features are never blocked while evaluating
   const isDemoDev = process.env.NODE_ENV !== 'production' || request.cookies.has('demo_user');
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    if (isDemoDev && (routePath === '/documents' || routePath === '/mcq-generator' || routePath === '/review-queue')) {
+    if (
+      isDemoDev &&
+      (routePath === '/documents' ||
+        routePath === '/mcq-generator' ||
+        routePath === '/review-queue' ||
+        routePath.startsWith('/admin/analytics'))
+    ) {
       // Allow demo inspection
     } else {
       const dashboardUrl = new URL('/dashboard', request.url);
