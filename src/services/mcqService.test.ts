@@ -57,4 +57,27 @@ describe('MCQService', () => {
 
     spy.mockRestore();
   });
+
+  it('generates a batch of distinct MCQs matching requested count', async () => {
+    const questions = await MCQService.generateBatchMCQ(
+      {
+        competencyId: 'comp-nsso',
+        difficulty: 'medium',
+        docTitle: 'NSSO_Operational_Guide',
+        docText: 'Clause 2: Stratified multistage designs require second-stage sampling of households by monthly per-capita expenditure.',
+      },
+      3
+    );
+
+    expect(questions.length).toBe(3);
+    questions.forEach((q, idx) => {
+      expect(q.id).toBeDefined();
+      expect(q.competencyId).toBe('comp-nsso');
+      expect(q.optionsEn.length).toBe(4);
+      expect(q.optionsHi.length).toBe(4);
+      expect(q.correctIndex).toBeGreaterThanOrEqual(0);
+      expect(q.correctIndex).toBeLessThanOrEqual(3);
+    });
+  });
 });
+
