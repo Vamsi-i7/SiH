@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { DocumentService } from '@/services/documentService';
+import { TextExtractionService } from '@/services/textExtractionService';
 import { getAuthenticatedUser } from '@/lib/auth';
 
 export async function POST(request: Request) {
@@ -16,11 +17,17 @@ export async function POST(request: Request) {
     }
 
     const filename = file.name;
-    const text = await file.text();
+    const arrayBuffer = await file.arrayBuffer();
+
+    const extraction = await TextExtractionService.extractText(
+      arrayBuffer,
+      filename,
+      file.type
+    );
 
     const ingested = await DocumentService.processDocument(
       filename,
-      text || 'Sample MoSPI guidelines extracted text for statistical manual.',
+      extraction.text || 'Sample MoSPI guidelines extracted text for statistical manual.',
       targetCompetency ? [targetCompetency] : [],
       userId
     );
@@ -28,6 +35,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       document: ingested,
+      extractionMethod: extraction.method,
+      wordCount: extraction.wordCount,
     });
   } catch (error) {
     console.error('Document upload error:', error);
