@@ -107,10 +107,10 @@ const PROBLEM_SOLVING: Assessment = {
       options: [
         'Identifying the most visible symptom of a problem',
         'Assigning blame to the team member who reported the issue',
-        'Investigating the underlying reasons that caused a problem, not just its surface symptoms',
         'Creating a checklist of problems for future reference',
+        'Investigating the underlying reasons that caused a problem, not just its surface symptoms',
       ],
-      correctAnswer: 2,
+      correctAnswer: 3,
     },
     {
       id: 'ps-q6',
@@ -142,11 +142,11 @@ const PROBLEM_SOLVING: Assessment = {
         'When two valid methodologies produce different results for the same analysis, the correct action is to:',
       options: [
         'Pick the result that aligns with your hypothesis',
-        'Document both results, describe the methodological differences, and recommend further review',
         'Average the two results to get a compromise value',
+        'Document both results, describe the methodological differences, and recommend further review',
         'Use only the result that your manager prefers',
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
     },
     {
       id: 'ps-q9',
@@ -167,10 +167,10 @@ const PROBLEM_SOLVING: Assessment = {
       options: [
         'Ignore the missing values and proceed with the complete cases only without disclosure',
         'Replace all missing values with zeros to fill the dataset',
-        'Assess the pattern of missingness, apply an appropriate imputation method, and document the approach',
         'Remove the variable entirely from the analysis without informing stakeholders',
+        'Assess the pattern of missingness, apply an appropriate imputation method, and document the approach',
       ],
-      correctAnswer: 2,
+      correctAnswer: 3,
     },
   ],
 };
@@ -197,11 +197,11 @@ const CRITICAL_THINKING: Assessment = {
         'A senior colleague asserts that a particular survey methodology is always correct. Your critical response should be to:',
       options: [
         'Accept the claim without question because of their seniority',
-        'Politely request supporting evidence and consider alternative methodologies',
-        'Publicly disagree in a team meeting without evidence',
         'Adopt a different methodology without informing anyone',
+        'Publicly disagree in a team meeting without evidence',
+        'Politely request supporting evidence and consider alternative methodologies',
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
     },
     {
       id: 'ct-q2',
@@ -220,12 +220,12 @@ const CRITICAL_THINKING: Assessment = {
       question:
         'A government report claims a 15% rise in rural literacy. Before accepting this finding, you should:',
       options: [
-        'Share the report widely without any review',
         'Examine the sample design, data collection methods, and definition of literacy used',
+        'Share the report widely without any review',
         'Assume the government would not publish incorrect data',
         'Compare only to last year\'s figure with no other checks',
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
     },
     {
       id: 'ct-q4',
@@ -282,10 +282,10 @@ const CRITICAL_THINKING: Assessment = {
       options: [
         'The author\'s credentials',
         'The length of the argument',
-        'The core claim and the evidence offered to support it',
         'Whether the argument agrees with existing policy',
+        'The core claim and the evidence offered to support it',
       ],
-      correctAnswer: 2,
+      correctAnswer: 3,
     },
     {
       id: 'ct-q9',
@@ -305,11 +305,11 @@ const CRITICAL_THINKING: Assessment = {
         'Which best describes an "assumption" in an argument?',
       options: [
         'A fact that has been verified by independent sources',
-        'An unstated premise that the argument depends on being true',
         'A statistical test result with a p-value below 0.05',
+        'An unstated premise that the argument depends on being true',
         'A conclusion that directly follows from the data',
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
     },
   ],
 };
@@ -335,12 +335,12 @@ const COMMUNICATION: Assessment = {
       question:
         'When explaining a complex statistical concept to a non-technical audience, you should:',
       options: [
-        'Use technical jargon to appear authoritative',
         'Simplify the language, use relatable examples, and check for understanding',
+        'Use technical jargon to appear authoritative',
         'Provide a detailed mathematical derivation',
         'Limit the explanation to a single sentence',
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
     },
     {
       id: 'cm-q2',
@@ -372,10 +372,10 @@ const COMMUNICATION: Assessment = {
       options: [
         'Leading questions that suggest the preferred answer',
         'Closed questions with only yes/no options',
-        'Open-ended questions that allow the respondent to elaborate',
         'Double-barrelled questions covering two topics at once',
+        'Open-ended questions that allow the respondent to elaborate',
       ],
-      correctAnswer: 2,
+      correctAnswer: 3,
     },
     {
       id: 'cm-q5',
@@ -394,12 +394,12 @@ const COMMUNICATION: Assessment = {
       question:
         'The primary purpose of an executive summary in a statistical report is to:',
       options: [
-        'Replace all other sections of the report',
         'Provide a concise overview of key findings and recommendations for decision-makers',
+        'Replace all other sections of the report',
         'List all the raw data tables',
         'Explain the history of the survey methodology',
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
     },
     {
       id: 'cm-q7',
@@ -408,10 +408,10 @@ const COMMUNICATION: Assessment = {
       options: [
         'Soften the findings to the point where the concern is no longer apparent',
         'Delay sharing until the findings improve',
-        'Present the findings clearly and objectively, accompanied by evidence and possible next steps',
         'Only share the findings verbally to avoid a paper trail',
+        'Present the findings clearly and objectively, accompanied by evidence and possible next steps',
       ],
-      correctAnswer: 2,
+      correctAnswer: 3,
     },
     {
       id: 'cm-q8',
@@ -497,12 +497,12 @@ const DECISION_MAKING: Assessment = {
       question:
         'Which cognitive bias causes decision-makers to disproportionately value their first piece of information?',
       options: [
-        'Availability bias',
         'Anchoring bias',
+        'Availability bias',
         'Hindsight bias',
         'Framing effect',
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
     },
     {
       id: 'dm-q4',
@@ -546,11 +546,11 @@ const DECISION_MAKING: Assessment = {
         'A risk matrix is a tool used to:',
       options: [
         'Guarantee that all risks are eliminated before proceeding',
-        'Visually assess risks by their likelihood and potential impact to prioritise responses',
-        'Assign financial values to all project risks',
         'Delegate risk management to the most junior team member',
+        'Assign financial values to all project risks',
+        'Visually assess risks by their likelihood and potential impact to prioritise responses',
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
     },
     {
       id: 'dm-q8',
@@ -558,11 +558,11 @@ const DECISION_MAKING: Assessment = {
         'Group decision-making can reduce the risk of poor outcomes primarily because:',
       options: [
         'More people means more time is taken, which always improves quality',
-        'Diverse perspectives can surface blind spots and challenge faulty assumptions',
         'Groups always reach consensus faster than individuals',
+        'Diverse perspectives can surface blind spots and challenge faulty assumptions',
         'It allows one person to avoid accountability for the outcome',
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
     },
     {
       id: 'dm-q9',
@@ -612,24 +612,24 @@ const CAPI_OPERATIONS: Assessment = {
       question:
         'When conducting a CAPI survey in an area with zero cellular connectivity, what is the mandatory protocol for completed interview schedules?',
       options: [
-        'Store completed schedules in the local encrypted SQLite DB and trigger sync as soon as network is re-established',
         'Delete schedules and re-conduct interviews when cellular network is restored',
+        'Store completed schedules in the local encrypted SQLite DB and trigger sync as soon as network is re-established',
         'Carry physical backup sheets and re-key all data manually',
         'Leave the tablet permanently unlocked until reaching the regional office',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 'capi-q2',
       question:
         'What is the acceptable GPS geo-tagging accuracy threshold required before saving a household listing point in the CAPI app?',
       options: [
-        'Accuracy within ±10 metres with at least 4 satellite locks',
-        'Accuracy within ±150 metres',
         'Any coordinate regardless of satellite lock',
+        'Accuracy within ±150 metres',
+        'Accuracy within ±10 metres with at least 4 satellite locks',
         'Manual coordinate typing from a paper map',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 'capi-q3',
@@ -648,48 +648,48 @@ const CAPI_OPERATIONS: Assessment = {
       question:
         'If an enumerator tablet battery drops below 15% during an active household interview, what is the correct protocol?',
       options: [
-        'Save the active draft, connect an external certified power bank, and verify the integrity hash before resuming',
+        'Discard the household interview entirely',
         'Rush through the remaining blocks by guessing respondent answers',
         'Continue until the tablet unexpectedly dies',
-        'Discard the household interview entirely',
+        'Save the active draft, connect an external certified power bank, and verify the integrity hash before resuming',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 'capi-q5',
       question:
         'How should an investigator handle sensitive demographic answers under the Collection of Statistics Act when respondents express fear of data misuse?',
       options: [
-        'Explain statutory confidentiality guarantees under the Act and demonstrate that data is encrypted on device',
         'Promise to give a paper copy of other respondents to prove safety',
+        'Explain statutory confidentiality guarantees under the Act and demonstrate that data is encrypted on device',
         'Skip all sensitive questions without noting remarks',
         'Record arbitrary fictitious responses to calm the respondent',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 'capi-q6',
       question:
         'What hash mechanism is used in the MoSPI CAPI offline sync protocol to detect payload corruption during transmission?',
       options: [
-        'Cryptographic checksum (SHA-256) calculated locally and verified by the central ingestion server',
-        'Simple character count comparison',
         'Tablet serial number verification only',
+        'Simple character count comparison',
+        'Cryptographic checksum (SHA-256) calculated locally and verified by the central ingestion server',
         'No verification is performed',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 'capi-q7',
       question:
         'When listing members in a household roster, how is the "Head of Household" formally defined in NSSO guidelines?',
       options: [
-        'A person who is acknowledged as such by the members of the household and bears primary economic/social management responsibility',
+        'The member who answers the door first',
         'Strictly the oldest male individual present',
         'The member with the highest bank balance',
-        'The member who answers the door first',
+        'A person who is acknowledged as such by the members of the household and bears primary economic/social management responsibility',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 'capi-q8',
@@ -708,24 +708,24 @@ const CAPI_OPERATIONS: Assessment = {
       question:
         'Before initiating daily field enumeration, what step must an investigator perform in the CAPI dashboard?',
       options: [
-        'Verify metadata sync, check assigned FSU/sample list, and inspect battery/storage health',
-        'Factory reset the tablet',
         'Uninstall antivirus and security policies',
+        'Factory reset the tablet',
+        'Verify metadata sync, check assigned FSU/sample list, and inspect battery/storage health',
         'Re-register with a personal Gmail account',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 'capi-q10',
       question:
         'What should be done if the CAPI tablet app crashes during a multi-member survey module?',
       options: [
-        'Reopen the app to trigger auto-recovery from the local transaction log up to the last saved item',
+        'Reinstall the application from an unverified APK',
         'Assume all work is lost and start from household 1',
         'Report the tablet damaged and abandon the assignment',
-        'Reinstall the application from an unverified APK',
+        'Reopen the app to trigger auto-recovery from the local transaction log up to the last saved item',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
   ],
 };
@@ -751,12 +751,12 @@ const SCHEDULE_0_LISTING: Assessment = {
       question:
         'What is the primary objective of preparing Schedule 0.0 in an NSS First Stage Unit (FSU)?',
       options: [
-        'To list all buildings, census houses, and households within the boundary to build an unbiased frame for second-stage selection',
-        'To collect detailed expenditure figures from each family',
         'To record political opinions of village leaders',
+        'To collect detailed expenditure figures from each family',
+        'To list all buildings, census houses, and households within the boundary to build an unbiased frame for second-stage selection',
         'To issue official ration cards to residents',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 's0-q2',
@@ -775,36 +775,36 @@ const SCHEDULE_0_LISTING: Assessment = {
       question:
         'When dividing a large sample village into 4 hamlet-groups, what is the governing principle for creating boundaries?',
       options: [
-        'Groups must have roughly equal population and clear, identifiable natural or man-made boundaries',
         'Groups must strictly follow caste lines',
+        'Groups must have roughly equal population and clear, identifiable natural or man-made boundaries',
         'Groups must be drawn as random geometrical squares on a map',
         'Groups should only include pucca houses',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 's0-q4',
       question:
         'How should a vacant non-residential commercial structure (e.g. locked warehouse) be recorded in Schedule 0.0?',
       options: [
-        'Assign a census house number, record institutional/non-residential purpose, and note zero resident households',
+        'Record the owner’s primary residence outside the FSU',
         'Ignore the building completely from the listing',
         'Invent a fictitious household living inside',
-        'Record the owner’s primary residence outside the FSU',
+        'Assign a census house number, record institutional/non-residential purpose, and note zero resident households',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 's0-q5',
       question:
         'What is the standard path of listing that an investigator must follow in an urban block or rural village?',
       options: [
-        'North-West corner to South-East following a continuous serpentine/clockwise sweep',
-        'Random zigzag jumping between distant streets',
         'Listing only houses adjacent to main highways',
+        'Random zigzag jumping between distant streets',
+        'North-West corner to South-East following a continuous serpentine/clockwise sweep',
         'Alphabetical order of household heads',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 's0-q6',
@@ -823,24 +823,24 @@ const SCHEDULE_0_LISTING: Assessment = {
       question:
         'What is Second Stage Stratification (SSS) in Schedule 0.0 listing?',
       options: [
-        'Classifying listed households into relatively homogeneous socio-economic strata before drawing sample units',
+        'A method to eliminate lower-income households from surveys',
         'Dividing the state into regional districts',
         'Splitting survey forms into separate paper files',
-        'A method to eliminate lower-income households from surveys',
+        'Classifying listed households into relatively homogeneous socio-economic strata before drawing sample units',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 's0-q8',
       question:
         'If a hamlet-group contains two selected sub-groups, how are samples drawn across them?',
       options: [
-        'Using Circular Systematic Sampling with random start independently in each stratum',
         'Arbitrary hand-picking by the field investigator',
+        'Using Circular Systematic Sampling with random start independently in each stratum',
         'Selecting the first 8 households on the list',
         'Selecting only households that volunteer',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 's0-q9',
@@ -859,12 +859,12 @@ const SCHEDULE_0_LISTING: Assessment = {
       question:
         'Why must temporary visitors (staying less than 6 months without intent to reside) be excluded from household listing in Schedule 0.0?',
       options: [
-        'To prevent double-counting across their usual place of residence and preserve unbiased population estimates',
-        'Because visitors do not consume food',
         'Because visitors lack Aadhaar cards',
+        'Because visitors do not consume food',
+        'To prevent double-counting across their usual place of residence and preserve unbiased population estimates',
         'To minimise paperwork for the enumerator',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
   ],
 };
@@ -890,24 +890,24 @@ const PLFS_SURVEY: Assessment = {
       question:
         'In PLFS, how is the "Principal Activity Status" of an individual determined over the 365-day reference period?',
       options: [
-        'By the activity status on which the person spent relatively the major time (majority criterion) during the 365 days',
         'By the activity in which the person earned the maximum income',
+        'By the activity status on which the person spent relatively the major time (majority criterion) during the 365 days',
         'By whatever the person was doing on the day of survey',
         'By the highest educational degree attained',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 'plfs-q2',
       question:
         'What minimum duration of economic engagement during the 365-day reference period qualifies a person for "Subsidiary Economic Activity Status"?',
       options: [
-        'Engaged for at least 30 days during the reference year',
+        'Engaged for 1 single hour',
         'Engaged for at least 183 days',
         'Engaged for at least 1 full year',
-        'Engaged for 1 single hour',
+        'Engaged for at least 30 days during the reference year',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 'plfs-q3',
@@ -926,36 +926,36 @@ const PLFS_SURVEY: Assessment = {
       question:
         'In the Daily Time Disposition matrix of PLFS, what intensity score is recorded for an activity pursued for 2.5 hours on a given day?',
       options: [
-        'Half day (intensity 0.5)',
-        'Full day (intensity 1.0)',
         'Zero intensity',
+        'Full day (intensity 1.0)',
+        'Half day (intensity 0.5)',
         'Quarter day (intensity 0.25)',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 'plfs-q5',
       question:
         'How does PLFS classify an unpaid family member assisting in a household enterprise without regular wages?',
       options: [
-        'Helper in household enterprise (Status code 21) within the self-employed category',
         'Unemployed person seeking work (Status code 81)',
+        'Helper in household enterprise (Status code 21) within the self-employed category',
         'Casual labour in non-agriculture (Status code 51)',
         'Out of labour force (Status code 92)',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 'plfs-q6',
       question:
         'Which industry classification standard is currently used in PLFS to record 5-digit economic activity codes?',
       options: [
-        'National Industrial Classification (NIC-2008)',
+        'COICOP classification',
         'Standard Industrial Classification (SIC-1987)',
         'Harmonized System (HS-2022)',
-        'COICOP classification',
+        'National Industrial Classification (NIC-2008)',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 'plfs-q7',
@@ -974,36 +974,36 @@ const PLFS_SURVEY: Assessment = {
       question:
         'What constitutes the "Labour Force" in national statistical reporting?',
       options: [
-        'Persons who are either employed (working or having work but not working) or unemployed (seeking or available for work)',
-        'All citizens aged 18 to 60 regardless of student or retiree status',
         'Only formally registered taxpayers',
+        'All citizens aged 18 to 60 regardless of student or retiree status',
+        'Persons who are either employed (working or having work but not working) or unemployed (seeking or available for work)',
         'Only workers with written contracts',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 'plfs-q9',
       question:
         'If a student spent 8 months studying and 4 months working in agricultural harvesting during the year, what is their Usual Status (ps+ss)?',
       options: [
-        'Principal status: Student (out of labour force); Subsidiary status: Agricultural worker (employed)',
+        'Not classified',
         'Principal status: Unemployed; Subsidiary status: Student',
         'Principal status: Agricultural worker; Subsidiary status: None',
-        'Not classified',
+        'Principal status: Student (out of labour force); Subsidiary status: Agricultural worker (employed)',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 'plfs-q10',
       question:
         'What is the rotational panel scheme used in PLFS for urban sampling units?',
       options: [
-        '2-8-2 rotational panel where an urban FSU is visited 4 times over 4 consecutive quarters',
         'A single one-time visit with no revisits',
+        '2-8-2 rotational panel where an urban FSU is visited 4 times over 4 consecutive quarters',
         'Revisiting the same household every month for 10 years',
         'Random replacement without panel tracking',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
   ],
 };
@@ -1041,48 +1041,48 @@ const DATA_SCRUTINY: Assessment = {
       question:
         'In an Annual Survey of Industries (ASI) return, Gross Sale Value of products is recorded as less than Net Sale Value. What scrutiny action is required?',
       options: [
-        'Flag as critical error: Gross value must equal or exceed Net value (Net = Gross minus taxes, rebates, and freight)',
-        'Approve the return as an acceptable negative rebate',
         'Delete the tax block entirely',
+        'Approve the return as an acceptable negative rebate',
+        'Flag as critical error: Gross value must equal or exceed Net value (Net = Gross minus taxes, rebates, and freight)',
         'Divide both figures by two',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 'scrutiny-q3',
       question:
         'When cross-scrutinizing household consumption expenditure with reported household monthly income, what constitutes a severe warning flag?',
       options: [
-        'Reported monthly food expenditure exceeds total household monthly income by a factor of 4 with zero reported loans, dissavings, or transfers',
         'Expenditure exactly matches income',
+        'Reported monthly food expenditure exceeds total household monthly income by a factor of 4 with zero reported loans, dissavings, or transfers',
         'Household saves 10% of monthly income',
         'Food expenditure is 30% of total expenditure',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 'scrutiny-q4',
       question:
         'What is the difference between "Sampling Error" and "Non-Sampling Error" in large-scale sample surveys?',
       options: [
-        'Sampling error arises from observing a subset instead of the full census; non-sampling error arises from measurement, coverage, reporting, or processing flaws',
+        'There is no mathematical distinction between them',
         'Sampling errors only happen in cities, non-sampling errors in villages',
         'Non-sampling errors decrease automatically with larger sample sizes',
-        'There is no mathematical distinction between them',
+        'Sampling error arises from observing a subset instead of the full census; non-sampling error arises from measurement, coverage, reporting, or processing flaws',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 'scrutiny-q5',
       question:
         'When an extreme outlier is detected in enterprise turnover data (e.g. 100x sector median), what is the correct professional methodology?',
       options: [
-        'Trace back the scrutiny slip to the field unit for verified audited financial statements or clarification notes before applying any statistical adjustment',
-        'Instantly delete the enterprise from the survey frame',
         'Replace the value with the state median without documenting the modification',
+        'Instantly delete the enterprise from the survey frame',
+        'Trace back the scrutiny slip to the field unit for verified audited financial statements or clarification notes before applying any statistical adjustment',
         'Ignore the return and don’t report it to the officer-in-charge',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
     {
       id: 'scrutiny-q6',
@@ -1101,24 +1101,24 @@ const DATA_SCRUTINY: Assessment = {
       question:
         'What principle governs the "Hot-Deck Imputation" technique used in statistical data cleaning?',
       options: [
-        'Replacing missing values with observed responses from a randomly selected "donor" unit with matching demographic/economic characteristics',
         'Setting all missing values to zero',
+        'Replacing missing values with observed responses from a randomly selected "donor" unit with matching demographic/economic characteristics',
         'Replacing missing values with the national overall mean',
         'Deleting the entire questionnaire from analysis',
       ],
-      correctAnswer: 0,
+      correctAnswer: 1,
     },
     {
       id: 'scrutiny-q8',
       question:
         'Under National Accounts Statistics (NAS), what constitutes "Gross Fixed Capital Formation" (GFCF)?',
       options: [
-        'Net additions to fixed assets (machinery, equipment, infrastructure, dwellings) during the accounting period',
+        'Total imports minus total exports',
         'Only purchases of stock market shares by households',
         'Total government expenditure on salaries and pensions',
-        'Total imports minus total exports',
+        'Net additions to fixed assets (machinery, equipment, infrastructure, dwellings) during the accounting period',
       ],
-      correctAnswer: 0,
+      correctAnswer: 3,
     },
     {
       id: 'scrutiny-q9',
@@ -1137,12 +1137,12 @@ const DATA_SCRUTINY: Assessment = {
       question:
         'What does an Official Scrutiny Sheet accompany when transmitting validated survey batches to the National Data Center?',
       options: [
-        'A formal log of all corrections, supervisor signatures, FSU sample allocation weights, and validation rule pass certificates',
-        'A marketing brochure for public release',
         'Raw unvalidated paper notes without timestamps',
+        'A marketing brochure for public release',
+        'A formal log of all corrections, supervisor signatures, FSU sample allocation weights, and validation rule pass certificates',
         'Only an invoice for travel reimbursements',
       ],
-      correctAnswer: 0,
+      correctAnswer: 2,
     },
   ],
 };
