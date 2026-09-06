@@ -90,7 +90,7 @@ export function AdminOverviewClient({
           <CardHeader>
             <CardTitle className="text-xs font-semibold text-muted-foreground">Average Readiness Index</CardTitle>
             <div className="text-3xl font-black text-foreground mt-1">{initialOverview.avgReadiness}%</div>
-            <div className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 font-semibold">
+            <div className="text-[11px] text-[--color-primary] mt-1 font-semibold">
               ↗ +4.2% from baseline
             </div>
           </CardHeader>
@@ -99,8 +99,8 @@ export function AdminOverviewClient({
         <Card>
           <CardHeader>
             <CardTitle className="text-xs font-semibold text-muted-foreground">Critical Gaps Identified</CardTitle>
-            <div className="text-3xl font-black text-rose-600 mt-1">{initialOverview.criticalGaps}</div>
-            <div className="text-[11px] text-rose-500 mt-1 font-semibold">Requires immediate training</div>
+            <div className="text-3xl font-black text-[--color-destructive] mt-1">{initialOverview.criticalGaps}</div>
+            <div className="text-[11px] text-[--color-destructive] mt-1 font-semibold">Requires immediate training</div>
           </CardHeader>
         </Card>
 

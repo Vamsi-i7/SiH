@@ -42,8 +42,8 @@ export function CopilotFAB({ userContext }: CopilotFABProps) {
         {/* Notification dot on first visit */}
         {!hasAnimated && (
           <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
-            <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-amber-500" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[--color-primary-light] opacity-75" />
+            <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-primary" />
           </span>
         )}
       </button>

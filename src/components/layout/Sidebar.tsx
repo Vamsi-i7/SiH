@@ -47,27 +47,27 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col border-r border-accent bg-white transition-all duration-200 ${
+      className={`flex flex-col border-r border-border bg-card transition-all duration-200 ${
         collapsed ? 'w-16' : 'w-56'
       }`}
     >
-      <div className="flex h-14 items-center border-b border-accent px-4">
+      <div className="flex h-14 items-center border-b border-border px-4">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#8b9a6e] text-white shadow-sm">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-white shadow-sm">
               <Building2 className="h-4 w-4" />
             </div>
-            <span className="font-bold text-sm text-[#1a1a1a]">StatVidya</span>
+            <span className="font-bold text-sm text-foreground">StatVidya</span>
           </div>
         )}
         {collapsed && (
-          <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-lg bg-[#8b9a6e] text-white shadow-sm">
+          <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-md bg-primary text-white shadow-sm">
             <Building2 className="h-4 w-4" />
           </div>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto flex h-6 w-6 items-center justify-center rounded-md text-stone-400 hover:bg-background hover:text-stone-700 transition-colors"
+          className="ml-auto flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
         >
           {collapsed ? (
             <ChevronRight className="h-4 w-4" />
@@ -79,7 +79,7 @@ export function Sidebar() {
 
       <nav className="flex-1 overflow-y-auto p-2">
         <div className="mb-2">
-          <p className={`text-[10px] font-semibold uppercase tracking-wider text-stone-400 pb-1 ${collapsed ? 'text-center' : ''}`}>
+          <p className={`text-[10px] font-semibold uppercase tracking-wider text-muted-foreground pb-1 ${collapsed ? 'text-center' : ''}`}>
             Main
           </p>
           {navItems.map((item) => {
@@ -88,12 +88,12 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   collapsed ? 'justify-center px-0' : ''
                 } ${
                   isActive(item.href)
-                    ? 'bg-[#8b9a6e] text-white'
-                    : 'text-stone-700 hover:bg-background'
+                    ? 'bg-primary text-white'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0" />
@@ -104,7 +104,7 @@ export function Sidebar() {
         </div>
 
         <div className="mb-2">
-          <p className={`text-[10px] font-semibold uppercase tracking-wider text-stone-400 pb-1 ${collapsed ? 'text-center' : ''}`}>
+          <p className={`text-[10px] font-semibold uppercase tracking-wider text-muted-foreground pb-1 ${collapsed ? 'text-center' : ''}`}>
             Content
           </p>
           {trainerItems.map((item) => {
@@ -113,12 +113,12 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   collapsed ? 'justify-center px-0' : ''
                 } ${
                   isActive(item.href)
-                    ? 'bg-[#8b9a6e] text-white'
-                    : 'text-stone-700 hover:bg-background'
+                    ? 'bg-primary text-white'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0" />
@@ -129,7 +129,7 @@ export function Sidebar() {
         </div>
 
         <div className="mb-2">
-          <p className={`text-[10px] font-semibold uppercase tracking-wider text-stone-400 pb-1 ${collapsed ? 'text-center' : ''}`}>
+          <p className={`text-[10px] font-semibold uppercase tracking-wider text-muted-foreground pb-1 ${collapsed ? 'text-center' : ''}`}>
             Admin
           </p>
           {adminItems.map((item) => {
@@ -138,12 +138,12 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   collapsed ? 'justify-center px-0' : ''
                 } ${
                   isActive(item.href)
-                    ? 'bg-[#8b9a6e] text-white'
-                    : 'text-stone-700 hover:bg-background'
+                    ? 'bg-primary text-white'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0" />
