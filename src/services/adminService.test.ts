@@ -4,7 +4,7 @@ import {
   computeDepartmentBreakdown,
   computeWorkforceOverview,
 } from './adminService';
-import type { User, CompetencyRecord, ActivityCompetency, TrainingPriority } from '../lib/types';
+import type { User, CompetencyRecord, ActivityCompetency } from '../lib/types';
 
 describe('adminService - Linear Regression', () => {
   it('returns isComputable: false for 0 points', () => {

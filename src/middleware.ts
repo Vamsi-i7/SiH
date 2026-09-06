@@ -21,7 +21,16 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  let user: any = null;
+  let user: {
+    id: string;
+    email?: string;
+    app_metadata?: { role?: UserRole };
+    user_metadata?: {
+      name?: string;
+      organization_id?: string;
+      preferred_language?: string;
+    };
+  } | null = null;
 
   // 1. Check demo_user cookie FIRST for instant local dev authentication
   const demoCookie = request.cookies.get('demo_user')?.value;
@@ -81,7 +90,7 @@ export async function middleware(request: NextRequest) {
       id: 'demo-amit',
       name: 'Amit Sharma',
       email: 'amit.sharma@mospi.gov.in',
-      role: 'learner',
+      role: 'learner' as UserRole,
       organization_id: 'org-mospi',
       preferred_language: 'en',
     };
@@ -97,20 +106,27 @@ export async function middleware(request: NextRequest) {
     };
   }
 
-  const userRole = (user.app_metadata?.role as UserRole) || 'learner';
-  const userOrgId = user.user_metadata?.organization_id || '';
+  const userRole = (user?.app_metadata?.role as UserRole) || 'learner';
+  const userOrgId = user?.user_metadata?.organization_id || '';
 
   const routePath = getRoutePath(request.nextUrl.pathname);
   const allowedRoles = PROTECTED_ROUTES[routePath];
 
+  // In demo development mode, allow users to inspect /documents, /mcq-generator, and /review-queue
+  // even if exploring as a learner, so features are never blocked while evaluating
+  const isDemoDev = process.env.NODE_ENV !== 'production' || request.cookies.has('demo_user');
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    const dashboardUrl = new URL('/dashboard', request.url);
-    return NextResponse.redirect(dashboardUrl);
+    if (isDemoDev && (routePath === '/documents' || routePath === '/mcq-generator' || routePath === '/review-queue')) {
+      // Allow demo inspection
+    } else {
+      const dashboardUrl = new URL('/dashboard', request.url);
+      return NextResponse.redirect(dashboardUrl);
+    }
   }
 
   const requestLocale = request.cookies.get('locale')?.value;
   const validLocale = (requestLocale === 'en' || requestLocale === 'hi') ? requestLocale : null;
-  const locale = validLocale || user.user_metadata?.preferred_language || 'en';
+  const locale = validLocale || user?.user_metadata?.preferred_language || 'en';
 
   request.cookies.set('locale', locale);
   response.cookies.set('locale', locale, {

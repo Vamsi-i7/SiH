@@ -6,7 +6,7 @@ import {
   type DepartmentSummary,
   type WorkforceOverview,
 } from '../lib/types';
-import { computeReadinessIndex, computeGapSeverity } from './competencyService';
+import { computeReadinessIndex, computeGapSeverity, classifySeverity } from './competencyService';
 
 export interface LinearRegressionResult {
   slope: number;
@@ -110,7 +110,7 @@ export function computeDepartmentBreakdown(
       for (const ac of activityCompetencies) {
         const level = userRecordMap.get(ac.competency_id) ?? 1;
         const severity = computeGapSeverity(level, ac.target_level, ac.priority);
-        if (severity === 2) {
+        if (classifySeverity(severity) === 'HIGH') {
           criticalGapCount++;
         }
       }

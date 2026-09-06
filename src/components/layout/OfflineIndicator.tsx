@@ -190,10 +190,7 @@ export function OfflineIndicator() {
       {/* Pending count chip when offline */}
       {variant === 'offline' && pendingCount > 0 && (
         <span
-          className="
-            flex items-center justify-center px-2 py-0.5 text-xs font-bold
-            bg-[--color-severity-moderate]/20 text-[--color-severity-moderate] rounded-full min-w-[1.5rem]
-          "
+          className="flex items-center justify-center px-2 py-0.5 text-xs font-bold bg-[--color-severity-moderate]/20 text-[--color-severity-moderate] rounded-full min-w-6"
           aria-label={`${pendingCount} assessments will sync when online`}
         >
           {pendingCount}

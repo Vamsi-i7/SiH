@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { rankCoursesForGaps } from '@/services/recommendationService';
+import { getPersonaFRAC } from '@/data/fracCadres';
+import { CompetencyService } from '@/services/competencyService';
 import type { CompetencyGap } from '@/lib/types';
+import type { AppUser } from '@/lib/auth';
 
 interface RecommendedCourse {
   id: string;
@@ -131,155 +134,61 @@ function CourseCard({ course }: { course: RecommendedCourse }) {
   );
 }
 
-function getDemoPathwaysData(): PathwaysData {
-  const demoGaps: CompetencyGap[] = [
-    {
-      competencyId: 'comp-capi',
-      competency: {
-        id: 'comp-capi',
-        name: 'CAPI Tablet Operation',
-        name_hi: 'कैपी टैबलेट संचालन',
-        category: 'Domain',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-fh',
-        name: 'Household Listing & Census Enumeration',
-        name_hi: 'परिवार सूचीकरण & जनगणना गणना',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 2,
-      targetLevel: 4,
-      gap: 2,
-      priority: 'critical',
-      severity: 'HIGH',
-      evidenceType: 'assessment-verified',
-    },
-    {
-      competencyId: 'comp-survey',
-      competency: {
-        id: 'comp-survey',
-        name: 'Survey Sampling & Design',
-        name_hi: 'सर्वेक्षण नमूनाकरण & डिजाइन',
-        category: 'Domain',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-ss',
-        name: 'Sample Selection & Multiplier Verification',
-        name_hi: 'नमूना चयन & गुणक सत्यापन',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 1,
-      targetLevel: 3,
-      gap: 2,
-      priority: 'important',
-      severity: 'HIGH',
-      evidenceType: 'self-assessed',
-    },
-    {
-      competencyId: 'comp-nsso',
-      competency: {
-        id: 'comp-nsso',
-        name: 'NSSO Protocol Mastery',
-        name_hi: 'एनएसएसओ प्रोटोकॉल निपुणता',
-        category: 'Domain',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-plfs',
-        name: 'PLFS Schedule Canvassing',
-        name_hi: 'पीएलएफएस अनुसूची सर्वेक्षण',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 1,
-      targetLevel: 3,
-      gap: 2,
-      priority: 'important',
-      severity: 'HIGH',
-      evidenceType: 'self-assessed',
-    },
-    {
-      competencyId: 'comp-data',
-      competency: {
-        id: 'comp-data',
-        name: 'Data Entry & Scrutiny',
-        name_hi: 'डेटा प्रविष्टि और जांच',
-        category: 'Functional',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-de',
-        name: 'Field Validation Checks',
-        name_hi: 'फील्ड सत्यापन जांच',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 1,
-      targetLevel: 3,
-      gap: 2,
-      priority: 'important',
-      severity: 'HIGH',
-      evidenceType: 'self-assessed',
-    },
-    {
-      competencyId: 'comp-teamwork',
-      competency: {
-        id: 'comp-teamwork',
-        name: 'Teamwork & Collaboration',
-        name_hi: 'टीम वर्क और सहयोग',
-        category: 'Behavioural',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-tw',
-        name: 'Field Coordination',
-        name_hi: 'फील्ड समन्वय',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 2,
-      targetLevel: 3,
-      gap: 1,
-      priority: 'desirable',
-      severity: 'MODERATE',
-      evidenceType: 'self-assessed',
-    },
-  ];
+function buildPersonaPathwaysData(user?: AppUser | null): PathwaysData {
+  const profile = getPersonaFRAC(user);
+  const isHindi = user?.user_metadata?.preferred_language === 'hi' || profile.preferredLanguage === 'hi';
 
-  const ranked = rankCoursesForGaps(demoGaps);
+  const gaps: CompetencyGap[] = profile.competencies.map((comp) => {
+    const gap = Math.max(0, comp.targetLevel - comp.currentLevel);
+    const severityScore = CompetencyService.computeGapSeverity(comp.currentLevel, comp.targetLevel, comp.priority);
+    const severity = CompetencyService.classifySeverity(severityScore);
+
+    return {
+      competencyId: comp.id,
+      competency: {
+        id: comp.id,
+        name: isHindi ? comp.name_hi : comp.name,
+        name_hi: comp.name_hi,
+        category: comp.category,
+        description: isHindi ? comp.description_hi : comp.description,
+        description_hi: comp.description_hi,
+        levels: comp.levels,
+        provenance: comp.provenance,
+        created_at: new Date().toISOString(),
+      },
+      activity: {
+        id: `act-${comp.id}`,
+        name: isHindi ? comp.activityName_hi : comp.activityName,
+        name_hi: comp.activityName_hi,
+        description: comp.description,
+        role_id: profile.personaId,
+        provenance: comp.provenance,
+        created_at: new Date().toISOString(),
+      },
+      currentLevel: comp.currentLevel,
+      targetLevel: comp.targetLevel,
+      gap,
+      priority: comp.priority,
+      severity,
+      evidenceType: comp.evidenceType,
+    };
+  });
+
+  const ranked = rankCoursesForGaps(gaps);
 
   const pathways: RecommendedCourse[] = ranked.map((r) => ({
     id: r.course.id,
-    title: r.course.title,
+    title: isHindi && r.course.title_hi ? r.course.title_hi : r.course.title,
     title_hi: r.course.title_hi,
     provider: r.course.provider,
     duration: r.course.duration,
-    description: r.course.description,
+    description: isHindi && r.course.description_hi ? r.course.description_hi : r.course.description,
     description_hi: r.course.description_hi,
     priority: r.priority,
     targetCompetencies: r.course.targetCompetencies.map(
-      (cId) => demoGaps.find((g) => g.competencyId === cId)?.competency.name || cId
+      (cId) => gaps.find((g) => g.competencyId === cId)?.competency.name || cId
     ),
-    whyRecommended: r.whyRecommended,
+    whyRecommended: isHindi && r.whyRecommended_hi ? r.whyRecommended_hi : r.whyRecommended,
     whyRecommended_hi: r.whyRecommended_hi,
     competencyGaps: r.matchingGaps.map((mg) => ({
       competency: mg.competencyName,
@@ -291,19 +200,20 @@ function getDemoPathwaysData(): PathwaysData {
     iGotLink: r.course.iGotLink,
   }));
 
-  const metCount = demoGaps.filter((g) => g.currentLevel >= g.targetLevel).length;
-  const readinessIndex = Math.round((metCount / demoGaps.length) * 100);
+  const userRecords = new Map(profile.competencies.map((c) => [c.id, c.currentLevel]));
+  const required = profile.competencies.map((c) => ({ competencyId: c.id, targetLevel: c.targetLevel }));
+  const readinessIndex = CompetencyService.computeReadinessIndex(required, userRecords);
 
   return {
     pathways,
     readinessIndex,
-    totalGaps: demoGaps.filter((g) => g.gap > 0).length,
+    totalGaps: gaps.filter((g) => g.gap > 0).length,
   };
 }
 
-export default function PathwaysClient() {
+export default function PathwaysClient({ user }: { user?: AppUser | null }) {
   const t = useTranslations();
-  const [data] = useState<PathwaysData>(getDemoPathwaysData);
+  const [data] = useState<PathwaysData>(() => buildPersonaPathwaysData(user));
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
 
   if (!data) {

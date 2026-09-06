@@ -10,8 +10,8 @@ import {
   User,
   LogOut,
   Settings,
-  Flag,
-  Users,
+  Sparkles,
+  Check,
 } from 'lucide-react';
 import { Notification } from '@/components/notifications/types';
 import { getInitialNotifications } from '@/components/notifications/notification-data';
@@ -19,48 +19,57 @@ import { NotificationDropdown } from '@/components/notifications/NotificationDro
 import { DEMO_PERSONAS } from '@/lib/demoPersonas';
 import type { DemoPersona } from '@/lib/types';
 
-function getInitialActivePersona(): DemoPersona {
+function getInitialPersona(): DemoPersona {
   if (typeof document === 'undefined') return DEMO_PERSONAS[0];
   try {
-    const match = document.cookie.match(/(?:^|;\s*)demo_user=([^;]+)/);
+    const match = document.cookie.match(/(?:^|; )demo_user=([^;]*)/);
     if (match) {
-      const parsed = JSON.parse(decodeURIComponent(match[1]));
-      if (parsed?.email) {
-        const found = DEMO_PERSONAS.find(
-          (p) => p.email.toLowerCase() === parsed.email.toLowerCase()
-        );
-        if (found) return found;
-      }
+      const decoded = JSON.parse(decodeURIComponent(match[1]));
+      const found = DEMO_PERSONAS.find(
+        (p) => p.email.toLowerCase() === decoded.email?.toLowerCase()
+      );
+      if (found) return found;
     }
   } catch {
-    // Use default persona on cookie parse error
+    // Fallback to default
   }
   return DEMO_PERSONAS[0];
+}
+
+function setPersonaCookie(persona: DemoPersona) {
+  if (typeof document === 'undefined') return;
+  document.cookie = `demo_user=${encodeURIComponent(
+    JSON.stringify(persona)
+  )}; path=/; max-age=604800`;
+  document.cookie = `locale=${
+    persona.preferred_language || 'en'
+  }; path=/; max-age=31536000`;
+}
+
+function clearPersonaCookie() {
+  if (typeof document === 'undefined') return;
+  document.cookie = 'demo_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 }
 
 export function Topbar() {
   const router = useRouter();
   const t = useTranslations('nav');
 
-  // Active Demo Persona
-  const [activePersona, setActivePersona] = useState<DemoPersona>(getInitialActivePersona);
-
-  // Dropdown visibility states (mutually exclusive)
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [personaOpen, setPersonaOpen] = useState(false);
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [activePersona, setActivePersona] = useState<DemoPersona>(getInitialPersona);
 
-  // Dropdown DOM refs for outside-click detection
-  const notificationsRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const personaRef = useRef<HTMLDivElement>(null);
+  const switcherRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
 
-  // Notifications state
+  // Notifications state initialized with active persona's role
   const [notifications, setNotifications] = useState<Notification[]>(() =>
-    getInitialNotifications(getInitialActivePersona().role)
+    getInitialNotifications(getInitialPersona().role)
   );
 
-  // Outside click & Escape key listeners
+  // Handle clicks outside dropdowns & Escape key
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -73,8 +82,8 @@ export function Topbar() {
       if (menuRef.current && !menuRef.current.contains(target)) {
         setMenuOpen(false);
       }
-      if (personaRef.current && !personaRef.current.contains(target)) {
-        setPersonaOpen(false);
+      if (switcherRef.current && !switcherRef.current.contains(target)) {
+        setSwitcherOpen(false);
       }
     };
 
@@ -82,7 +91,7 @@ export function Topbar() {
       if (event.key === 'Escape') {
         setNotificationsOpen(false);
         setMenuOpen(false);
-        setPersonaOpen(false);
+        setSwitcherOpen(false);
       }
     };
 
@@ -98,17 +107,17 @@ export function Topbar() {
   const toggleNotifications = useCallback(() => {
     setNotificationsOpen((prev) => !prev);
     setMenuOpen(false);
-    setPersonaOpen(false);
+    setSwitcherOpen(false);
   }, []);
 
   const toggleMenu = useCallback(() => {
     setMenuOpen((prev) => !prev);
     setNotificationsOpen(false);
-    setPersonaOpen(false);
+    setSwitcherOpen(false);
   }, []);
 
-  const togglePersona = useCallback(() => {
-    setPersonaOpen((prev) => !prev);
+  const toggleSwitcher = useCallback(() => {
+    setSwitcherOpen((prev) => !prev);
     setNotificationsOpen(false);
     setMenuOpen(false);
   }, []);
@@ -116,12 +125,9 @@ export function Topbar() {
   // Notification action handlers
   const handleNotificationClick = useCallback(
     (notification: Notification) => {
-      // Mark as read immediately
       setNotifications((prev) =>
         prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n))
       );
-
-      // Navigate if link provided
       if (notification.href) {
         setNotificationsOpen(false);
         router.push(notification.href);
@@ -134,100 +140,135 @@ export function Topbar() {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   }, []);
 
-  // Persona switch handler
-  const handleSelectPersona = useCallback((persona: DemoPersona) => {
-    setPersonaOpen(false);
+  const handleSelectPersona = (persona: DemoPersona) => {
     setActivePersona(persona);
+    setSwitcherOpen(false);
     setNotifications(getInitialNotifications(persona.role));
-
-    const userObj = {
-      id: persona.id,
-      name: persona.name,
-      email: persona.email,
-      role: persona.role,
-      organization_id: persona.organization_id,
-      cadre: persona.cadre,
-      designation: persona.designation,
-      preferred_language: persona.preferred_language,
-      department: persona.department,
-    };
-    document.cookie = `demo_user=${encodeURIComponent(
-      JSON.stringify(userObj)
-    )};path=/;max-age=${60 * 60 * 24 * 7};SameSite=Lax`;
-    document.cookie = `locale=${persona.preferred_language || 'en'};path=/;max-age=${
-      60 * 60 * 24 * 7
-    };SameSite=Lax`;
-
+    setPersonaCookie(persona);
     window.location.reload();
-  }, []);
+  };
 
-  // Calculate dynamic unread count
+  const roleColors: Record<
+    string,
+    { bg: string; text: string; badge: string }
+  > = {
+    learner: {
+      bg: 'bg-[#1b365d]/10',
+      text: 'text-[#1b365d]',
+      badge: 'bg-[#1b365d]/10 text-[#1b365d]',
+    },
+    trainer: {
+      bg: 'bg-[#8b9a6e]/15',
+      text: 'text-[#8b9a6e]',
+      badge: 'bg-[#8b9a6e]/15 text-[#5f6c48]',
+    },
+    admin: {
+      bg: 'bg-[#c9963a]/15',
+      text: 'text-[#a77930]',
+      badge: 'bg-[#c9963a]/15 text-[#886022]',
+    },
+  };
+
+  const currentRoleStyle =
+    roleColors[activePersona.role] || roleColors.learner;
   const unreadCount = notifications.filter((n) => !n.read).length;
   const badgeLabel = unreadCount > 99 ? '99+' : unreadCount.toString();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-accent bg-white px-6">
-      <div className="flex items-center">
-        <h1 className="text-lg font-semibold text-[#1a1a1a]">
+    <header className="flex h-16 items-center justify-between border-b border-border bg-white px-4 sm:px-6">
+      <div className="flex items-center gap-3">
+        <h1 className="text-base sm:text-lg font-semibold text-foreground">
           {t('dashboard')}
         </h1>
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Persona Switcher */}
-        <div className="relative" ref={personaRef}>
+        {/* 1-Click Official Persona Switcher */}
+        <div className="relative" ref={switcherRef}>
           <button
+            id="persona-switcher-button"
             type="button"
-            onClick={togglePersona}
-            aria-label="Switch demo persona"
-            aria-expanded={personaOpen}
-            className="flex items-center gap-1.5 rounded-lg border border-accent bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 hover:bg-background transition-colors cursor-pointer"
+            onClick={toggleSwitcher}
+            aria-label="Switch persona or cadre role"
+            aria-expanded={switcherOpen}
+            className="flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold hover:bg-stone-50 transition shadow-2xs cursor-pointer"
+            title="Switch Persona / Cadre Role"
           >
-            <Users className="h-3.5 w-3.5 text-primary" />
-            <span className="capitalize font-semibold text-primary-dark hidden md:inline">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-muted-foreground hidden md:inline">
+              Cadre Persona:
+            </span>
+            <span className="font-bold text-foreground truncate max-w-32.5 sm:max-w-45">
+              {activePersona.name}
+            </span>
+            <span
+              className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${currentRoleStyle.badge}`}
+            >
               {activePersona.role}
             </span>
-            <ChevronDown className="h-3 w-3 text-stone-400" />
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </button>
 
-          {personaOpen && (
-            <div className="absolute right-0 mt-2 w-72 rounded-xl border border-accent bg-white py-1.5 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150">
-              <div className="px-3 py-2 border-b border-accent">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                  Switch Demo Persona
+          {switcherOpen && (
+            <div className="absolute right-0 mt-2 w-80 rounded-xl border border-border bg-white p-2 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-100">
+              <div className="px-3 py-2 border-b border-border/60 mb-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Switch Official Cadre
+                  </span>
+                  <span className="text-[10px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">
+                    SIH Demo
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Select a role to test role-specific dashboards, Hindi CAPI, or NSSTA Trainer workflows.
                 </p>
               </div>
-              <div className="py-1">
-                {DEMO_PERSONAS.map((p) => {
-                  const isSelected = p.id === activePersona.id;
+
+              <div className="space-y-1">
+                {DEMO_PERSONAS.map((persona) => {
+                  const isSelected = persona.id === activePersona.id;
+                  const style = roleColors[persona.role] || roleColors.learner;
+
                   return (
                     <button
-                      key={p.id}
+                      key={persona.id}
                       type="button"
-                      onClick={() => handleSelectPersona(p)}
-                      className={`flex w-full items-start gap-2.5 px-3 py-2 text-left text-xs transition-colors hover:bg-background cursor-pointer ${
-                        isSelected ? 'bg-[#f7f2eb]' : ''
+                      onClick={() => handleSelectPersona(persona)}
+                      className={`w-full flex items-start gap-3 p-2.5 rounded-lg text-left transition cursor-pointer ${
+                        isSelected
+                          ? 'bg-secondary border border-border'
+                          : 'hover:bg-stone-50'
                       }`}
                     >
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eae2d6] text-[#8b9a6e] font-bold text-xs mt-0.5">
-                        {p.name.charAt(0)}
+                      <div
+                        className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-bold text-xs ${style.bg} ${style.text}`}
+                      >
+                        {persona.name.charAt(0)}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <p className="font-semibold text-stone-900 truncate">
-                            {p.name}
+                          <p className="text-xs font-bold text-foreground truncate">
+                            {persona.name}
                           </p>
-                          <span className="text-[10px] font-bold uppercase rounded px-1.5 py-0.5 bg-stone-100 text-stone-600">
-                            {p.role}
+                          <span
+                            className={`text-[10px] font-bold uppercase px-1.5 py-0.2 rounded ${style.badge}`}
+                          >
+                            {persona.role}
                           </span>
                         </div>
-                        <p className="text-[11px] text-stone-500 truncate">
-                          {p.designation}
+                        <p className="text-[11px] text-muted-foreground truncate">
+                          {persona.designation} • {persona.cadre}
                         </p>
-                        <p className="text-[10px] text-stone-400 truncate">
-                          {p.cadre}
-                        </p>
+                        {persona.preferred_language === 'hi' && (
+                          <span className="inline-block mt-0.5 text-[9px] font-bold text-orange-700 bg-orange-50 px-1.5 rounded">
+                            🇮🇳 हिन्दी First (NSSO FOD)
+                          </span>
+                        )}
                       </div>
+                      {isSelected && (
+                        <Check className="h-4 w-4 text-emerald-600 mt-1 shrink-0" />
+                      )}
                     </button>
                   );
                 })}
@@ -278,30 +319,37 @@ export function Topbar() {
             aria-expanded={menuOpen}
             className="flex items-center gap-2 rounded-lg hover:bg-background px-2 py-1.5 text-stone-600 transition-colors cursor-pointer"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#eae2d6] text-[#8b9a6e] font-bold">
-              <User className="h-4 w-4 text-[#8b9a6e]" />
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-full font-bold ${currentRoleStyle.bg} ${currentRoleStyle.text}`}
+            >
+              {activePersona.name.charAt(0)}
             </div>
-            <span className="text-sm font-medium text-[#1a1a1a] hidden sm:inline">
+            <span className="text-sm font-medium text-foreground hidden sm:inline">
               {activePersona.name}
             </span>
             <ChevronDown className="h-4 w-4 text-stone-400" />
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-56 rounded-xl border border-accent bg-white py-1.5 shadow-xl z-50 animate-in fade-in zoom-in-95 duration-150">
-              <div className="px-4 py-2 border-b border-accent">
-                <p className="text-sm font-semibold text-[#1a1a1a]">
+            <div className="absolute right-0 mt-2 w-56 rounded-xl border border-border bg-white py-1 shadow-lg z-50 animate-in fade-in zoom-in-95 duration-100">
+              <div className="px-4 py-2 border-b border-border">
+                <p className="text-sm font-bold text-foreground">
                   {activePersona.name}
                 </p>
-                <p className="text-xs text-stone-500 truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   {activePersona.email}
                 </p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">
+                  {activePersona.designation}
+                </p>
                 <div className="mt-1.5 flex items-center gap-1.5">
-                  <span className="text-[10px] font-bold uppercase rounded px-1.5 py-0.5 bg-[#8b9a6e]/15 text-[#728056]">
+                  <span
+                    className={`text-[10px] font-bold uppercase rounded px-1.5 py-0.5 ${currentRoleStyle.badge}`}
+                  >
                     {activePersona.role}
                   </span>
                   <span className="text-[10px] text-stone-400 truncate">
-                    {activePersona.designation}
+                    {activePersona.cadre}
                   </span>
                 </div>
               </div>
@@ -310,39 +358,40 @@ export function Topbar() {
                 <Link
                   href="/profile"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-stone-700 hover:bg-background transition-colors"
+                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors"
                 >
-                  <User className="h-4 w-4 text-[#8b9a6e]" />
+                  <User className="h-4 w-4 text-primary" />
                   <span>{t('profile')}</span>
                 </Link>
 
                 <Link
                   href="/pathways"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-stone-700 hover:bg-background transition-colors"
+                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors"
                 >
-                  <Flag className="h-4 w-4 text-[#8b9a6e]" />
+                  <Sparkles className="h-4 w-4 text-primary" />
                   <span>{t('pathways')}</span>
                 </Link>
 
                 <Link
                   href="/settings"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-stone-700 hover:bg-background transition-colors"
+                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-foreground hover:bg-secondary transition-colors"
                 >
-                  <Settings className="h-4 w-4 text-[#8b9a6e]" />
+                  <Settings className="h-4 w-4 text-primary" />
                   <span>Settings</span>
                 </Link>
               </div>
 
-              <div className="border-t border-accent pt-1">
+              <div className="border-t border-border pt-1">
                 <button
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
+                    clearPersonaCookie();
                     router.push('/auth/login');
                   }}
-                  className="flex w-full items-center gap-2.5 px-4 py-2 text-sm text-rose-600 hover:bg-background transition-colors cursor-pointer"
+                  className="flex w-full items-center gap-2.5 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>{t('logout')}</span>

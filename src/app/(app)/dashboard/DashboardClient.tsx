@@ -7,6 +7,7 @@ import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { useEffect, useState } from 'react';
 import { CompetencyService } from '@/services/competencyService';
+import { getPersonaFRAC } from '@/data/fracCadres';
 import { PlayCircle } from 'lucide-react';
 
 interface DashboardProps {
@@ -54,50 +55,43 @@ export default function DashboardPage({ user }: DashboardProps) {
   const [userRole, setUserRole] = useState<string>(fallbackRole);
 
   useEffect(() => {
-    const loadDashboard = async () => {
+    const loadDashboard = () => {
       try {
-        const fastQuery = async <T,>(promise: Promise<T>, timeoutMs = 150): Promise<T | null> => {
-          return Promise.race([
-            promise,
-            new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs)),
-          ]);
-        };
+        const profile = getPersonaFRAC(user);
+        const isHindi = user.user_metadata?.preferred_language === 'hi' || profile.preferredLanguage === 'hi';
 
-        // Role resolved from user metadata or fallback
+        setUserRole(isHindi ? profile.designation_hi : profile.designation);
 
-        // Build readiness and gap data from demo competencies
-        // In production: fetch from activity_competencies joined with role requirements
-        const demoCompetencies = [
-          { id: 'comp-capi', name: 'CAPI Tablet Operation', current: 2, target: 4, priority: 'critical' as const },
-          { id: 'comp-nsso', name: 'NSSO Protocol Mastery', current: 3, target: 3, priority: 'critical' as const },
-          { id: 'comp-survey', name: 'Survey Sampling & Design', current: 1, target: 2, priority: 'important' as const },
-          { id: 'comp-data', name: 'Data Entry & Scrutiny', current: 2, target: 3, priority: 'important' as const },
-          { id: 'comp-teamwork', name: 'Teamwork & Collaboration', current: 3, target: 2, priority: 'desirable' as const },
-        ];
-
-        // Calculate readiness
-        const met = demoCompetencies.filter(c => c.current >= c.target).length;
-        const readiness = Math.round((met / demoCompetencies.length) * 100);
+        // Calculate readiness with PRD mathematical engine
+        const userRecords = new Map(profile.competencies.map((c) => [c.id, c.currentLevel]));
+        const required = profile.competencies.map((c) => ({
+          competencyId: c.id,
+          targetLevel: c.targetLevel,
+        }));
+        const readiness = CompetencyService.computeReadinessIndex(required, userRecords);
         setReadinessIndex(readiness);
 
-        // Build gaps
-        const SEVERITY_MAP = { 0: 'PROFICIENT' as const, 1: 'MODERATE' as const, 2: 'HIGH' as const };
-        const gaps: CompetencyGapCard[] = demoCompetencies
-          .map(comp => {
-            const severityScore = CompetencyService.computeGapSeverity(comp.current, comp.target, comp.priority);
-            const severity = SEVERITY_MAP[severityScore as keyof typeof SEVERITY_MAP] || 'PROFICIENT';
+        // Build gaps with official PRD severity formulas
+        const gaps: CompetencyGapCard[] = profile.competencies
+          .map((comp) => {
+            const severityScore = CompetencyService.computeGapSeverity(
+              comp.currentLevel,
+              comp.targetLevel,
+              comp.priority
+            );
+            const severity = CompetencyService.classifySeverity(severityScore);
             return {
               competencyId: comp.id,
-              competencyName: comp.name,
-              currentLevel: comp.current,
-              targetLevel: comp.target,
-              gap: comp.target - comp.current,
+              competencyName: isHindi ? comp.name_hi : comp.name,
+              currentLevel: comp.currentLevel,
+              targetLevel: comp.targetLevel,
+              gap: Math.max(0, comp.targetLevel - comp.currentLevel),
               severity,
               priority: comp.priority,
-              activity: 'Household Listing & Enumeration',
+              activity: isHindi ? comp.activityName_hi : comp.activityName,
             };
           })
-          .filter(g => g.gap > 0)
+          .filter((g) => g.gap > 0)
           .sort((a, b) => {
             const scoreA = CompetencyService.computeGapSeverity(a.currentLevel, a.targetLevel, a.priority);
             const scoreB = CompetencyService.computeGapSeverity(b.currentLevel, b.targetLevel, b.priority);
@@ -108,13 +102,12 @@ export default function DashboardPage({ user }: DashboardProps) {
         setTopGaps(gaps);
 
         // Build radar data
-        const radar = demoCompetencies.map(c => ({
-          label: c.name.split(' ').slice(0, 2).join(' '),
-          current: c.current,
-          target: c.target,
+        const radar = profile.competencies.map((c) => ({
+          label: (isHindi ? c.name_hi : c.name).split(' ').slice(0, 2).join(' '),
+          current: c.currentLevel,
+          target: c.targetLevel,
         }));
         setRadarData(radar);
-
         setLoading(false);
       } catch (error) {
         console.error('Failed to load dashboard:', error);
@@ -123,7 +116,7 @@ export default function DashboardPage({ user }: DashboardProps) {
     };
 
     loadDashboard();
-  }, [user.id, user.user_metadata?.organization_id]);
+  }, [user]);
 
   const severityColors = {
     HIGH: 'text-[#c0574a] bg-[#c0574a]/10 border-[#c0574a]/25',

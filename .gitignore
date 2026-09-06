@@ -41,9 +41,9 @@ public/sw.js
 public/sw.js.map
 public/swe-worker-*.js
 
-# Supabase Local Development
-supabase/.branches/
-supabase/.temp/
+# Firebase Data Connect Local Development
+.dataconnect/
+dataconnect/.dataconnect/
 
 # Vitest / Coverage
 coverage/

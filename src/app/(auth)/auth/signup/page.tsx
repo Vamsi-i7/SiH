@@ -11,18 +11,18 @@ export default async function SignupPage() {
   return (
     <div className="flex-1 flex flex-col">
       {/* Institutional Header */}
-      <header className="border-b border-border bg-card sticky top-0 z-30 shadow-sm">
+      <header className="border-b border-border bg-card sticky top-0 z-30 shadow-xs">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3.5">
           <a href="/auth/login" className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-xs">
               <BarChart3 className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-tight text-lg text-foreground">
+                <span className="font-bold tracking-tight text-foreground">
                   StatVidya
                 </span>
-                <span className="rounded-md bg-secondary border border-border px-2 py-0.5 text-xs font-semibold text-primary">
+                <span className="rounded-md bg-secondary border border-border px-2 py-0.5 font-semibold text-primary text-xs">
                   MoSPI • NSSTA
                 </span>
               </div>
@@ -52,7 +52,7 @@ export default async function SignupPage() {
             </p>
           </div>
 
-          <div className="bg-card rounded-xl border border-border p-6 sm:p-8 shadow-card">
+          <div className="bg-card rounded-xl border border-border p-6 sm:p-8 shadow-xs">
             <Suspense>
               <SignupForm />
             </Suspense>

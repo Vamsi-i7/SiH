@@ -7,7 +7,7 @@
  */
 
 import type { EngineState, QuestionStatus } from '@/services/assessmentEngine';
-import { getQuestionStatus, getAnsweredCount, getScore } from '@/services/assessmentEngine';
+import { getQuestionStatus, getAnsweredCount } from '@/services/assessmentEngine';
 
 interface ReviewPanelProps {
   state: EngineState;

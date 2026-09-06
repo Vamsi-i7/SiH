@@ -10,7 +10,7 @@ import { getAuthenticatedUser } from '@/lib/auth';
 
 describe('POST /api/admin/flag-department', () => {
   it('returns 401 if user is unauthenticated', async () => {
-    vi.mocked(getAuthenticatedUser).mockResolvedValue(null as any);
+    vi.mocked(getAuthenticatedUser).mockResolvedValue(null as never);
 
     const req = new NextRequest('http://localhost:3000/api/admin/flag-department', {
       method: 'POST',

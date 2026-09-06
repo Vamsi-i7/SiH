@@ -53,8 +53,9 @@ export default function AssessmentReview({
     return null;
   }
 
-  const levelKey = `L${assessmentState.final_level}` as keyof typeof levelLabels;
-  const levelInfo = levelLabels[levelKey];
+  const finalLevelStr = assessmentState.final_level || 'L1';
+  const levelKey = (finalLevelStr.startsWith('L') ? finalLevelStr : `L${finalLevelStr}`) as keyof typeof levelLabels;
+  const levelInfo = levelLabels[levelKey] || levelLabels['L1'];
 
   return (
     <div className="p-4 md:p-8 max-w-2xl mx-auto space-y-6">

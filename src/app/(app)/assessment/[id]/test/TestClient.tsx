@@ -12,8 +12,7 @@
  * beforeunload warning prevents accidental navigation during ACTIVE phase.
  */
 
-import { useEffect, useReducer, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useReducer, useRef, useCallback, useState } from 'react';
 import type { Assessment } from '@/data/assessments';
 import {
   createEngine,
@@ -22,15 +21,19 @@ import {
   getAnsweredCount,
   submitAssessment,
   currentQuestion,
+  getScore,
+  type ScoreResult,
 } from '@/services/assessmentEngine';
 import offlineQueueManager from '@/services/offlineService';
 import { generateUUID } from '@/services/assessmentService';
+import { saveCompetencyPromotion } from '@/data/fracCadres';
 import { useAssessmentMode } from '@/contexts/AssessmentModeContext';
 import TestHeader from './TestHeader';
 import QuestionNavigator from './QuestionNavigator';
 import QuestionPanel from './QuestionPanel';
 import EndTestModal from './EndTestModal';
 import ReviewPanel from './ReviewPanel';
+import TestResultsView from './TestResultsView';
 import { ChevronLeft, ChevronRight, ClipboardList } from 'lucide-react';
 
 interface TestClientProps {
@@ -39,7 +42,6 @@ interface TestClientProps {
 }
 
 export default function TestClient({ assessment, userId }: TestClientProps) {
-  const router = useRouter();
   const { setAssessmentActive } = useAssessmentMode();
 
   const [state, dispatch] = useReducer(
@@ -50,8 +52,10 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
 
   // Interval ref — store here so it's never recreated on re-render
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  // Track whether the timer expired (for the review panel notice)
-  const timedOutRef = useRef(false);
+  // Post-assessment results state
+  const [showResults, setShowResults] = useState(false);
+  const [scoreData, setScoreData] = useState<ScoreResult | null>(null);
+  const [promotedLevel, setPromotedLevel] = useState<number>(2);
 
   // ── Mount / Unmount ────────────────────────────────────────────────────
   useEffect(() => {
@@ -85,13 +89,8 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
     };
   }, [state.phase]);
 
-  // Detect timer-triggered auto-end (remainingSeconds hit 0 → phase moved to REVIEW)
-  useEffect(() => {
-    if (state.phase === 'REVIEW' && state.remainingSeconds === 0) {
-      timedOutRef.current = true;
-    }
-  }, [state.phase, state.remainingSeconds]);
-
+  // Derived: detect timer-triggered auto-end
+  const timedOut = state.phase === 'REVIEW' && state.remainingSeconds === 0;
   // ── beforeunload warning ───────────────────────────────────────────────
   useEffect(() => {
     if (state.phase !== 'ACTIVE') return;
@@ -103,32 +102,52 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
   }, [state.phase]);
 
   // ── Submission ─────────────────────────────────────────────────────────
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(() => {
     const finalState = submitAssessment(state);
+    const calculatedScore = getScore(state);
+
+    // Map assessment ID to cadre competency for closed-loop profile promotion
+    const compMap: Record<string, string> = {
+      'capi-operations': 'comp-capi',
+      'schedule-0-listing': 'comp-demarcation',
+      'plfs-survey': 'comp-data',
+      'data-scrutiny': 'comp-scrutiny',
+      'problem-solving': 'comp-teamwork',
+      'critical-thinking': 'comp-scrutiny',
+      'communication': 'comp-comm',
+      'decision-making': 'comp-nsso',
+    };
+    const targetComp = compMap[assessment.id] || assessment.id;
+
+    // Promotion threshold: >=70% promotes to L3, >=90% promotes to L4
+    const newLvl = calculatedScore.percentageCorrect >= 90 ? 4 : calculatedScore.percentageCorrect >= 70 ? 3 : 2;
+
+    setScoreData(calculatedScore);
+    setPromotedLevel(newLvl);
+    setShowResults(true);
+
     dispatch({ type: 'SUBMIT_ASSESSMENT' });
     setAssessmentActive(false);
 
-    // Queue for offline sync — mirrors existing offlineService pattern
-    try {
-      const local_id = generateUUID();
-      await offlineQueueManager.queueAssessment({
-        local_id,
-        assessment_id: null,
-        competency_id: assessment.id,
-        user_id: userId,
-        final_level: 'L1', // Scoring is shown in-app; backend can recompute
-        answers: Object.fromEntries(
-          Object.entries(finalState.answers).map(([k, v]) => [k, v.toString()])
-        ),
-        branch_path: 'L1',
-        created_at: finalState.startedAt ?? new Date().toISOString(),
-      });
-    } catch {
-      // Offline queue failure is non-fatal; result is shown in-app
-    }
+    // Persist promotion locally so dashboard and gap analysis update immediately
+    saveCompetencyPromotion(userId, targetComp, newLvl);
 
-    router.push('/assignments');
-  }, [state, assessment.id, userId, router, setAssessmentActive]);
+    // Queue for offline sync asynchronously
+    void offlineQueueManager.queueAssessment({
+      local_id: generateUUID(),
+      assessment_id: null,
+      competency_id: assessment.id,
+      user_id: userId,
+      final_level: `L${newLvl}`,
+      answers: Object.fromEntries(
+        Object.entries(finalState.answers).map(([k, v]) => [k, v.toString()])
+      ),
+      branch_path: `L${newLvl}`,
+      created_at: finalState.startedAt ?? new Date().toISOString(),
+    }).catch(() => {
+      // Offline queue failure is non-fatal
+    });
+  }, [state, assessment.id, userId, setAssessmentActive]);
 
   // ── Derived state ──────────────────────────────────────────────────────
   const question = currentQuestion(state);
@@ -137,14 +156,27 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
   const selectedAnswer = state.answers[question?.id] ?? null;
   const isLastQuestion = state.currentIndex === assessment.questions.length - 1;
 
-  // ── SUBMITTED — redirect is in handleSubmit, show brief loading ────────
-  if (state.phase === 'SUBMITTED') {
+  // ── RESULTS phase ──────────────────────────────────────────────────────
+  if (showResults && scoreData) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <TestResultsView
+        assessment={assessment}
+        score={scoreData}
+        userAnswers={state.answers}
+        promotedLevel={promotedLevel}
+        onRetakeTest={() => window.location.reload()}
+      />
+    );
+  }
+
+  // ── SUBMITTED — brief loading fallback ────────────────────────────────
+  if (state.phase === 'SUBMITTED' && !showResults) {
+    return (
+      <div className="flex h-full items-center justify-center min-h-screen">
         <div className="text-center space-y-4 p-8">
           <div className="text-5xl">✅</div>
           <h2 className="text-2xl font-bold text-foreground">Assessment Submitted</h2>
-          <p className="text-muted-foreground">Your responses have been saved. Redirecting…</p>
+          <p className="text-muted-foreground">Calculating your score and updating FRAC competency profile…</p>
         </div>
       </div>
     );
@@ -163,7 +195,7 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
         />
         <ReviewPanel
           state={state}
-          timedOut={timedOutRef.current}
+          timedOut={timedOut}
           onContinueTest={() => dispatch({ type: 'RESUME_FROM_REVIEW' })}
           onSubmit={handleSubmit}
         />
