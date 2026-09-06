@@ -62,7 +62,7 @@ export function FlaggedRegionsModal({
 
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4 text-xs text-[#2d1f17]">
-          <p className="text-[#705849] leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed">
             The following two regional offices have exceeded the statutory 12.0% scrutiny error threshold 
             and fallen below 60.0% workforce readiness, triggering mandatory executive intervention.
           </p>
@@ -77,23 +77,23 @@ export function FlaggedRegionsModal({
                 <h3 className="text-sm font-bold text-[#2d1f17] mt-1">
                   FOD Bihar Regional Office (Patna)
                 </h3>
-                <p className="text-[11px] text-[#705849]">
+                <p className="text-[11px] text-muted-foreground">
                   520 Officers • 46% Readiness (L1.2) • 19.8% Scrutiny Error Rate
                 </p>
               </div>
               <div className="text-right font-mono shrink-0">
                 <span className="text-lg font-black text-red-700">19.8%</span>
-                <span className="text-[9px] text-[#705849] block">Error Rate</span>
+                <span className="text-[9px] text-muted-foreground block">Error Rate</span>
               </div>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/20 text-[11px] text-[#705849] space-y-1">
+            <div className="p-2.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/20 text-[11px] text-muted-foreground space-y-1">
               <span className="font-bold text-[#2d1f17] block">Primary Error Driver:</span>
               <p>Schedule 0.0 CEB listing demarcation in rural flood zones; hamlet-group identification bypass.</p>
             </div>
 
             <div className="flex items-center justify-between pt-1">
-              <span className="text-[10px] text-[#705849]">Action: NSSTA Demarcation Bootcamp</span>
+              <span className="text-[10px] text-muted-foreground">Action: NSSTA Demarcation Bootcamp</span>
               {triaged.includes('FOD Bihar') ? (
                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700">
                   <CheckCircle2 className="h-3.5 w-3.5" />
@@ -122,23 +122,23 @@ export function FlaggedRegionsModal({
                 <h3 className="text-sm font-bold text-[#2d1f17] mt-1">
                   FOD UP East Regional Office (Prayagraj)
                 </h3>
-                <p className="text-[11px] text-[#705849]">
+                <p className="text-[11px] text-muted-foreground">
                   610 Officers • 54% Readiness (L2.1) • 15.4% Scrutiny Error Rate
                 </p>
               </div>
               <div className="text-right font-mono shrink-0">
                 <span className="text-lg font-black text-amber-700">15.4%</span>
-                <span className="text-[9px] text-[#705849] block">Error Rate</span>
+                <span className="text-[9px] text-muted-foreground block">Error Rate</span>
               </div>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/20 text-[11px] text-[#705849] space-y-1">
+            <div className="p-2.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/20 text-[11px] text-muted-foreground space-y-1">
               <span className="font-bold text-[#2d1f17] block">Primary Error Driver:</span>
               <p>NIC-2008 5-digit industrial classification ambiguity in informal manufacturing enterprises.</p>
             </div>
 
             <div className="flex items-center justify-between pt-1">
-              <span className="text-[10px] text-[#705849]">Action: NSSTA Economic Coding Clinic</span>
+              <span className="text-[10px] text-muted-foreground">Action: NSSTA Economic Coding Clinic</span>
               {triaged.includes('FOD UP East') ? (
                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700">
                   <CheckCircle2 className="h-3.5 w-3.5" />
@@ -159,12 +159,12 @@ export function FlaggedRegionsModal({
         </div>
 
         {/* Footer */}
-        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-[#705849] shrink-0">
+        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-muted-foreground shrink-0">
           <span className="text-[11px]">Directives enforceable under NSC Protocol</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-white transition-colors cursor-pointer"
+            className="px-4 py-1.5 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-white transition-colors cursor-pointer"
           >
             Close
           </button>

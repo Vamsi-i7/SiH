@@ -93,11 +93,11 @@ export function CommissionSweepModal({
               <h3 className="text-base font-bold text-[#2d1f17]">
                 Statutory Assessment Sweep Authorized
               </h3>
-              <p className="text-xs text-[#705849] max-w-md mx-auto">
+              <p className="text-xs text-muted-foreground max-w-md mx-auto">
                 Official dispatch notification transmitted to NSSTA Greater Noida and all participating Regional Offices.
               </p>
               <div className="p-3 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 font-mono text-xs">
-                <span className="text-[10px] text-[#705849] block">EXECUTIVE ORDER ID</span>
+                <span className="text-[10px] text-muted-foreground block">EXECUTIVE ORDER ID</span>
                 <span className="font-bold text-[#555934] text-sm">{orderId}</span>
               </div>
               <button
@@ -110,7 +110,7 @@ export function CommissionSweepModal({
             </div>
           ) : (
             <>
-              <p className="text-[#705849] leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Issue a binding statutory order under the National Statistical Commission guidelines mandating 
                 comprehensive competency re-assessments across target regional zones.
               </p>
@@ -138,7 +138,7 @@ export function CommissionSweepModal({
                         className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-white border-[#555934] text-[#555934] font-bold shadow-2xs'
-                            : 'bg-[#FAF6F0]/60 border-[#BF9B7A]/30 text-[#705849]'
+                            : 'bg-[#FAF6F0]/60 border-[#BF9B7A]/30 text-muted-foreground'
                         }`}
                       >
                         <span className="text-[11px] truncate">{zone}</span>
@@ -171,7 +171,7 @@ export function CommissionSweepModal({
                         className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                           active
                             ? 'bg-[#8C5B3E] text-white shadow-2xs'
-                            : 'bg-white text-[#705849] border border-[#BF9B7A]/30'
+                            : 'bg-white text-muted-foreground border border-[#BF9B7A]/30'
                         }`}
                       >
                         {survey}
@@ -184,7 +184,7 @@ export function CommissionSweepModal({
               {/* Deadline & Lead Faculty */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-bold text-[#705849] text-[11px] block">
+                  <label className="font-bold text-muted-foreground text-[11px] block">
                     Mandatory Completion Deadline
                   </label>
                   <input
@@ -196,7 +196,7 @@ export function CommissionSweepModal({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-[#705849] text-[11px] block">
+                  <label className="font-bold text-muted-foreground text-[11px] block">
                     NSSTA Academic Lead
                   </label>
                   <input
@@ -212,7 +212,7 @@ export function CommissionSweepModal({
               <div className="p-3 rounded-xl bg-white border border-[#BF9B7A]/30 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4 text-[#555934]" />
-                  <span className="text-[11px] font-semibold text-[#705849]">
+                  <span className="text-[11px] font-semibold text-muted-foreground">
                     Authorizing Officer: <strong>Rajesh Kumar (ADG)</strong>
                   </span>
                 </div>
@@ -230,7 +230,7 @@ export function CommissionSweepModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-white transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-white transition-colors cursor-pointer"
             >
               Cancel
             </button>

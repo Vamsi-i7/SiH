@@ -73,7 +73,7 @@ export function TraineeErrorHeatmap() {
               Trainee Curriculum Error Heatmap
             </h2>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             FR-CONTENT-11 • Diagnostic failure rates aggregated across recent cohort assessments
           </p>
         </div>
@@ -111,7 +111,7 @@ export function TraineeErrorHeatmap() {
                       )}
                       {point.errorRatePercent}% Error Rate
                     </span>
-                    <span className="text-[11px] text-[#705849] font-medium truncate">
+                    <span className="text-[11px] text-muted-foreground font-medium truncate">
                       {point.cadre}
                     </span>
                   </div>
@@ -119,7 +119,7 @@ export function TraineeErrorHeatmap() {
                 </div>
 
                 <div className="shrink-0 text-right">
-                  <span className="text-xs font-mono font-bold text-[#705849]">
+                  <span className="text-xs font-mono font-bold text-muted-foreground">
                     N = {point.sampleCount} trainees
                   </span>
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { DashboardUserProps } from '../RoleDashboardRouter';
+import type { DashboardUserProps } from '@/components/dashboard/RoleDashboardRouter';
 import { TrainerKpiStrip } from './TrainerKpiStrip';
 import { TrainerReviewTriageCard } from './TrainerReviewTriageCard';
 import { TraineeErrorHeatmap } from './TraineeErrorHeatmap';
@@ -77,7 +77,7 @@ export default function TrainerDashboard({ user }: { user: DashboardUserProps })
                   <GraduationCap className="h-3.5 w-3.5" />
                   {facultyCadre}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/30">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/30">
                   National Statistical Systems Training Academy (NSSTA)
                 </span>
               </div>
@@ -87,7 +87,7 @@ export default function TrainerDashboard({ user }: { user: DashboardUserProps })
               <p className="text-xs sm:text-sm font-semibold text-[#8C5B3E] mt-0.5">
                 {facultyDesignation} • MoSPI Capacity Building & Examination Board
               </p>
-              <p className="text-xs text-[#705849] flex items-center gap-1 mt-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-[#8C5B3E]" />
                 NSSTA Campus, Plot No. 22, Knowledge Park II, Greater Noida, UP
               </p>
@@ -163,7 +163,7 @@ export default function TrainerDashboard({ user }: { user: DashboardUserProps })
               className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 cursor-pointer shadow-2xs ${
                 isActive
                   ? 'bg-[#8C5B3E] text-white shadow-xs'
-                  : 'bg-white border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0] hover:text-[#2d1f17]'
+                  : 'bg-white border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#FAF6F0] hover:text-[#2d1f17]'
               }`}
             >
               <Icon className="h-4 w-4" />

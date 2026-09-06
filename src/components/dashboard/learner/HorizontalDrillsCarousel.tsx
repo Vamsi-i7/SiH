@@ -117,7 +117,7 @@ export function HorizontalDrillsCarousel({
               5 Available
             </span>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
               ? 'आधिकारिक परिदृश्यों पर आधारित छोटे अभ्यास • तत्काल अंक और वैधानिक नियम व्याख्या'
               : 'Micro-simulations on authentic MoSPI scenarios • Instant feedback and manual citations'}
@@ -130,7 +130,7 @@ export function HorizontalDrillsCarousel({
             type="button"
             onClick={() => scroll('left')}
             aria-label="Scroll drills carousel left"
-            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-[#705849] hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
+            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-muted-foreground hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -138,7 +138,7 @@ export function HorizontalDrillsCarousel({
             type="button"
             onClick={() => scroll('right')}
             aria-label="Scroll drills carousel right"
-            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-[#705849] hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
+            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-muted-foreground hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -158,12 +158,12 @@ export function HorizontalDrillsCarousel({
           return (
             <div
               key={drill.id}
-              className="min-w-[280px] sm:min-w-[320px] max-w-[320px] rounded-2xl border border-[#BF9B7A]/30 bg-[#FAF6F0]/60 p-4 sm:p-5 flex flex-col justify-between hover:border-[#BF9B7A] hover:bg-[#FAF6F0] transition-all snap-start shadow-2xs group"
+              className="min-w-70 sm:min-w-[320px] max-w-[320px] rounded-2xl border border-[#BF9B7A]/30 bg-[#FAF6F0]/60 p-4 sm:p-5 flex flex-col justify-between hover:border-[#BF9B7A] hover:bg-[#FAF6F0] transition-all snap-start shadow-2xs group"
             >
               <div>
                 {/* Top badges */}
                 <div className="flex items-center justify-between gap-2 mb-2.5">
-                  <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#BF9B7A]/25 text-[#593E2E]">
+                  <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#BF9B7A]/25 text-chart-5">
                     {drill.tag}
                   </span>
                   <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold text-[#8C5B3E] bg-[#F8C858]/25 px-2 py-0.5 rounded-full border border-[#F8C858]/40">
@@ -178,19 +178,19 @@ export function HorizontalDrillsCarousel({
                 </h3>
 
                 {/* Subtitle / Cadre */}
-                <p className="text-[11px] font-medium text-[#705849] mt-1 truncate">
+                <p className="text-[11px] font-medium text-muted-foreground mt-1 truncate">
                   {drill.cadre}
                 </p>
 
                 {/* Description */}
-                <p className="text-xs text-[#705849] mt-2 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
                   {description}
                 </p>
               </div>
 
               {/* Card Footer & Action */}
               <div className="mt-4 pt-3 border-t border-[#BF9B7A]/20">
-                <div className="flex items-center justify-between text-[11px] font-mono text-[#705849] mb-3">
+                <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground mb-3">
                   <span className="flex items-center gap-1">
                     <Clock className="h-3 w-3 text-[#8C5B3E]" />
                     {drill.duration}

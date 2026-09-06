@@ -44,7 +44,7 @@ export function TrainerKpiStrip({
       subtext: 'Official MoSPI SOPs',
       icon: FileStack,
       bgColor: 'bg-[#8C5B3E]/15',
-      textColor: 'text-[#593E2E]',
+      textColor: 'text-chart-5',
     },
     {
       id: 'officers',
@@ -79,13 +79,13 @@ export function TrainerKpiStrip({
               <Icon className={`h-5 w-5 ${kpi.textColor}`} />
             </div>
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold text-[#705849] truncate leading-tight">
+              <p className="text-[11px] font-semibold text-muted-foreground truncate leading-tight">
                 {kpi.label}
               </p>
               <p className="text-xl sm:text-2xl font-extrabold text-[#2d1f17] tracking-tight mt-0.5 font-mono">
                 {kpi.value}
               </p>
-              <p className="text-[10px] font-medium text-[#705849]/80 truncate">
+              <p className="text-[10px] font-medium text-muted-foreground/80 truncate">
                 {kpi.subtext}
               </p>
             </div>

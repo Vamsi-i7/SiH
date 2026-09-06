@@ -36,7 +36,7 @@ export function PriorityGapsCard({
               {isHindi ? 'प्राथमिकता क्षमता अंतराल (FRAC ढांचा)' : 'Priority Competency Gaps (FRAC Framework)'}
             </h2>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
               ? 'आधिकारिक कर्तव्यों और फील्ड संवीक्षा के आधार पर व्यवस्थित'
               : 'Grounded in MoSPI Cadre Rules • Severity = (Target − Current) × Priority'}
@@ -111,7 +111,7 @@ export function PriorityGapsCard({
                         {isHindi ? '🛡️ सत्यापित' : '🛡️ Verified'}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#BF9B7A]/20 text-[#593E2E]">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#BF9B7A]/20 text-chart-5">
                         <UserCheck className="h-3 w-3" />
                         {isHindi ? '✍️ स्व-मूल्यांकित' : '✍️ Self-Assessed'}
                       </span>
@@ -122,7 +122,7 @@ export function PriorityGapsCard({
                   <h3 className="text-base font-bold text-[#2d1f17]">{compName}</h3>
 
                   {/* FR-COMP-4 FRAC Activity Attribution */}
-                  <div className="text-xs text-[#705849] flex items-center gap-1.5">
+                  <div className="text-xs text-muted-foreground flex items-center gap-1.5">
                     <span className="font-semibold text-[#8C5B3E]">
                       {isHindi ? 'संबद्ध गतिविधि:' : 'Linked Activity:'}
                     </span>
@@ -158,12 +158,12 @@ export function PriorityGapsCard({
               {/* Stepped Level Progression Bar (L1 to L5) */}
               <div className="mt-4 pt-3 border-t border-[#BF9B7A]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-4 text-xs font-mono">
-                  <span className="text-[#705849]">
+                  <span className="text-muted-foreground">
                     {isHindi ? 'वर्तमान स्तर:' : 'Current:'}{' '}
                     <strong className="text-[#2d1f17] font-bold">L{comp.currentLevel}</strong>
                   </span>
                   <span className="text-[#BF9B7A]">→</span>
-                  <span className="text-[#705849]">
+                  <span className="text-muted-foreground">
                     {isHindi ? 'लक्ष्य स्तर:' : 'Target:'}{' '}
                     <strong className="text-[#555934] font-bold">L{comp.targetLevel}</strong>
                   </span>

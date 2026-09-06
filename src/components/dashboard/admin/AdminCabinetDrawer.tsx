@@ -54,7 +54,7 @@ export function AdminCabinetDrawer({
           </span>
         </div>
 
-        <p className="text-xs text-[#705849] mt-2 mb-4">
+        <p className="text-xs text-muted-foreground mt-2 mb-4">
           Statutory reporting exports and executive orders for Secretary (Statistics) and National Statistical Commission (NSC).
         </p>
 
@@ -67,7 +67,7 @@ export function AdminCabinetDrawer({
               </div>
               <div>
                 <h3 className="text-xs font-bold text-[#2d1f17]">Secretary Briefing Memo (PDF)</h3>
-                <p className="text-[11px] text-[#705849]">Includes econometric regression &amp; regional gap charts</p>
+                <p className="text-[11px] text-muted-foreground">Includes econometric regression &amp; regional gap charts</p>
               </div>
             </div>
             <button
@@ -88,7 +88,7 @@ export function AdminCabinetDrawer({
               </div>
               <div>
                 <h3 className="text-xs font-bold text-[#2d1f17]">National Cadre Roster (CSV)</h3>
-                <p className="text-[11px] text-[#705849]">Complete 4,850 official competency levels and scores</p>
+                <p className="text-[11px] text-muted-foreground">Complete 4,850 official competency levels and scores</p>
               </div>
             </div>
             <button
@@ -109,7 +109,7 @@ export function AdminCabinetDrawer({
               </div>
               <div>
                 <h3 className="text-xs font-bold text-[#2d1f17]">Commission Q3 Assessment Sweep</h3>
-                <p className="text-[11px] text-[#705849]">Authorize mandatory verification across all 7 regional zones</p>
+                <p className="text-[11px] text-muted-foreground">Authorize mandatory verification across all 7 regional zones</p>
               </div>
             </div>
             <button
@@ -123,7 +123,7 @@ export function AdminCabinetDrawer({
         </div>
       </div>
 
-      <div className="mt-5 pt-4 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[11px] text-[#705849]">
+      <div className="mt-5 pt-4 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[11px] text-muted-foreground">
         <span>Digital Governance Protocol 2026</span>
         <span className="inline-flex items-center gap-1 text-emerald-700 font-bold">
           <CheckCircle2 className="h-3.5 w-3.5" />

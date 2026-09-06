@@ -127,7 +127,7 @@ export function OfficerDossierModal({
               <p className="text-xs font-semibold text-[#8C5B3E] mt-0.5">
                 {persona.designation}
               </p>
-              <div className="flex items-center gap-2 mt-1 text-[11px] text-[#705849]">
+              <div className="flex items-center gap-2 mt-1 text-[11px] text-muted-foreground">
                 <span className="font-mono font-bold text-[#555934]">{employeeCode}</span>
                 <span>•</span>
                 <span>{cadreBatch}</span>
@@ -138,7 +138,7 @@ export function OfficerDossierModal({
           {/* Dossier Details Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div className="p-3.5 rounded-xl bg-white border border-[#BF9B7A]/20 space-y-1">
-              <div className="flex items-center gap-1.5 text-[#705849] text-[11px] font-bold">
+              <div className="flex items-center gap-1.5 text-muted-foreground text-[11px] font-bold">
                 <Building className="h-3.5 w-3.5 text-[#8C5B3E]" />
                 <span>{isHindi ? 'कैडर एवं सेवा' : 'Cadre & Service'}</span>
               </div>
@@ -146,7 +146,7 @@ export function OfficerDossierModal({
             </div>
 
             <div className="p-3.5 rounded-xl bg-white border border-[#BF9B7A]/20 space-y-1">
-              <div className="flex items-center gap-1.5 text-[#705849] text-[11px] font-bold">
+              <div className="flex items-center gap-1.5 text-muted-foreground text-[11px] font-bold">
                 <MapPin className="h-3.5 w-3.5 text-[#8C5B3E]" />
                 <span>{isHindi ? 'वर्तमान पदस्थापना' : 'Current Posting'}</span>
               </div>
@@ -154,7 +154,7 @@ export function OfficerDossierModal({
             </div>
 
             <div className="p-3.5 rounded-xl bg-white border border-[#BF9B7A]/20 space-y-1">
-              <div className="flex items-center gap-1.5 text-[#705849] text-[11px] font-bold">
+              <div className="flex items-center gap-1.5 text-muted-foreground text-[11px] font-bold">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
                 <span>{isHindi ? 'FRAC योग्यता आधार' : 'FRAC Competency Baseline'}</span>
               </div>
@@ -162,7 +162,7 @@ export function OfficerDossierModal({
             </div>
 
             <div className="p-3.5 rounded-xl bg-white border border-[#BF9B7A]/20 space-y-1">
-              <div className="flex items-center gap-1.5 text-[#705849] text-[11px] font-bold">
+              <div className="flex items-center gap-1.5 text-muted-foreground text-[11px] font-bold">
                 <Hash className="h-3.5 w-3.5 text-[#8C5B3E]" />
                 <span>{isHindi ? 'वेतन मैट्रिक्स स्तर' : 'Pay Matrix Band'}</span>
               </div>
@@ -178,7 +178,7 @@ export function OfficerDossierModal({
                 <p className="font-bold text-[#2d1f17]">
                   {isHindi ? 'iGOT कर्मयोगी सत्यापित अधिकारी' : 'iGOT Karmayogi Verified Officer'}
                 </p>
-                <p className="text-[11px] text-[#705849]">
+                <p className="text-[11px] text-muted-foreground">
                   {isHindi ? 'केंद्रीय सांख्यिकी संगठन द्वारा प्रमाणित' : 'Statutory Central Statistical Registry Verified'}
                 </p>
               </div>
@@ -202,7 +202,7 @@ export function OfficerDossierModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-[#FAF6F0] transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-[#FAF6F0] transition-colors cursor-pointer"
           >
             {isHindi ? 'बंद करें' : 'Close'}
           </button>

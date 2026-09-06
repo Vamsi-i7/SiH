@@ -192,7 +192,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
             <button
               type="button"
               onClick={handleGoBack}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#BF9B7A]/40 bg-white hover:bg-[#FAF6F0] text-xs font-semibold text-[#593E2E] shadow-2xs transition-all hover:scale-102 active:scale-98 group cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#BF9B7A]/40 bg-white hover:bg-[#FAF6F0] text-xs font-semibold text-chart-5 shadow-2xs transition-all hover:scale-102 active:scale-98 group cursor-pointer"
               title="Go back to previous page"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-[#555934] group-hover:-translate-x-0.5 transition-transform" />
@@ -200,21 +200,21 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
             </button>
             <Link
               href="/"
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#BF9B7A]/25 bg-white/70 hover:bg-white text-[11px] font-medium text-[#705849] hover:text-[#2d1f17] transition-all"
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#BF9B7A]/25 bg-white/70 hover:bg-white text-[11px] font-medium text-muted-foreground hover:text-[#2d1f17] transition-all"
               title="Go to Home"
             >
               <span>Home</span>
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#BF9B7A]/40 bg-white/80 backdrop-blur-xs text-[11px] font-semibold text-[#593E2E] shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#BF9B7A]/40 bg-white/80 backdrop-blur-xs text-[11px] font-semibold text-chart-5 shadow-2xs">
               <KarmayogiEmblemIcon className="h-4 w-4" />
               <span>MoSPI • NSSTA</span>
             </div>
             <button
               type="button"
               onClick={handleGoBack}
-              className="lg:hidden h-7 w-7 rounded-full bg-white border border-[#BF9B7A]/40 text-[#593E2E] flex items-center justify-center shadow-2xs hover:bg-[#FAF6F0] cursor-pointer"
+              className="lg:hidden h-7 w-7 rounded-full bg-white border border-[#BF9B7A]/40 text-chart-5 flex items-center justify-center shadow-2xs hover:bg-[#FAF6F0] cursor-pointer"
               title="Close and go back"
             >
               <X className="h-3.5 w-3.5" />
@@ -232,7 +232,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2d1f17] tracking-tight font-sans">
             Create an account
           </h1>
-          <p className="text-xs text-[#705849] mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Official government statistical workforce onboarding & FRAC competency profile
           </p>
         </div>
@@ -248,7 +248,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
               currentStep === 1
                 ? 'bg-[#555934] text-white shadow-xs'
-                : 'bg-white/80 text-[#705849] border border-[#BF9B7A]/30'
+                : 'bg-white/80 text-muted-foreground border border-[#BF9B7A]/30'
             }`}
           >
             1. Cadre & Organization
@@ -264,7 +264,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
               currentStep === 2
                 ? 'bg-[#555934] text-white shadow-xs'
-                : 'bg-white/80 text-[#705849] border border-[#BF9B7A]/30'
+                : 'bg-white/80 text-muted-foreground border border-[#BF9B7A]/30'
             }`}
           >
             2. Profile & Competencies
@@ -284,7 +284,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
           <form onSubmit={handleProceedToStep2} className="space-y-3.5">
             {/* Center / State */}
             <div>
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                 Jurisdiction <span className="text-red-500">*</span>
               </label>
               <div className="inline-flex p-1 rounded-full bg-[#F2E6D8]/60 border border-[#BF9B7A]/30">
@@ -292,7 +292,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
                   type="button"
                   onClick={() => setCenterState('Center')}
                   className={`px-4 py-1 rounded-full text-xs font-semibold transition-all ${
-                    centerState === 'Center' ? 'bg-white text-[#2d1f17] shadow-xs' : 'text-[#705849]'
+                    centerState === 'Center' ? 'bg-white text-[#2d1f17] shadow-xs' : 'text-muted-foreground'
                   }`}
                 >
                   Central Ministry
@@ -301,7 +301,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
                   type="button"
                   onClick={() => setCenterState('State')}
                   className={`px-4 py-1 rounded-full text-xs font-semibold transition-all ${
-                    centerState === 'State' ? 'bg-white text-[#2d1f17] shadow-xs' : 'text-[#705849]'
+                    centerState === 'State' ? 'bg-white text-[#2d1f17] shadow-xs' : 'text-muted-foreground'
                   }`}
                 >
                   State DES
@@ -311,7 +311,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
 
             {/* Ministry */}
             <div>
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                 Ministry/Department <span className="text-red-500">*</span>
               </label>
               <select
@@ -333,7 +333,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
 
             {/* Organisation */}
             <div>
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                 Organisation <span className="text-red-500">*</span>
               </label>
               <select
@@ -358,7 +358,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
 
             {/* Designation */}
             <div>
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                 Cadre / Designation <span className="text-red-500">*</span>
               </label>
               <select
@@ -377,7 +377,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
 
             {/* Email Box with Send OTP */}
             <div className="rounded-2xl border border-[#BF9B7A]/35 p-3.5 bg-white space-y-2.5 shadow-xs">
-              <label className="block text-xs font-semibold text-[#593E2E]">
+              <label className="block text-xs font-semibold text-chart-5">
                 Official Government Email <span className="text-red-500">*</span>
               </label>
               <div className="flex gap-2">
@@ -393,7 +393,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
                   type="button"
                   onClick={handleSendOtp}
                   disabled={loading || !email.includes('@')}
-                  className="px-4 h-11 rounded-xl bg-[#555934] hover:bg-[#3e4225] text-white text-xs font-semibold shrink-0 transition-colors disabled:opacity-50 cursor-pointer"
+                  className="px-4 h-11 rounded-xl bg-[#555934] hover:bg-primary-dark text-white text-xs font-semibold shrink-0 transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   {loading ? 'Sending...' : otpSent ? 'OTP Sent ✓' : 'Send OTP'}
                 </button>
@@ -428,7 +428,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
                 setCurrentStep(1);
                 if (onStepChange) onStepChange(1);
               }}
-              className="inline-flex items-center gap-1 text-xs text-[#705849] hover:text-[#555934] font-semibold mb-1"
+              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-[#555934] font-semibold mb-1"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Back to Cadre Selection</span>
@@ -436,7 +436,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
 
             {/* OTP Entry */}
             <div>
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                 Enter 6-Digit Email OTP <span className="text-red-500">*</span>
               </label>
               <input
@@ -452,7 +452,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
 
             {/* Officer Name */}
             <div>
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                 Full Officer Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -468,7 +468,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
             {/* Phone & Parichay ID in 2 columns */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
-                <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+                <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                   Mobile Number
                 </label>
                 <input
@@ -481,7 +481,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#593E2E] mb-1 ml-1">
+                <label className="block text-xs font-semibold text-chart-5 mb-1 ml-1">
                   Parichay / Employee ID
                 </label>
                 <input
@@ -506,7 +506,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
                 </span>
               </div>
 
-              <p className="text-[11px] text-[#705849] leading-relaxed">
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
                 Allocating competencies for <strong className="text-[#2d1f17]">{designation}</strong> ({organisation}):
               </p>
 
@@ -575,7 +575,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
       </div>
 
       {/* Footer */}
-      <div className="mt-8 pt-4 border-t border-[#BF9B7A]/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[#705849]">
+      <div className="mt-8 pt-4 border-t border-[#BF9B7A]/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
         <p>
           Already have an account?{' '}
           <Link href="/auth/login" className="font-bold text-[#555934] hover:underline">
@@ -583,7 +583,7 @@ export default function SignupForm({ onStepChange }: SignupFormProps) {
           </Link>
         </p>
 
-        <a href="#help" onClick={(e) => { e.preventDefault(); alert("Ministry of Statistics & Programme Implementation (MoSPI) Helpline: 1800-111-555"); }} className="text-[11px] text-[#705849] hover:underline">
+        <a href="#help" onClick={(e) => { e.preventDefault(); alert("Ministry of Statistics & Programme Implementation (MoSPI) Helpline: 1800-111-555"); }} className="text-[11px] text-muted-foreground hover:underline">
           Nodal Helpdesk
         </a>
       </div>

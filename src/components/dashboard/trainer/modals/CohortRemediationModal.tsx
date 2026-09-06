@@ -68,21 +68,21 @@ export function CohortRemediationModal({
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#8C5B3E]/15 text-[#8C5B3E] border border-[#8C5B3E]/30">
                 NSSTA Faculty Intervention
               </span>
-              <span className="text-[10px] font-mono text-[#705849]">
+              <span className="text-[10px] font-mono text-muted-foreground">
                 Rule FR-CONTENT-11
               </span>
             </div>
             <h2 className="text-xl font-bold text-[#2d1f17] tracking-tight">
               Curate Remedial Drill
             </h2>
-            <p className="text-xs text-[#705849]">
+            <p className="text-xs text-muted-foreground">
               Target: <span className="font-semibold text-[#2d1f17]">{cohortName}</span>
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#F2E6D8] transition-colors"
+            className="p-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#F2E6D8] transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -98,7 +98,7 @@ export function CohortRemediationModal({
               <h3 className="text-lg font-bold text-[#2d1f17]">
                 Remedial Drill Dispatched!
               </h3>
-              <p className="text-xs text-[#705849] max-w-xs mx-auto">
+              <p className="text-xs text-muted-foreground max-w-xs mx-auto">
                 {questionCount} diagnostic questions have been assigned to {recipientScope === 'AT_RISK' ? `${atRiskCount} at-risk officers` : `all ${totalEnrolled} trainees`}. Offline sync activated.
               </p>
             </div>
@@ -108,7 +108,7 @@ export function CohortRemediationModal({
               <div className="space-y-2">
                 <label className="text-xs font-bold text-[#2d1f17] flex items-center justify-between">
                   <span>Target Recipients</span>
-                  <span className="text-[10px] text-[#705849] font-mono font-normal">
+                  <span className="text-[10px] text-muted-foreground font-mono font-normal">
                     Select delivery scope
                   </span>
                 </label>
@@ -119,14 +119,14 @@ export function CohortRemediationModal({
                     className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
                       recipientScope === 'AT_RISK'
                         ? 'bg-[#8C5B3E]/10 border-[#8C5B3E] text-[#8C5B3E]'
-                        : 'bg-white border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0]'
+                        : 'bg-white border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#FAF6F0]'
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-bold text-xs">
                       <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
                       <span>At-Risk Officers Only</span>
                     </div>
-                    <p className="text-[11px] text-[#705849] mt-0.5">
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
                       {atRiskCount} officers with score &lt; 60%
                     </p>
                   </button>
@@ -137,14 +137,14 @@ export function CohortRemediationModal({
                     className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
                       recipientScope === 'ALL'
                         ? 'bg-[#8C5B3E]/10 border-[#8C5B3E] text-[#8C5B3E]'
-                        : 'bg-white border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0]'
+                        : 'bg-white border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#FAF6F0]'
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-bold text-xs">
                       <Target className="h-3.5 w-3.5 text-[#555934]" />
                       <span>Entire Cohort</span>
                     </div>
-                    <p className="text-[11px] text-[#705849] mt-0.5">
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
                       All {totalEnrolled} trainees
                     </p>
                   </button>
@@ -185,12 +185,12 @@ export function CohortRemediationModal({
                       className={`p-2.5 rounded-xl border text-xs transition-all cursor-pointer flex items-center justify-between ${
                         competency === c.id
                           ? 'bg-[#555934]/10 border-[#555934] text-[#2d1f17]'
-                          : 'bg-white border-[#BF9B7A]/25 text-[#705849] hover:bg-[#FAF6F0]'
+                          : 'bg-white border-[#BF9B7A]/25 text-muted-foreground hover:bg-[#FAF6F0]'
                       }`}
                     >
                       <div>
                         <p className="font-bold text-xs">{c.title}</p>
-                        <p className="text-[10px] text-[#705849]">{c.desc}</p>
+                        <p className="text-[10px] text-muted-foreground">{c.desc}</p>
                       </div>
                       <div
                         className={`h-4 w-4 rounded-full border flex items-center justify-center shrink-0 ${
@@ -249,7 +249,7 @@ export function CohortRemediationModal({
               </div>
 
               {/* Institutional Notice */}
-              <div className="p-3 rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/25 flex items-start gap-2.5 text-xs text-[#705849]">
+              <div className="p-3 rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/25 flex items-start gap-2.5 text-xs text-muted-foreground">
                 <ShieldCheck className="h-4 w-4 text-[#555934] shrink-0 mt-0.5" />
                 <p className="text-[11px] leading-relaxed">
                   Remedial test items are extracted directly from the verified MoSPI question bank with statutory citation feedback upon trainee submission.
@@ -265,7 +265,7 @@ export function CohortRemediationModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-xs font-bold text-[#705849] hover:bg-[#F2E6D8] transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-xs font-bold text-muted-foreground hover:bg-[#F2E6D8] transition-colors cursor-pointer"
             >
               Cancel
             </button>

@@ -75,7 +75,7 @@ export function CourseCard({
       case 'APPLIED':
         return {
           label: 'Applied Practice',
-          classes: 'bg-[#BF9B7A]/20 text-[#593E2E]',
+          classes: 'bg-[#BF9B7A]/20 text-chart-5',
         };
       case 'CAPSTONE':
         return {
@@ -85,7 +85,7 @@ export function CourseCard({
       default:
         return {
           label: 'Specialized',
-          classes: 'bg-[#E8DACB] text-[#705849]',
+          classes: 'bg-muted text-muted-foreground',
         };
     }
   };
@@ -113,20 +113,20 @@ export function CourseCard({
               </h4>
             </div>
           </div>
-          <span className="font-mono text-xs font-bold text-[#2d1f17] bg-[#E8DACB]/60 px-2 py-0.5 rounded-full">
+          <span className="font-mono text-xs font-bold text-[#2d1f17] bg-muted/60 px-2 py-0.5 rounded-full">
             {progress}%
           </span>
         </div>
 
         {/* Progress Bar */}
         <div className="space-y-1.5 mb-3.5">
-          <div className="h-2 w-full overflow-hidden rounded-full bg-[#E8DACB]">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
             <div
               className="h-full rounded-full bg-[#555934] transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="flex items-center justify-between text-[11px] text-[#705849]">
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
             <span>{course.currentModule || 'Module 3 of 6: GPS & Validation'}</span>
             <span>{course.duration}</span>
           </div>
@@ -134,7 +134,7 @@ export function CourseCard({
 
         {/* Footer CTA */}
         <div className="flex items-center justify-between pt-3">
-          <span className="text-[11px] text-[#705849] flex items-center gap-1">
+          <span className="text-[11px] text-muted-foreground flex items-center gap-1">
             <span className="h-1.5 w-1.5 rounded-full bg-[#555934] animate-pulse" />
             iGOT Karmayogi
           </span>
@@ -142,7 +142,7 @@ export function CourseCard({
             href={course.iGotLink || 'https://igotkarmayogi.gov.in'}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#555934] hover:text-[#3e4225] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#555934] hover:text-primary-dark transition-colors"
           >
             Resume Learning
             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -170,8 +170,8 @@ export function CourseCard({
             <ProvenanceBadge provenance="SYNTHETIC_DEMO_DATA" showLabel={false} size="sm" />
           </div>
 
-          <div className="flex items-center gap-1 text-xs text-[#705849]">
-            <Clock className="h-3 w-3 text-[#705849]" />
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Clock className="h-3 w-3 text-muted-foreground" />
             <span className="font-mono text-[11px]">{course.duration}</span>
           </div>
         </div>
@@ -186,13 +186,13 @@ export function CourseCard({
               <h3 className="text-base font-semibold text-[#2d1f17] leading-snug group-hover:text-[#555934] transition-colors">
                 {course.title}
               </h3>
-              <p className="text-xs text-[#705849] mt-0.5">{course.provider}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{course.provider}</p>
             </div>
           </div>
         </div>
 
         {/* Description */}
-        <p className="text-xs text-[#705849] leading-relaxed mb-3 line-clamp-2">
+        <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-2">
           {course.description}
         </p>
 
@@ -211,7 +211,7 @@ export function CourseCard({
 
         {/* Competencies Targeted */}
         <div className="mb-4">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[#705849] mb-1.5">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
             Target Competency
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -230,7 +230,7 @@ export function CourseCard({
 
       {/* Card Footer / CTAs */}
       <div className="pt-3 flex items-center justify-between">
-        <div className="flex items-center gap-3 text-[11px] text-[#705849]">
+        <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
           {course.rating && (
             <span className="flex items-center gap-1 font-mono font-medium text-[#2d1f17]">
               <Star className="h-3 w-3 fill-[#BF9B7A] text-[#BF9B7A]" />
@@ -238,7 +238,7 @@ export function CourseCard({
             </span>
           )}
           {course.enrolledCount && (
-            <span className="flex items-center gap-1 font-mono text-[#705849]">
+            <span className="flex items-center gap-1 font-mono text-muted-foreground">
               <Users className="h-3 w-3" />
               {course.enrolledCount.toLocaleString()}
             </span>
@@ -250,7 +250,7 @@ export function CourseCard({
             href={course.iGotLink || 'https://igotkarmayogi.gov.in'}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-[#555934] px-4 py-2 text-xs font-semibold text-white shadow-2xs transition-all hover:bg-[#3e4225] hover:shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-[#555934] px-4 py-2 text-xs font-semibold text-white shadow-2xs transition-all hover:bg-primary-dark hover:shadow-sm"
           >
             Start Learning
             <ExternalLink className="h-3 w-3" />

@@ -155,14 +155,14 @@ export function DepartmentBreakdownTable({ onInspectOffice }: DepartmentBreakdow
               Regional Offices &amp; Division Readiness
             </h2>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             FR-ADMIN-4 • Live cadre capacity monitoring and ministerial priority assignment
           </p>
         </div>
 
         {/* Search input */}
         <div className="relative w-full sm:w-64">
-          <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#705849]" />
+          <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Filter by RO or zone..."
@@ -177,7 +177,7 @@ export function DepartmentBreakdownTable({ onInspectOffice }: DepartmentBreakdow
       <div className="overflow-x-auto mt-4">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-[#705849] uppercase tracking-wider">
+            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
               <th className="pb-3 pl-2">Regional Office / Division</th>
               <th className="pb-3">Officers</th>
               <th className="pb-3">Readiness</th>
@@ -196,7 +196,7 @@ export function DepartmentBreakdownTable({ onInspectOffice }: DepartmentBreakdow
                   {/* Name & Zone */}
                   <td className="py-4 pl-2 pr-4">
                     <p className="font-bold text-[#2d1f17]">{dept.name}</p>
-                    <p className="text-[11px] text-[#705849]">{dept.zone}</p>
+                    <p className="text-[11px] text-muted-foreground">{dept.zone}</p>
                   </td>
 
                   {/* Officers */}
@@ -206,10 +206,10 @@ export function DepartmentBreakdownTable({ onInspectOffice }: DepartmentBreakdow
 
                   {/* Readiness */}
                   <td className="py-4 pr-4">
-                    <div className="space-y-1 min-w-[100px]">
+                    <div className="space-y-1 min-w-25">
                       <div className="flex items-center justify-between text-[11px] font-mono">
                         <span className="font-bold text-[#2d1f17]">{dept.readinessPercent}%</span>
-                        <span className="text-[#705849]">{dept.avgLevel}</span>
+                        <span className="text-muted-foreground">{dept.avgLevel}</span>
                       </div>
                       <div className="h-1.5 w-full rounded-full bg-[#BF9B7A]/20 overflow-hidden">
                         <div

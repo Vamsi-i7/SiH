@@ -186,7 +186,7 @@ export function NationalCadreRosterModal({ isOpen, onClose }: NationalCadreRoste
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             {/* Search Input */}
             <div className="relative w-full sm:w-80">
-              <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#705849]" />
+              <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search by officer, station, cadre..."
@@ -217,7 +217,7 @@ export function NationalCadreRosterModal({ isOpen, onClose }: NationalCadreRoste
                 className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   selectedCadre === c
                     ? 'bg-[#555934] text-white shadow-2xs'
-                    : 'bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]/80'
+                    : 'bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]/80'
                 }`}
               >
                 {c === 'ALL' ? 'All Cadres (4,850)' : `${c} Cadre`}
@@ -231,7 +231,7 @@ export function NationalCadreRosterModal({ isOpen, onClose }: NationalCadreRoste
           <div className="overflow-x-auto rounded-2xl border border-[#BF9B7A]/30 bg-white shadow-2xs">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-[11px] font-bold text-[#705849] uppercase tracking-wider">
+                <tr className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
                   <th className="py-3 px-4">Officer Name</th>
                   <th className="py-3 px-3">Cadre &amp; Rank</th>
                   <th className="py-3 px-3">Posting Station</th>
@@ -247,17 +247,17 @@ export function NationalCadreRosterModal({ isOpen, onClose }: NationalCadreRoste
                     <td className="py-3.5 px-4 font-sans font-bold text-[#2d1f17]">
                       {officer.name}
                     </td>
-                    <td className="py-3.5 px-3 font-sans text-[#705849]">
+                    <td className="py-3.5 px-3 font-sans text-muted-foreground">
                       {officer.cadre}
                     </td>
-                    <td className="py-3.5 px-3 font-sans text-[#705849]">
+                    <td className="py-3.5 px-3 font-sans text-muted-foreground">
                       {officer.station}
                     </td>
                     <td className="py-3.5 px-3 font-bold text-[#555934]">
                       {officer.fracLevel}
                     </td>
                     <td className="py-3.5 px-3">
-                      <div className="space-y-1 min-w-[70px]">
+                      <div className="space-y-1 min-w-17.5">
                         <span className="font-bold text-[#2d1f17]">{officer.readiness}%</span>
                         <div className="h-1.5 w-full rounded-full bg-[#BF9B7A]/20 overflow-hidden">
                           <div
@@ -279,7 +279,7 @@ export function NationalCadreRosterModal({ isOpen, onClose }: NationalCadreRoste
                           Optimal
                         </span>
                       ) : officer.status === 'COMPETENT' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/40">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/40">
                           Competent
                         </span>
                       ) : (
@@ -296,12 +296,12 @@ export function NationalCadreRosterModal({ isOpen, onClose }: NationalCadreRoste
         </div>
 
         {/* Footer */}
-        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-[#705849] shrink-0">
+        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-muted-foreground shrink-0">
           <span>Showing {filtered.length} of 4,850 officers across 7 zones</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-white transition-colors cursor-pointer"
+            className="px-4 py-1.5 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-white transition-colors cursor-pointer"
           >
             Close Roster
           </button>

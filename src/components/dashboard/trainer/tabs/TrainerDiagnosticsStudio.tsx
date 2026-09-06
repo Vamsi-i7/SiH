@@ -164,7 +164,7 @@ export function TrainerDiagnosticsStudio({
             Item Diagnostics & Zonal Error Disparities
           </h2>
         </div>
-        <p className="text-xs text-[#705849]">
+        <p className="text-xs text-muted-foreground">
           Psychometric verification of question items, distractor effectiveness, and geographical failure patterns across MoSPI Zonal Training Centres
         </p>
 
@@ -183,7 +183,7 @@ export function TrainerDiagnosticsStudio({
             <h3 className="text-base font-bold text-[#2d1f17]">
               Regional Zonal Center Deficit Comparison
             </h3>
-            <p className="text-xs text-[#705849]">
+            <p className="text-xs text-muted-foreground">
               Cross-zonal performance on NSS 79th Round benchmark competencies
             </p>
           </div>
@@ -194,7 +194,7 @@ export function TrainerDiagnosticsStudio({
 
         <div className="overflow-x-auto rounded-2xl border border-[#BF9B7A]/20">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-[#705849] font-bold uppercase tracking-wider text-[10px]">
+            <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
               <tr>
                 <th className="py-3 px-4">Zonal Center</th>
                 <th className="py-3 px-4">Trainees</th>
@@ -213,7 +213,7 @@ export function TrainerDiagnosticsStudio({
                       <span>{reg.center}</span>
                     </div>
                   </td>
-                  <td className="py-3 px-4 font-mono text-[#705849]">
+                  <td className="py-3 px-4 font-mono text-muted-foreground">
                     {reg.cadreCount} Officers
                   </td>
                   <td className="py-3 px-4 font-medium text-[#2d1f17]">
@@ -237,7 +237,7 @@ export function TrainerDiagnosticsStudio({
                       </span>
                     </div>
                   </td>
-                  <td className="py-3 px-4 font-mono text-[11px] text-[#705849]">
+                  <td className="py-3 px-4 font-mono text-[11px] text-muted-foreground">
                     {reg.trend}
                   </td>
                   <td className="py-3 px-4 text-right">
@@ -298,7 +298,7 @@ export function TrainerDiagnosticsStudio({
                   <span className="font-bold text-[#2d1f17]">{item.concept}</span>
                   <span className="font-mono font-bold text-red-600 text-[11px]">{item.pct}</span>
                 </div>
-                <p className="text-[11px] text-[#705849]">{item.detail}</p>
+                <p className="text-[11px] text-muted-foreground">{item.detail}</p>
                 <div className="pt-1.5 flex justify-end">
                   <button
                     type="button"

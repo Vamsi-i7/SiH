@@ -109,7 +109,7 @@ export function TrainerCohortStudio({
                 National Academy Cohorts & Training Batches
               </h2>
             </div>
-            <p className="text-xs text-[#705849] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Live roster oversight across NSSTA Greater Noida and 5 Zonal Training Centres (ZTCs)
             </p>
           </div>
@@ -133,7 +133,7 @@ export function TrainerCohortStudio({
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-[#BF9B7A]/20">
           <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#705849]" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               value={search}
@@ -158,7 +158,7 @@ export function TrainerCohortStudio({
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer shrink-0 ${
                   selectedCadre === cd.id
                     ? 'bg-[#8C5B3E] text-white shadow-2xs'
-                    : 'bg-[#FAF6F0] text-[#705849] hover:bg-[#F2E6D8]'
+                    : 'bg-[#FAF6F0] text-muted-foreground hover:bg-[#F2E6D8]'
                 }`}
               >
                 {cd.label}
@@ -180,7 +180,7 @@ export function TrainerCohortStudio({
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase tracking-wider bg-[#8C5B3E]/15 text-[#8C5B3E] border border-[#8C5B3E]/30">
                   {cohort.code}
                 </span>
-                <span className="text-xs text-[#705849] font-medium flex items-center gap-1">
+                <span className="text-xs text-muted-foreground font-medium flex items-center gap-1">
                   <Building2 className="h-3.5 w-3.5 text-[#8C5B3E]" />
                   {cohort.center}
                 </span>
@@ -189,18 +189,18 @@ export function TrainerCohortStudio({
               <h3 className="font-bold text-base text-[#2d1f17] tracking-tight mt-2">
                 {cohort.name}
               </h3>
-              <p className="text-xs text-[#705849] mt-0.5">{cohort.cadre}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{cohort.cadre}</p>
 
               {/* Stats Strip */}
               <div className="grid grid-cols-3 gap-2 my-3 p-3 rounded-2xl bg-[#FAF6F0]/70 border border-[#BF9B7A]/20 text-center">
                 <div>
-                  <p className="text-[10px] font-bold uppercase text-[#705849]">Enrolled</p>
+                  <p className="text-[10px] font-bold uppercase text-muted-foreground">Enrolled</p>
                   <p className="text-base font-bold font-mono text-[#2d1f17] mt-0.5">
                     {cohort.enrolled}
                   </p>
                 </div>
                 <div className="border-x border-[#BF9B7A]/20">
-                  <p className="text-[10px] font-bold uppercase text-[#705849]">Pass Rate</p>
+                  <p className="text-[10px] font-bold uppercase text-muted-foreground">Pass Rate</p>
                   <p className="text-base font-bold font-mono text-[#555934] mt-0.5">
                     {cohort.avgScore}%
                   </p>
@@ -216,7 +216,7 @@ export function TrainerCohortStudio({
               {/* Syllabus Meter */}
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-[#705849]">Syllabus Progress</span>
+                  <span className="text-muted-foreground">Syllabus Progress</span>
                   <span className="font-mono font-bold text-[#2d1f17]">{cohort.progress}%</span>
                 </div>
                 <div className="w-full bg-[#EAE0D0] h-2 rounded-full overflow-hidden">
@@ -259,7 +259,7 @@ export function TrainerCohortStudio({
                 At-Risk Trainee Intervention Queue (&lt;60% Score)
               </h3>
             </div>
-            <p className="text-xs text-[#705849] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Officers requiring targeted remediation before deployment to field operations
             </p>
           </div>
@@ -270,7 +270,7 @@ export function TrainerCohortStudio({
 
         <div className="overflow-x-auto rounded-2xl border border-[#BF9B7A]/20">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-[#705849] font-bold uppercase tracking-wider text-[10px]">
+            <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
               <tr>
                 <th className="py-3 px-4">Trainee</th>
                 <th className="py-3 px-4">Cadre & Center</th>
@@ -293,7 +293,7 @@ export function TrainerCohortStudio({
                       </div>
                       <div>
                         <p>{trainee.name}</p>
-                        <p className="text-[10px] text-[#705849] font-normal">
+                        <p className="text-[10px] text-muted-foreground font-normal">
                           {trainee.designation}
                         </p>
                       </div>
@@ -301,7 +301,7 @@ export function TrainerCohortStudio({
                   </td>
                   <td className="py-3 px-4">
                     <p className="text-[#2d1f17]">{trainee.cadre}</p>
-                    <p className="text-[10px] text-[#705849]">{trainee.center}</p>
+                    <p className="text-[10px] text-muted-foreground">{trainee.center}</p>
                   </td>
                   <td className="py-3 px-4">
                     <span className="font-mono font-bold text-sm text-red-600">
