@@ -2,11 +2,11 @@
 
 import { useState, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { type GeneratedQuestion } from '@/services/mcqService';
-import { Sparkles, CheckCircle, RefreshCw, BookOpen, Bot, Send, ArrowRight, FileText, Check } from 'lucide-react';
+import { Sparkles, RefreshCw, BookOpen, Bot, FileText, SlidersHorizontal } from 'lucide-react';
+import { DocumentPracticeCard } from '@/components/mcq/DocumentPracticeCard';
 
 interface IngestedDoc {
   id: string;
@@ -89,10 +89,11 @@ function MCQGeneratorInner() {
 
   const [selectedDocId, setSelectedDocId] = useState(initialDocId);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+  const [questionFocus, setQuestionFocus] = useState<'protocols' | 'thresholds' | 'scrutiny'>('protocols');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedQuestion, setGeneratedQuestion] = useState<GeneratedQuestion | null>(null);
-  const [activeTab, setActiveTab] = useState<'en' | 'hi'>('en');
   const [stagedToQueue, setStagedToQueue] = useState(false);
+  const [viewMode, setViewMode] = useState<'practice' | 'inspector'>('practice');
 
   // Fetch live documents from backend Firestore
   useEffect(() => {
@@ -158,18 +159,18 @@ function MCQGeneratorInner() {
           citationSource: activeDoc.citation,
           docTitle: activeDoc.title,
           docText: activeDoc.chunks?.[0]?.text || activeDoc.title,
+          questionFocus,
         }),
       });
 
       const data = await res.json();
       if (data.success && data.question) {
-        // Ensure citation references the active official document
         const q = data.question;
         q.citation = activeDoc.citation;
         setGeneratedQuestion(q);
       }
     } catch (err) {
-      console.error('Failed to generate:', err);
+      console.error('Failed to generate with Groq AI:', err);
     } finally {
       setIsGenerating(false);
     }
@@ -213,33 +214,35 @@ function MCQGeneratorInner() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-              MoSPI AI Content Pipeline
+              MoSPI AI Learning & Practice
             </span>
             <span className="text-xs text-stone-500">• Clause 4.3 FRAC Calibrated Generator</span>
           </div>
-          <h1 className="text-2xl font-bold text-stone-900 tracking-tight">Multi-AI Bilingual MCQ Generator</h1>
+          <h1 className="text-2xl font-bold text-stone-900 tracking-tight">
+            Document Practice & MCQ Station
+          </h1>
           <p className="text-sm text-stone-600">
-            3-Model consensus reconciliation (Claude 3.5, GPT-4o, Llama-3) grounded in official MoSPI field manuals.
+            Generate authentic self-paced questions from your uploaded manuals and official MoSPI guidelines powered by Groq AI.
           </p>
         </div>
         <ProvenanceBadge provenance="PROPOSED_METHODOLOGY" />
       </div>
 
-      {/* Generator Controls */}
+      {/* Generator & Composition Controls */}
       <Card className="border-stone-200 bg-white shadow-xs">
         <CardHeader className="bg-stone-50/50 border-b border-stone-100 pb-4">
           <CardTitle className="text-base font-semibold text-stone-900 flex items-center gap-2">
             <FileText className="h-4 w-4 text-[#8b9a6e]" />
-            Grounding Source & Calibration Parameters
+            Document Grounding & Question Composition
           </CardTitle>
           <CardDescription className="text-xs text-stone-500">
-            Select an ingested MoSPI manual to extract authentic operational context and calibration depth.
+            Select an ingested manual and tailor difficulty and operational focus for question generation.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-5 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Document Grounding Selector */}
-            <div className="md:col-span-2">
+            <div>
               <label className="block text-xs font-semibold text-stone-700 mb-1.5">
                 Ingested MoSPI Document Grounding
               </label>
@@ -254,9 +257,9 @@ function MCQGeneratorInner() {
                   </option>
                 ))}
               </select>
-              <p className="text-[11px] text-stone-500 mt-1 flex items-center gap-1">
-                <BookOpen className="h-3 w-3 text-amber-600" />
-                Citation anchor: <span className="font-medium text-stone-700">{activeDoc.citation}</span>
+              <p className="text-[11px] text-stone-500 mt-1 flex items-center gap-1 truncate">
+                <BookOpen className="h-3 w-3 text-amber-600 shrink-0" />
+                <span className="truncate">{activeDoc.citation}</span>
               </p>
             </div>
 
@@ -270,34 +273,55 @@ function MCQGeneratorInner() {
                 onChange={(e) => setDifficulty(e.target.value as 'easy' | 'medium' | 'hard')}
                 className="w-full text-xs sm:text-sm border border-stone-300 rounded-lg p-2.5 bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#8b9a6e]"
               >
-                <option value="medium">Medium (L3 Stage 1 Calibration)</option>
+                <option value="medium">Medium (L3 Operational Field Work)</option>
                 <option value="easy">Easy (L1-L2 Foundational Recall)</option>
-                <option value="hard">Hard (L4-L5 Non-Sampling Distractors)</option>
+                <option value="hard">Hard (L4-L5 Advanced Scrutiny & Edge Cases)</option>
               </select>
               <p className="text-[11px] text-stone-500 mt-1">
-                Mapped to FRAC Competency: <span className="font-semibold text-[#7a885f]">{activeDoc.competencyName}</span>
+                Competency: <span className="font-semibold text-[#7a885f]">{activeDoc.competencyName}</span>
+              </p>
+            </div>
+
+            {/* Question Composition Focus */}
+            <div>
+              <label className="block text-xs font-semibold text-stone-700 mb-1.5">
+                Question Composition Focus
+              </label>
+              <select
+                value={questionFocus}
+                onChange={(e) => setQuestionFocus(e.target.value as 'protocols' | 'thresholds' | 'scrutiny')}
+                className="w-full text-xs sm:text-sm border border-stone-300 rounded-lg p-2.5 bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#8b9a6e]"
+              >
+                <option value="protocols">Operational Field Protocols & SOPs</option>
+                <option value="thresholds">Numerical Cutoffs, Limits & Rules</option>
+                <option value="scrutiny">Data Scrutiny & Discrepancy Checks</option>
+              </select>
+              <p className="text-[11px] text-stone-500 mt-1 flex items-center gap-1">
+                <SlidersHorizontal className="h-3 w-3 text-[#555934]" />
+                Targeted cognitive framing
               </p>
             </div>
           </div>
 
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span className="text-xs text-[#705849]">
-              Pipeline: 3 Independent Generations → Agreement Matrix → MoSPI Fact Scrutiny
+          <div className="pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs text-[#705849] flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-amber-600" />
+              Engine: <strong>Groq AI (gpt-oss-20b)</strong> • Sub-second contextual inference
             </span>
             <button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="w-full sm:w-auto px-5 py-2.5 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 shadow-xs transition active:scale-95 disabled:opacity-60"
+              className="w-full sm:w-auto px-6 py-2.5 bg-[#555934] hover:bg-[#3e4225] text-white text-sm font-semibold rounded-xl flex items-center justify-center gap-2 shadow-xs transition active:scale-95 disabled:opacity-60"
             >
               {isGenerating ? (
                 <>
                   <RefreshCw className="h-4 w-4 animate-spin" />
-                  Reconciling AI Models...
+                  Generating with Groq AI...
                 </>
               ) : (
                 <>
                   <Sparkles className="h-4 w-4" />
-                  Generate Calibrated Item
+                  Generate Question
                 </>
               )}
             </button>
@@ -305,163 +329,121 @@ function MCQGeneratorInner() {
         </CardContent>
       </Card>
 
-      {/* Generated Result Preview */}
+      {/* Generated Result: Interactive Practice Mode or Admin Inspector */}
       {generatedQuestion && (
-        <Card className="border-stone-200 bg-white shadow-sm animate-in fade-in-50 duration-300">
-          <CardHeader className="border-b border-stone-100 pb-4 bg-stone-50/40">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-2.5">
-                  <CardTitle className="text-lg font-bold text-stone-900">
-                    Consensus-Verified Assessment Item
-                  </CardTitle>
+        <div className="space-y-4">
+          {/* Mode Switcher */}
+          <div className="flex items-center justify-between px-1">
+            <div className="text-xs font-semibold text-stone-500">
+              Active Question ID: <code className="text-stone-700">{generatedQuestion.id}</code>
+            </div>
+            <div className="flex rounded-lg bg-stone-100 p-1 border border-stone-200">
+              <button
+                onClick={() => setViewMode('practice')}
+                className={`px-3 py-1 text-xs font-semibold rounded-md transition ${
+                  viewMode === 'practice'
+                    ? 'bg-white text-stone-900 shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                Self-Paced Practice
+              </button>
+              <button
+                onClick={() => setViewMode('inspector')}
+                className={`px-3 py-1 text-xs font-semibold rounded-md transition ${
+                  viewMode === 'inspector'
+                    ? 'bg-white text-stone-900 shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                Faculty Inspector
+              </button>
+            </div>
+          </div>
+
+          {viewMode === 'practice' ? (
+            <DocumentPracticeCard
+              key={generatedQuestion.id}
+              question={generatedQuestion}
+              docTitle={activeDoc.title}
+              difficulty={difficulty}
+              onNextQuestion={handleGenerate}
+              isGeneratingNext={isGenerating}
+              onStageToQueue={handlePushToReview}
+              stagedToQueue={stagedToQueue}
+            />
+          ) : (
+            <Card className="border-stone-200 bg-white shadow-sm">
+              <CardHeader className="border-b border-stone-100 pb-4 bg-stone-50/40">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg font-bold text-stone-900">
+                      Faculty Quality & Distractor Breakdown
+                    </CardTitle>
+                    <CardDescription className="text-xs text-stone-500 flex items-center gap-2 mt-1">
+                      <Bot className="h-3.5 w-3.5 text-blue-600" />
+                      Evaluated by {generatedQuestion.modelsEvaluated.join(', ')}
+                    </CardDescription>
+                  </div>
                   <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 font-bold border border-blue-200">
                     Consensus Score: {(generatedQuestion.consensusScore * 100).toFixed(0)}%
                   </span>
-                  <span className="text-xs px-2 py-0.5 rounded bg-stone-100 text-stone-700 font-medium">
-                    {difficulty.toUpperCase()}
-                  </span>
                 </div>
-                <CardDescription className="flex items-center gap-2 mt-1.5 text-xs text-stone-500">
-                  <Bot className="h-3.5 w-3.5 text-blue-600" />
-                  <span>Models Evaluated: <strong>Claude 3.5 Sonnet</strong>, <strong>GPT-4o</strong>, <strong>Llama-3-70B</strong></span>
-                </CardDescription>
-              </div>
+              </CardHeader>
+              <CardContent className="pt-5 space-y-4">
+                <div className="p-4 rounded-xl bg-stone-50 border border-stone-200">
+                  <span className="text-xs font-bold text-stone-500 block mb-1">ENGLISH STEM</span>
+                  <p className="text-sm font-medium text-stone-900">{generatedQuestion.stemEn}</p>
+                  <span className="text-xs font-bold text-stone-500 block mt-3 mb-1">HINDI STEM</span>
+                  <p className="text-sm font-medium text-stone-900">{generatedQuestion.stemHi}</p>
+                </div>
 
-              {/* Language Switcher */}
-              <div className="flex rounded-lg bg-stone-100 p-1 border border-stone-200 self-start sm:self-auto">
-                <button
-                  onClick={() => setActiveTab('en')}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition ${
-                    activeTab === 'en' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-600 hover:text-stone-900'
-                  }`}
-                >
-                  English
-                </button>
-                <button
-                  onClick={() => setActiveTab('hi')}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition ${
-                    activeTab === 'hi' ? 'bg-white text-stone-900 shadow-xs' : 'text-stone-600 hover:text-stone-900'
-                  }`}
-                >
-                  हिन्दी (Hindi)
-                </button>
-              </div>
-            </div>
-          </CardHeader>
-
-          <CardContent className="space-y-6 pt-6">
-            {/* Question Stem */}
-            <div className="p-4 rounded-xl bg-stone-50 border border-stone-200">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block mb-1">
-                Question Stem ({activeTab === 'en' ? 'English' : 'हिन्दी'})
-              </span>
-              <p className="text-base font-semibold text-stone-900 leading-relaxed">
-                {activeTab === 'en' ? generatedQuestion.stemEn : generatedQuestion.stemHi}
-              </p>
-            </div>
-
-            {/* Choices */}
-            <div className="space-y-2.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block">
-                Calibrated Options & Distractor Design
-              </span>
-              {(activeTab === 'en' ? generatedQuestion.optionsEn : generatedQuestion.optionsHi).map(
-                (opt, idx) => {
-                  const isCorrect = idx === generatedQuestion.correctIndex;
-                  return (
-                    <div
-                      key={idx}
-                      className={`p-3.5 rounded-xl border text-sm flex items-start gap-3 transition ${
-                        isCorrect
-                          ? 'border-emerald-300 bg-emerald-50/70 text-emerald-950 font-medium shadow-xs'
-                          : 'border-stone-200 bg-white text-stone-700'
-                      }`}
-                    >
-                      <span
-                        className={`inline-flex items-center justify-center h-6 w-6 rounded-full text-xs font-bold shrink-0 ${
+                <div className="space-y-2">
+                  <span className="text-xs font-bold text-stone-500 block">OPTIONS & VERIFIED KEY</span>
+                  {generatedQuestion.optionsEn.map((opt, idx) => {
+                    const isCorrect = idx === generatedQuestion.correctIndex;
+                    return (
+                      <div
+                        key={idx}
+                        className={`p-3 rounded-lg border text-xs sm:text-sm flex items-start gap-3 ${
                           isCorrect
-                            ? 'bg-emerald-700 text-white'
-                            : 'bg-stone-100 text-stone-700 border border-stone-200'
+                            ? 'border-emerald-300 bg-emerald-50/70 text-emerald-950 font-medium'
+                            : 'border-stone-200 bg-white text-stone-700'
                         }`}
                       >
-                        {String.fromCharCode(65 + idx)}
-                      </span>
-                      <span className="flex-1 pt-0.5">{opt}</span>
-                      {isCorrect && (
-                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 shrink-0">
-                          Verified Key
-                        </span>
-                      )}
-                    </div>
-                  );
-                }
-              )}
-            </div>
+                        <span className="font-bold">{String.fromCharCode(65 + idx)}.</span>
+                        <div className="flex-1">
+                          <div>{opt}</div>
+                          <div className="text-xs text-stone-500 mt-0.5">{generatedQuestion.optionsHi[idx]}</div>
+                        </div>
+                        {isCorrect && (
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            Key
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
 
-            {/* Grounding & Citation */}
-            <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200 text-xs space-y-2 text-amber-950">
-              <div className="flex items-center gap-2 font-bold text-amber-900">
-                <BookOpen className="h-4 w-4 text-amber-700" />
-                <span>Official MoSPI Source Grounding & Justification:</span>
-              </div>
-              <p className="leading-relaxed text-amber-900">
-                {activeTab === 'en' ? generatedQuestion.rationaleEn : generatedQuestion.rationaleHi}
-              </p>
-              <div className="pt-1 text-[11px] font-semibold text-amber-800">
-                Source: {generatedQuestion.citation}
-              </div>
-            </div>
+                <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-950">
+                  <strong>MoSPI Justification:</strong> {generatedQuestion.rationaleEn}
+                  <div className="mt-1 text-amber-800 font-medium">Source: {generatedQuestion.citation}</div>
+                </div>
 
-            {/* Action Bar */}
-            <div className="pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-xs text-stone-500">
-                Status: <strong className="text-stone-700">{stagedToQueue ? 'STAGED IN QUEUE' : 'DRAFT GENERATED'}</strong>
-              </div>
-
-              <div className="flex items-center gap-3">
-                {stagedToQueue ? (
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">
-                      <Check className="h-4 w-4" /> Staged into Queue
-                    </span>
-                    <Link
-                      href="/review-queue"
-                      className="px-4 py-2 bg-[#8b9a6e] hover:bg-[#7a885f] text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-xs transition"
-                    >
-                      Open Review Queue <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </div>
-                ) : (
+                <div className="pt-2 flex justify-end">
                   <button
                     onClick={handlePushToReview}
-                    className="px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-lg flex items-center gap-2 shadow-xs transition active:scale-95"
+                    disabled={stagedToQueue}
+                    className="px-4 py-2 bg-blue-700 hover:bg-blue-800 disabled:bg-stone-300 text-white text-xs font-bold rounded-lg transition shadow-xs"
                   >
-                    <Send className="h-3.5 w-3.5" />
-                    Stage into Faculty Review Queue
+                    {stagedToQueue ? 'Staged in Faculty Queue' : 'Stage into Review Queue'}
                   </button>
-                )}
-              </div>
-            </div>
-
-            {stagedToQueue && (
-              <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs rounded-lg flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span>
-                    Item successfully staged into the <strong>Faculty Review & Calibration Queue</strong> with consensus certification.
-                  </span>
                 </div>
-                <Link
-                  href="/review-queue"
-                  className="font-bold underline text-emerald-800 hover:text-emerald-950 shrink-0"
-                >
-                  Review Now →
-                </Link>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       )}
     </div>
   );
@@ -474,3 +456,4 @@ export default function MCQGeneratorPage() {
     </Suspense>
   );
 }
+
