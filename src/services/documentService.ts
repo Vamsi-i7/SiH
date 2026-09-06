@@ -6,7 +6,7 @@
  */
 
 import { uploadToR2, PUBLIC_URL } from '@/lib/r2';
-import { getSupabaseServerClient } from '@/lib/supabase';
+import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
 
 export interface DocumentChunk {
   id: string;
@@ -90,7 +90,7 @@ export class DocumentService {
 
     // 2. Map metadata to Supabase DB if client available
     try {
-      const supabase = await getSupabaseServerClient();
+      const supabase = getSupabaseBrowserClient();
       if (supabase) {
         await supabase.from('documents').insert({
           title: docRecord.title,
@@ -113,7 +113,7 @@ export class DocumentService {
    */
   static async getDocuments(): Promise<IngestedDocument[]> {
     try {
-      const supabase = await getSupabaseServerClient();
+      const supabase = getSupabaseBrowserClient();
       if (supabase) {
         const { data, error } = await supabase
           .from('documents')
