@@ -6,6 +6,9 @@ import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { ProgressRing } from '@/components/ProgressRing';
 import { Award, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import { getPersonaFRAC } from '@/data/fracCadres';
+import { CompetencyService } from '@/services/competencyService';
+import type { AppUser } from '@/lib/auth';
 
 interface CompetencyRecord {
   competencyId: string;
@@ -41,96 +44,62 @@ interface ProfileData {
   competencyHistory: Record<string, CompetencyHistoryEntry[]>;
 }
 
-function getDemoProfileData(): ProfileData {
+function buildPersonaProfileData(user?: AppUser | null): ProfileData {
+  const profile = getPersonaFRAC(user);
+  const isHindi = user?.user_metadata?.preferred_language === 'hi' || profile.preferredLanguage === 'hi';
+
+  const competencyRecords: CompetencyRecord[] = profile.competencies.map((comp) => ({
+    competencyId: comp.id,
+    competencyName: isHindi ? comp.name_hi : comp.name,
+    category: comp.category,
+    currentLevel: comp.currentLevel,
+    targetLevel: comp.targetLevel,
+    evidenceType: comp.evidenceType,
+    lastUpdated: '2026-08-15',
+  }));
+
+  const userRecords = new Map(profile.competencies.map((c) => [c.id, c.currentLevel]));
+  const required = profile.competencies.map((c) => ({ competencyId: c.id, targetLevel: c.targetLevel }));
+  const readinessIndex = CompetencyService.computeReadinessIndex(required, userRecords);
+
+  const competencyHistory: Record<string, CompetencyHistoryEntry[]> = {};
+  profile.competencies.forEach((c) => {
+    competencyHistory[c.id] = [
+      {
+        date: '2026-08-15',
+        level: c.currentLevel,
+        source: c.evidenceType === 'assessment-verified' ? 'assessment-score' : 'self-assessment',
+      },
+      {
+        date: '2026-03-10',
+        level: Math.max(1, c.currentLevel - 1),
+        source: 'self-assessment',
+      },
+    ];
+  });
+
   return {
-    name: 'Sunita Devi',
-    email: 'sunita.devi@mospi.gov.in',
-    designation: 'Field Investigator (Grade II)',
-    cadre: 'FOD - NSSO',
-    department: 'Field Operations Division',
-    organization: 'MoSPI Demo Organization',
-    role: 'Field Investigator',
-    karmaPoints: 1275,
-    aparMilestone: '2025-2026: Exceeded Expectations',
-    readinessIndex: 67,
+    name: profile.name,
+    email: profile.email,
+    designation: isHindi ? profile.designation_hi : profile.designation,
+    cadre: profile.cadre,
+    department: isHindi ? profile.department_hi : profile.department,
+    organization: 'Ministry of Statistics and Programme Implementation (MoSPI)',
+    role: isHindi ? profile.designation_hi : profile.designation,
+    karmaPoints: profile.personaId.includes('sunita') ? 1450 : 1820,
+    aparMilestone: '2025-2026: Benchmark Target Exceeded',
+    readinessIndex,
     joinedDate: '2023-06-15',
-    assessmentsCompleted: 8,
+    assessmentsCompleted: 6,
     coursesCompleted: 4,
-    competencyRecords: [
-      {
-        competencyId: 'comp-capi',
-        competencyName: 'CAPI Tablet Operation',
-        category: 'Domain',
-        currentLevel: 3,
-        targetLevel: 4,
-        evidenceType: 'assessment-verified',
-        lastUpdated: '2025-08-10',
-      },
-      {
-        competencyId: 'comp-nsso',
-        competencyName: 'NSSO Protocol Mastery',
-        category: 'Domain',
-        currentLevel: 3,
-        targetLevel: 3,
-        evidenceType: 'assessment-verified',
-        lastUpdated: '2025-07-22',
-      },
-      {
-        competencyId: 'comp-survey',
-        competencyName: 'Survey Sampling & Design',
-        category: 'Functional',
-        currentLevel: 2,
-        targetLevel: 3,
-        evidenceType: 'self-assessed',
-        lastUpdated: '2025-06-01',
-      },
-      {
-        competencyId: 'comp-data',
-        competencyName: 'Data Entry & Scrutiny',
-        category: 'Functional',
-        currentLevel: 3,
-        targetLevel: 3,
-        evidenceType: 'assessment-verified',
-        lastUpdated: '2025-08-05',
-      },
-      {
-        competencyId: 'comp-teamwork',
-        competencyName: 'Teamwork & Collaboration',
-        category: 'Behavioural',
-        currentLevel: 3,
-        targetLevel: 2,
-        evidenceType: 'self-assessed',
-        lastUpdated: '2025-05-15',
-      },
-      {
-        competencyId: 'comp-communication',
-        competencyName: 'Citizen Enumeration Ethics',
-        category: 'Behavioural',
-        currentLevel: 4,
-        targetLevel: 3,
-        evidenceType: 'assessment-verified',
-        lastUpdated: '2025-07-30',
-      },
-    ],
-    competencyHistory: {
-      'comp-capi': [
-        { date: '2025-08-10', level: 3, source: 'assessment-score' },
-        { date: '2025-05-20', level: 2, source: 'assessment-score' },
-        { date: '2025-02-15', level: 2, source: 'self-assessment' },
-        { date: '2024-11-01', level: 1, source: 'self-assessment' },
-      ],
-      'comp-nsso': [
-        { date: '2025-07-22', level: 3, source: 'assessment-score' },
-        { date: '2025-04-10', level: 3, source: 'course-completion' },
-        { date: '2025-01-05', level: 2, source: 'assessment-score' },
-      ],
-    },
+    competencyRecords,
+    competencyHistory,
   };
 }
 
-export default function ProfileClient() {
+export default function ProfileClient({ user }: { user?: AppUser | null }) {
   const t = useTranslations();
-  const [data] = useState<ProfileData>(getDemoProfileData);
+  const [data] = useState<ProfileData>(() => buildPersonaProfileData(user));
   const [activeTab, setActiveTab] = useState<'overview' | 'competencies' | 'history'>('overview');
 
   if (!data) {

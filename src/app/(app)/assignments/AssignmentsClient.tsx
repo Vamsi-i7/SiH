@@ -13,6 +13,10 @@ import { getAssessmentMetas } from '@/data/assessments';
 import { ClipboardCheck, Clock, BookOpen, ChevronRight } from 'lucide-react';
 
 const iconByIndex = [
+  '📱', // CAPI Operations
+  '🗺️', // Schedule 0.0 & UFS Demarcation
+  '📊', // PLFS Survey
+  '📋', // Statistical Scrutiny
   '🧩', // Problem Solving
   '🔍', // Critical Thinking
   '💬', // Communication
@@ -48,7 +52,7 @@ export default function AssignmentsClient() {
         {[
           { label: 'Available Tests', value: metas.length.toString(), color: 'text-[#555934]' },
           { label: 'Questions Each', value: '10', color: 'text-[#BF9B7A]' },
-          { label: 'Time Limit', value: '5 min', color: 'text-[#8C5B3E]' },
+          { label: 'Time Limit', value: '5-10 min', color: 'text-[#8C5B3E]' },
           { label: 'Question Type', value: 'MCQ', color: 'text-[#593E2E]' },
         ].map((stat) => (
           <div

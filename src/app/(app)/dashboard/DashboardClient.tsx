@@ -32,6 +32,7 @@ import { CourseCard, type CourseData } from '@/components/CourseCard';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { CompetencyService } from '@/services/competencyService';
 import { OFFICIAL_COURSE_CATALOG } from '@/services/recommendationService';
+import { getPersonaFRAC } from '@/data/fracCadres';
 
 interface DashboardProps {
   user: {

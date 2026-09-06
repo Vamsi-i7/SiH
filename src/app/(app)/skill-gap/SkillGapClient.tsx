@@ -7,7 +7,9 @@ import { PlayCircle } from 'lucide-react';
 import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { CompetencyService } from '@/services/competencyService';
+import { getPersonaFRAC } from '@/data/fracCadres';
 import type { CompetencyGap } from '@/lib/types';
+import type { AppUser } from '@/lib/auth';
 
 interface GapCardProps {
   gap: CompetencyGap;
@@ -102,231 +104,65 @@ function GapCard({ gap }: GapCardProps) {
   );
 }
 
-function getDemoGapsAndRadar(): { gaps: CompetencyGap[]; radarData: RadarDataPoint[] } {
-  // Demo data that matches the FRAC domain model and CompetencyService logic
-  const demoGaps: CompetencyGap[] = [
-    {
-      competencyId: 'comp-capi',
-      competency: {
-        id: 'comp-capi',
-        name: 'CAPI Tablet Operation',
-        name_hi: 'कैपी टैबलेट संचालन',
-        category: 'Domain',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-fh',
-        name: 'Household Listing & Census Enumeration',
-        name_hi: 'परिवार सूचीकरण & जनगणना गणना',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 2,
-      targetLevel: 4,
-      gap: 2,
-      priority: 'critical',
-      severity: 'HIGH',
-      evidenceType: 'assessment-verified',
-    },
-    {
-      competencyId: 'comp-survey',
-      competency: {
-        id: 'comp-survey',
-        name: 'Survey Sampling & Design',
-        name_hi: 'सर्वेक्षण नमूनाकरण & डिजाइन',
-        category: 'Functional',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-fh',
-        name: 'Household Listing & Census Enumeration',
-        name_hi: 'परिवार सूचीकरण & जनगणना गणना',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 1,
-      targetLevel: 3,
-      gap: 2,
-      priority: 'important',
-      severity: 'HIGH',
-      evidenceType: 'self-assessed',
-    },
-    {
-      competencyId: 'comp-data',
-      competency: {
-        id: 'comp-data',
-        name: 'Data Entry & Scrutiny',
-        name_hi: 'डेटा प्रविष्टि & संवीक्षा',
-        category: 'Functional',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-se',
-        name: 'Socio-Economic Survey Execution',
-        name_hi: 'सामाजिक-आर्थिक सर्वेक्षण निष्पादन',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 1,
-      targetLevel: 3,
-      gap: 2,
-      priority: 'important',
-      severity: 'HIGH',
-      evidenceType: 'assessment-verified',
-    },
-    {
-      competencyId: 'comp-nsso',
-      competency: {
-        id: 'comp-nsso',
-        name: 'NSSO Protocol Mastery',
-        name_hi: 'एनएसएसओ प्रोटोकॉल में दक्षता',
-        category: 'Domain',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-se',
-        name: 'Socio-Economic Survey Execution',
-        name_hi: 'सामाजिक-आर्थिक सर्वेक्षण निष्पादन',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 3,
-      targetLevel: 3,
-      gap: 0,
-      priority: 'critical',
-      severity: 'PROFICIENT',
-      evidenceType: 'assessment-verified',
-    },
-    {
-      competencyId: 'comp-ethics',
-      competency: {
-        id: 'comp-ethics',
-        name: 'Statistical Ethics & Integrity',
-        name_hi: 'सांख्यिकीय नैतिकता & अखंडता',
-        category: 'Behavioural',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-se',
-        name: 'Socio-Economic Survey Execution',
-        name_hi: 'सामाजिक-आर्थिक सर्वेक्षण निष्पादन',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 4,
-      targetLevel: 2,
-      gap: 0,
-      priority: 'important',
-      severity: 'PROFICIENT',
-      evidenceType: 'assessment-verified',
-    },
-    {
-      competencyId: 'comp-teamwork',
-      competency: {
-        id: 'comp-teamwork',
-        name: 'Teamwork & Collaboration',
-        name_hi: 'टीमवर्क & सहयोग',
-        category: 'Behavioural',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-fh',
-        name: 'Household Listing & Census Enumeration',
-        name_hi: 'परिवार सूचीकरण & जनगणना गणना',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 1,
-      targetLevel: 4,
-      gap: 3,
-      priority: 'desirable',
-      severity: 'MODERATE',
-      evidenceType: 'self-assessed',
-    },
-    {
-      competencyId: 'comp-estimation',
-      competency: {
-        id: 'comp-estimation',
-        name: 'Statistical Estimation & Analysis',
-        name_hi: 'सांख्यिकीय अनुमान & विश्लेषण',
-        category: 'Domain',
-        levels: { L1: '', L2: '', L3: '', L4: '', L5: '' },
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      activity: {
-        id: 'act-se',
-        name: 'Socio-Economic Survey Execution',
-        name_hi: 'सामाजिक-आर्थिक सर्वेक्षण निष्पादन',
-        role_id: 'role-field-investigator',
-        provenance: 'PROPOSED_FRAMEWORK',
-        created_at: new Date().toISOString(),
-      },
-      currentLevel: 1,
-      targetLevel: 4,
-      gap: 3,
-      priority: 'desirable',
-      severity: 'MODERATE',
-      evidenceType: 'self-assessed',
-    },
-  ];
+function buildPersonaGapsAndRadar(user?: AppUser | null): { gaps: CompetencyGap[]; radarData: RadarDataPoint[] } {
+  const profile = getPersonaFRAC(user);
+  const isHindi = user?.user_metadata?.preferred_language === 'hi' || profile.preferredLanguage === 'hi';
 
-  // Sort gaps by severity (HIGH > MODERATE > PROFICIENT) and priority
-  const severityOrder = { HIGH: 0, MODERATE: 1, PROFICIENT: 2 };
-  const sortedGaps = [...demoGaps].sort((a, b) => {
-    const severityA = severityOrder[a.severity];
-    const severityB = severityOrder[b.severity];
+  const gaps: CompetencyGap[] = profile.competencies.map((comp) => {
+    const gap = Math.max(0, comp.targetLevel - comp.currentLevel);
+    const severityScore = CompetencyService.computeGapSeverity(comp.currentLevel, comp.targetLevel, comp.priority);
+    const severity = CompetencyService.classifySeverity(severityScore);
 
-    if (severityA !== severityB) {
-      return severityA - severityB;
-    }
-
-    const priorityOrder = { critical: 0, important: 1, desirable: 2 };
-    const priorityA = priorityOrder[a.priority];
-    const priorityB = priorityOrder[b.priority];
-
-    if (priorityA !== priorityB) {
-      return priorityA - priorityB;
-    }
-
-    return b.gap - a.gap;
-  });
-
-  // Build radar data for the most relevant activities
-  const relevantActivities = [...new Set(sortedGaps.map(g => g.activity.name))];
-  const radar: RadarDataPoint[] = relevantActivities.map(activity => {
-    const gapForActivity = sortedGaps.find(g => g.activity.name === activity);
     return {
-      label: activity.split(' ')[0] + ' ' + activity.split(' ')[1],
-      current: gapForActivity?.currentLevel || 1,
-      target: gapForActivity?.targetLevel || 3,
+      competencyId: comp.id,
+      competency: {
+        id: comp.id,
+        name: isHindi ? comp.name_hi : comp.name,
+        name_hi: comp.name_hi,
+        category: comp.category,
+        description: isHindi ? comp.description_hi : comp.description,
+        description_hi: comp.description_hi,
+        levels: comp.levels,
+        provenance: comp.provenance,
+        created_at: new Date().toISOString(),
+      },
+      activity: {
+        id: `act-${comp.id}`,
+        name: isHindi ? comp.activityName_hi : comp.activityName,
+        name_hi: comp.activityName_hi,
+        description: comp.description,
+        role_id: profile.personaId,
+        provenance: comp.provenance,
+        created_at: new Date().toISOString(),
+      },
+      currentLevel: comp.currentLevel,
+      targetLevel: comp.targetLevel,
+      gap,
+      priority: comp.priority,
+      severity,
+      evidenceType: comp.evidenceType,
     };
   });
+
+  // Sort gaps by severity score descending (PRD §4.1 formula)
+  const sortedGaps = [...gaps].sort((a, b) => {
+    const scoreA = CompetencyService.computeGapSeverity(a.currentLevel, a.targetLevel, a.priority);
+    const scoreB = CompetencyService.computeGapSeverity(b.currentLevel, b.targetLevel, b.priority);
+    return scoreB - scoreA;
+  });
+
+  const radar: RadarDataPoint[] = profile.competencies.map((c) => ({
+    label: (isHindi ? c.name_hi : c.name).split(' ').slice(0, 2).join(' '),
+    current: c.currentLevel,
+    target: c.targetLevel,
+  }));
 
   return { gaps: sortedGaps, radarData: radar };
 }
 
-export default function SkillGapClient() {
+export default function SkillGapClient({ user }: { user?: AppUser | null }) {
   const t = useTranslations();
-  const [{ gaps, radarData }] = useState(getDemoGapsAndRadar);
+  const [{ gaps, radarData }] = useState(() => buildPersonaGapsAndRadar(user));
   const [filter, setFilter] = useState<'all' | 'HIGH' | 'MODERATE' | 'PROFICIENT'>('all');
 
   const filteredGaps = gaps.filter(gap => filter === 'all' || gap.severity === filter);

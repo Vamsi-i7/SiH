@@ -26,7 +26,7 @@ export default async function SignupPage() {
                   MoSPI • NSSTA
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground hidden sm:block">
+              <p className="text-xs text-[#705849] hidden sm:block">
                 National Statistical Systems Training Academy
               </p>
             </div>
@@ -44,10 +44,10 @@ export default async function SignupPage() {
       <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-12">
         <div className="mx-auto w-full max-w-md space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <h1 className="text-2xl font-bold tracking-tight text-[#2d1f17]">
               {t('signup')}
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[#705849]">
               Create your official StatVidya workforce competency profile
             </p>
           </div>
@@ -57,7 +57,7 @@ export default async function SignupPage() {
               <SignupForm />
             </Suspense>
 
-            <p className="mt-5 text-center text-xs text-muted-foreground pt-4">
+            <p className="mt-5 text-center text-xs text-[#705849] pt-4">
               {t('hasAccount')}{' '}
               <a href="/auth/login" className="font-semibold text-[#555934] hover:underline transition-colors">
                 {t('login')}
@@ -68,7 +68,7 @@ export default async function SignupPage() {
       </main>
 
       {/* Institutional Footer */}
-      <footer className="bg-white py-4 text-center text-xs text-muted-foreground shadow-[0_-2px_12px_-4px_rgba(89,62,46,0.03)]">
+      <footer className="bg-white py-4 text-center text-xs text-[#705849] shadow-[0_-2px_12px_-4px_rgba(89,62,46,0.03)]">
         <p>Ministry of Statistics and Programme Implementation (MoSPI) • National Statistical Systems Training Academy (NSSTA)</p>
       </footer>
     </div>

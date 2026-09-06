@@ -40,11 +40,27 @@ const QUICK_ACTIONS = [
 // COMPONENT
 // ============================================================================
 
+function getWelcomeMessage(userContext?: CopilotUserContext): Message {
+  const greeting = userContext?.name
+    ? `🙏 Namaste, **${userContext.name}**! I'm your StatVidya Copilot.\n\nAs a **${userContext.designation || userContext.role || 'learner'}** in ${userContext.cadre || 'the Official Statistical System'}, I can help you navigate the platform, understand your competency gaps, and find relevant iGOT courses.\n\nWhat would you like to explore?`
+    : `🙏 **Namaste!** I'm your StatVidya Copilot.\n\nI can help you with FRAC competency tracking, iGOT learning pathways, and platform navigation.\n\nWhat would you like to explore?`;
+
+  return {
+    id: 'welcome',
+    role: 'assistant',
+    content: greeting,
+    timestamp: new Date(1730000000000),
+  };
+}
+
 export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => [getWelcomeMessage(userContext)]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(() =>
+    typeof navigator !== 'undefined' ? !navigator.onLine : false
+  );
+  const msgCounterRef = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -80,7 +96,6 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
   useEffect(() => {
     const goOnline = () => setIsOffline(false);
     const goOffline = () => setIsOffline(true);
-    setIsOffline(!navigator.onLine);
     window.addEventListener('online', goOnline);
     window.addEventListener('offline', goOffline);
     return () => {
@@ -89,36 +104,20 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
     };
   }, []);
 
-  // Welcome message on first open
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      const greeting = userContext?.name
-        ? `🙏 Namaste, **${userContext.name}**! I'm your StatVidya Copilot.\n\nAs a **${userContext.designation || userContext.role || 'learner'}** in ${userContext.cadre || 'the Official Statistical System'}, I can help you navigate the platform, understand your competency gaps, and find relevant iGOT courses.\n\nWhat would you like to explore?`
-        : `🙏 **Namaste!** I'm your StatVidya Copilot.\n\nI can help you with FRAC competency tracking, iGOT learning pathways, and platform navigation.\n\nWhat would you like to explore?`;
-
-      setMessages([
-        {
-          id: 'welcome',
-          role: 'assistant',
-          content: greeting,
-          timestamp: new Date(),
-        },
-      ]);
-    }
-  }, [isOpen, messages.length, userContext]);
-
   // ─── Send Message ───
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
 
+    msgCounterRef.current += 1;
     const userMsg: Message = {
-      id: `user-${Date.now()}`,
+      id: `user-${msgCounterRef.current}`,
       role: 'user',
       content: text.trim(),
       timestamp: new Date(),
     };
 
-    const assistantId = `assistant-${Date.now()}`;
+    msgCounterRef.current += 1;
+    const assistantId = `assistant-${msgCounterRef.current}`;
     const assistantMsg: Message = {
       id: assistantId,
       role: 'assistant',
@@ -250,7 +249,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
   };
 
   const clearChat = () => {
-    setMessages([]);
+    setMessages([getWelcomeMessage(userContext)]);
   };
 
   if (!isOpen) return null;
@@ -261,7 +260,7 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
     <>
       {/* Backdrop (mobile) */}
       <div
-        className="fixed inset-0 z-[998] bg-black/20 backdrop-blur-[2px] sm:hidden"
+        className="fixed inset-0 z-998 bg-black/20 backdrop-blur-xs sm:hidden"
         onClick={onClose}
         aria-hidden
       />
