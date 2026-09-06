@@ -97,6 +97,10 @@ export function Topbar() {
         setMenuOpen(false);
         setSwitcherOpen(false);
       }
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        router.push('/pathways');
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -105,7 +109,7 @@ export function Topbar() {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [router]);
 
   // Dropdown toggle handlers with mutual exclusivity
   const toggleNotifications = useCallback(() => {
