@@ -227,7 +227,7 @@ function MCQGeneratorInner() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-              MoSPI AI Learning & Practice
+              MoSPI Practice & Calibration
             </span>
             <span className="text-xs text-stone-500">• Clause 4.3 FRAC Calibrated Generator</span>
           </div>
