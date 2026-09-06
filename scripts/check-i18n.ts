@@ -1,12 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-function getNestedKeys(obj: Record<string, any>, prefix = ''): string[] {
+function getNestedKeys(obj: Record<string, unknown>, prefix = ''): string[] {
   let keys: string[] = [];
   for (const key of Object.keys(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
-    if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
-      keys = keys.concat(getNestedKeys(obj[key], fullKey));
+    const val = obj[key];
+    if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+      keys = keys.concat(getNestedKeys(val as Record<string, unknown>, fullKey));
     } else {
       keys.push(fullKey);
     }

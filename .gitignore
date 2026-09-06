@@ -13,7 +13,6 @@ dist/
 next-env.d.ts
 
 # Environment files
-.env
 .env*.local
 !.env.example
 
