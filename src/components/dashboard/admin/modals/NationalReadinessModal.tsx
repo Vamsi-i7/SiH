@@ -52,7 +52,7 @@ export function NationalReadinessModal({ isOpen, onClose }: NationalReadinessMod
           {/* Top Macro Banner */}
           <div className="p-4 rounded-2xl bg-white border border-[#BF9B7A]/30 flex items-center justify-between gap-4 shadow-2xs">
             <div>
-              <span className="text-[10px] font-bold text-[#705849] uppercase tracking-wider block">
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                 Aggregated National Readiness
               </span>
               <div className="flex items-baseline gap-2 mt-0.5">
@@ -61,7 +61,7 @@ export function NationalReadinessModal({ isOpen, onClose }: NationalReadinessMod
                   <TrendingUp className="h-3.5 w-3.5" /> +4.2% QoQ
                 </span>
               </div>
-              <p className="text-[11px] text-[#705849] mt-1">
+              <p className="text-[11px] text-muted-foreground mt-1">
                 Target: <strong>75.0%</strong> by end of Q3 2026 (Mission Karmayogi Bharat)
               </p>
             </div>
@@ -85,7 +85,7 @@ export function NationalReadinessModal({ isOpen, onClose }: NationalReadinessMod
               <div className="h-2 w-full rounded-full bg-[#BF9B7A]/20 overflow-hidden">
                 <div className="h-full rounded-full bg-emerald-600" style={{ width: '84.2%' }} />
               </div>
-              <p className="text-[10px] text-[#705849]">820 Senior Officers • Level 4-5 Macro Scrutiny Qualified</p>
+              <p className="text-[10px] text-muted-foreground">820 Senior Officers • Level 4-5 Macro Scrutiny Qualified</p>
             </div>
 
             {/* SSS */}
@@ -97,7 +97,7 @@ export function NationalReadinessModal({ isOpen, onClose }: NationalReadinessMod
               <div className="h-2 w-full rounded-full bg-[#BF9B7A]/20 overflow-hidden">
                 <div className="h-full rounded-full bg-[#8C5B3E]" style={{ width: '71.8%' }} />
               </div>
-              <p className="text-[10px] text-[#705849]">2,150 JSOs and SSOs • Level 3 Demarcation &amp; Scrutiny</p>
+              <p className="text-[10px] text-muted-foreground">2,150 JSOs and SSOs • Level 3 Demarcation &amp; Scrutiny</p>
             </div>
 
             {/* FOD */}
@@ -109,7 +109,7 @@ export function NationalReadinessModal({ isOpen, onClose }: NationalReadinessMod
               <div className="h-2 w-full rounded-full bg-[#BF9B7A]/20 overflow-hidden">
                 <div className="h-full rounded-full bg-red-600" style={{ width: '58.4%' }} />
               </div>
-              <p className="text-[10px] text-[#705849]">1,880 Field Investigators • Primary bottleneck in Schedule 0.0 CEB listing</p>
+              <p className="text-[10px] text-muted-foreground">1,880 Field Investigators • Primary bottleneck in Schedule 0.0 CEB listing</p>
             </div>
           </div>
 
@@ -118,7 +118,7 @@ export function NationalReadinessModal({ isOpen, onClose }: NationalReadinessMod
             <AlertTriangle className="h-5 w-5 text-[#8C5B3E] shrink-0 mt-0.5" />
             <div>
               <h4 className="font-bold text-[#2d1f17] text-[11px]">Executive Recommendation</h4>
-              <p className="text-[10.5px] text-[#705849] leading-relaxed mt-0.5">
+              <p className="text-[10.5px] text-muted-foreground leading-relaxed mt-0.5">
                 Reallocating 15 faculty trainers from Headquarters to Patna and Prayagraj ROs will close the 
                 16.6% competency deficit in the FOD Rural Cadre within 4 weeks.
               </p>
@@ -127,7 +127,7 @@ export function NationalReadinessModal({ isOpen, onClose }: NationalReadinessMod
         </div>
 
         {/* Footer */}
-        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-[#705849] shrink-0">
+        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-muted-foreground shrink-0">
           <span className="text-[11px]">Registry Timestamp: 07 Sep 2026</span>
           <button
             type="button"

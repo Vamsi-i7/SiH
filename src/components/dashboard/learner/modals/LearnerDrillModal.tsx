@@ -301,7 +301,7 @@ export function LearnerDrillModal({
 
               {/* Multiple Choice Options */}
               <div className="space-y-2.5">
-                <p className="text-xs font-bold text-[#705849]">
+                <p className="text-xs font-bold text-muted-foreground">
                   {isHindi ? 'सही मानक प्रक्रिया चुनें:' : 'Select Standard Operating Procedure:'}
                 </p>
                 {currentQuestion.options.map((opt) => {
@@ -378,7 +378,7 @@ export function LearnerDrillModal({
               <h3 className="text-xl font-black text-[#2d1f17]">
                 {isHindi ? 'फील्ड ड्रिल सफलतापूर्वक पूर्ण!' : 'Field Drill Successfully Completed!'}
               </h3>
-              <p className="text-xs text-[#705849] max-w-md mx-auto">
+              <p className="text-xs text-muted-foreground max-w-md mx-auto">
                 {isHindi
                   ? `आपने ${questions.length} में से ${score} प्रश्नों का सही उत्तर दिया है। आपके आधिकारिक कैडर प्रोफाइल में कर्म अंक जोड़ दिए गए हैं।`
                   : `You verified ${score} out of ${questions.length} scenarios correctly. Karma points have been credited to your official civil service dossier.`}
@@ -397,7 +397,7 @@ export function LearnerDrillModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-[#FAF6F0] transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-[#FAF6F0] transition-colors cursor-pointer"
           >
             {isHindi ? 'छोड़ें' : 'Close'}
           </button>

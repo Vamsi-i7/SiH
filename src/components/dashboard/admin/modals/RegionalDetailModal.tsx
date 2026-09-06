@@ -85,23 +85,23 @@ export function RegionalDetailModal({
           {/* Key Metrics Grid */}
           <div className="grid grid-cols-3 gap-3">
             <div className="p-3.5 rounded-2xl bg-white border border-[#BF9B7A]/30 text-center">
-              <span className="text-[10px] font-bold text-[#705849] block">Total Personnel</span>
+              <span className="text-[10px] font-bold text-muted-foreground block">Total Personnel</span>
               <span className="text-xl font-extrabold font-mono text-[#2d1f17]">{office.headcount}</span>
-              <span className="text-[9px] text-[#705849] block">FOD &amp; SSS Cadres</span>
+              <span className="text-[9px] text-muted-foreground block">FOD &amp; SSS Cadres</span>
             </div>
             <div className="p-3.5 rounded-2xl bg-white border border-[#BF9B7A]/30 text-center">
-              <span className="text-[10px] font-bold text-[#705849] block">Workforce Readiness</span>
+              <span className="text-[10px] font-bold text-muted-foreground block">Workforce Readiness</span>
               <span className={`text-xl font-extrabold font-mono ${office.readinessPercent >= 70 ? 'text-emerald-700' : 'text-[#8C5B3E]'}`}>
                 {office.readinessPercent}%
               </span>
-              <span className="text-[9px] text-[#705849] block">Avg: {office.avgLevel}</span>
+              <span className="text-[9px] text-muted-foreground block">Avg: {office.avgLevel}</span>
             </div>
             <div className="p-3.5 rounded-2xl bg-white border border-[#BF9B7A]/30 text-center">
-              <span className="text-[10px] font-bold text-[#705849] block">Scrutiny Error Rate</span>
+              <span className="text-[10px] font-bold text-muted-foreground block">Scrutiny Error Rate</span>
               <span className={`text-xl font-extrabold font-mono ${office.errorRate > 12 ? 'text-red-700' : 'text-[#2d1f17]'}`}>
                 {office.errorRate}%
               </span>
-              <span className="text-[9px] text-[#705849] block">NSS Returns</span>
+              <span className="text-[9px] text-muted-foreground block">NSS Returns</span>
             </div>
           </div>
 
@@ -113,15 +113,15 @@ export function RegionalDetailModal({
             </h3>
             <div className="space-y-1.5 text-[11px]">
               <div className="flex items-center justify-between">
-                <span className="text-[#705849]">Field Investigators (FOD Rural Cadre)</span>
+                <span className="text-muted-foreground">Field Investigators (FOD Rural Cadre)</span>
                 <span className="font-mono font-bold text-[#2d1f17]">{Math.round(office.headcount * 0.65)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#705849]">Junior Statistical Officers (SSS Cadre)</span>
+                <span className="text-muted-foreground">Junior Statistical Officers (SSS Cadre)</span>
                 <span className="font-mono font-bold text-[#2d1f17]">{Math.round(office.headcount * 0.25)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#705849]">Senior Officers &amp; Directors (ISS Cadre)</span>
+                <span className="text-muted-foreground">Senior Officers &amp; Directors (ISS Cadre)</span>
                 <span className="font-mono font-bold text-[#2d1f17]">{Math.round(office.headcount * 0.10)}</span>
               </div>
             </div>
@@ -188,7 +188,7 @@ export function RegionalDetailModal({
             <div className="p-4 rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h4 className="font-bold text-[#2d1f17] text-[11px]">NSSTA Remedial Intervention</h4>
-                <p className="text-[10px] text-[#705849]">
+                <p className="text-[10px] text-muted-foreground">
                   Deploy targeted 5-day competency booster modules and faculty mentors to this RO.
                 </p>
               </div>
@@ -205,12 +205,12 @@ export function RegionalDetailModal({
         </div>
 
         {/* Footer */}
-        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-[#705849] shrink-0">
+        <div className="bg-[#FAF6F0] border-t border-[#BF9B7A]/30 px-6 py-3 flex items-center justify-between text-xs text-muted-foreground shrink-0">
           <span className="text-[11px]">Audit Source: NSS Scrutiny System 2026</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-white transition-colors cursor-pointer"
+            className="px-4 py-1.5 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-white transition-colors cursor-pointer"
           >
             Close
           </button>

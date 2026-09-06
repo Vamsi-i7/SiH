@@ -249,11 +249,11 @@ export function Topbar({ initialRole }: TopbarProps) {
       {/* Search / Context Area */}
       <div className="flex items-center gap-4 min-w-0">
         <div className="relative hidden xl:flex items-center">
-          <Search className="absolute left-3 h-3.5 w-3.5 text-[#705849] pointer-events-none" />
+          <Search className="absolute left-3 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
           <input
             type="text"
             placeholder="Search competencies, manuals, or metrics... (⌘K)"
-            className="h-9 w-64 lg:w-72 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/25 pl-9 pr-4 text-xs text-[#2d1f17] placeholder:text-[#705849] focus:bg-white focus:ring-2 focus:ring-[#555934]/20 focus:outline-none transition-all shadow-2xs"
+            className="h-9 w-64 lg:w-72 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/25 pl-9 pr-4 text-xs text-[#2d1f17] placeholder:text-muted-foreground focus:bg-white focus:ring-2 focus:ring-[#555934]/20 focus:outline-none transition-all shadow-2xs"
             readOnly
             onClick={() => router.push(role === 'trainer' ? '/documents' : '/skill-gap')}
           />
@@ -272,7 +272,7 @@ export function Topbar({ initialRole }: TopbarProps) {
               >
                 <Award className="h-3.5 w-3.5 text-[#8C5B3E]" />
                 <span className="font-mono">+550</span>
-                <span className="text-[10px] text-[#705849]">Karma Points</span>
+                <span className="text-[10px] text-muted-foreground">Karma Points</span>
               </button>
 
               {/* Interactive CAPI Offline Engine */}
@@ -380,7 +380,7 @@ export function Topbar({ initialRole }: TopbarProps) {
             title="Switch Persona / Cadre Role"
           >
             <span className="flex h-2 w-2 rounded-full bg-[#555934] animate-pulse" />
-            <span className="text-[#705849] hidden lg:inline">
+            <span className="text-muted-foreground hidden lg:inline">
               Active Persona:
             </span>
             <span className="font-bold text-[#2d1f17] truncate max-w-28 sm:max-w-40">
@@ -391,7 +391,7 @@ export function Topbar({ initialRole }: TopbarProps) {
             >
               {role}
             </span>
-            <ChevronDown className="h-3.5 w-3.5 text-[#705849]" />
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </button>
 
           {switcherOpen && (
@@ -401,11 +401,11 @@ export function Topbar({ initialRole }: TopbarProps) {
                   <span className="text-xs font-bold uppercase tracking-wider text-[#2d1f17]">
                     Switch Official Cadre
                   </span>
-                  <span className="text-[10px] font-mono font-bold bg-[#BF9B7A]/20 text-[#593E2E] px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-mono font-bold bg-[#BF9B7A]/20 text-chart-5 px-2 py-0.5 rounded-full">
                     Role-Gated
                   </span>
                 </div>
-                <p className="text-[11px] text-[#705849] mt-1">
+                <p className="text-[11px] text-muted-foreground mt-1">
                   Select a persona to immediately adapt the dashboard, sidebar, topbar, and tools to that role.
                 </p>
               </div>
@@ -442,7 +442,7 @@ export function Topbar({ initialRole }: TopbarProps) {
                             {persona.role}
                           </span>
                         </div>
-                        <p className="text-[11px] text-[#705849] truncate mt-0.5">
+                        <p className="text-[11px] text-muted-foreground truncate mt-0.5">
                           {persona.designation} • {persona.cadre}
                         </p>
                         {persona.preferred_language === 'hi' && (
@@ -482,12 +482,12 @@ export function Topbar({ initialRole }: TopbarProps) {
               unreadCount > 0 ? `, ${unreadCount} unread` : ''
             }`}
             aria-expanded={notificationsOpen}
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0]/80 hover:text-[#2d1f17] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#555934] cursor-pointer"
+            className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#FAF6F0]/80 hover:text-[#2d1f17] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#555934] cursor-pointer"
           >
             <Bell className="h-4 w-4" />
             {unreadCount > 0 && (
               <span
-                className="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#8C5B3E] px-1 text-[9px] font-bold text-white shadow-2xs"
+                className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#8C5B3E] px-1 text-[9px] font-bold text-white shadow-2xs"
                 aria-hidden="true"
               >
                 {badgeLabel}
@@ -522,11 +522,11 @@ export function Topbar({ initialRole }: TopbarProps) {
               <span className="text-xs font-semibold text-[#2d1f17] leading-tight truncate max-w-28">
                 {activePersona.name}
               </span>
-              <span className="text-[10px] text-[#705849] -mt-0.5 truncate max-w-28">
+              <span className="text-[10px] text-muted-foreground -mt-0.5 truncate max-w-28">
                 {activePersona.designation}
               </span>
             </div>
-            <ChevronDown className="h-3.5 w-3.5 text-[#705849]" />
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
           </button>
 
           {menuOpen && (
@@ -535,10 +535,10 @@ export function Topbar({ initialRole }: TopbarProps) {
                 <p className="text-xs font-bold text-[#2d1f17]">
                   {activePersona.name}
                 </p>
-                <p className="text-[11px] text-[#705849] truncate">
+                <p className="text-[11px] text-muted-foreground truncate">
                   {activePersona.email}
                 </p>
-                <p className="text-[10px] text-[#705849] mt-0.5">
+                <p className="text-[10px] text-muted-foreground mt-0.5">
                   {activePersona.designation}
                 </p>
                 <div className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-[#555934]/12 px-2.5 py-0.5 text-[9px] font-semibold text-[#555934]">
@@ -582,13 +582,13 @@ export function Topbar({ initialRole }: TopbarProps) {
                   href="https://igotkarmayogi.gov.in"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-[#705849] hover:bg-[#FAF6F0] hover:text-[#2d1f17] transition-colors"
+                  className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-[#FAF6F0] hover:text-[#2d1f17] transition-colors"
                 >
                   <span className="flex items-center gap-2">
-                    <ExternalLink className="h-3.5 w-3.5 text-[#705849]" />
+                    <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
                     iGOT Portal
                   </span>
-                  <span className="text-[9px] font-mono text-[#705849]">Gov.in</span>
+                  <span className="text-[9px] font-mono text-muted-foreground">Gov.in</span>
                 </a>
               </div>
 

@@ -55,7 +55,7 @@ export function OutcomeCorrelationChart() {
                 Survey Scrutiny Outcome Correlation (PRD §9.4.5)
               </h2>
             </div>
-            <p className="text-xs text-[#705849] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Empirical correlation between field competency levels and subsequent schedule scrutiny error rates
             </p>
           </div>
@@ -64,7 +64,7 @@ export function OutcomeCorrelationChart() {
           <div className="flex items-center gap-2 shrink-0">
             <span
               title="Simulated benchmark based on NSS 78th Round Scrutiny Guidelines (PRD §9.4.5)"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-black uppercase tracking-wider bg-[#BF9B7A]/20 text-[#593E2E] border border-[#BF9B7A]/30"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-black uppercase tracking-wider bg-[#BF9B7A]/20 text-chart-5 border border-[#BF9B7A]/30"
             >
               <ShieldAlert className="h-3 w-3 text-[#8C5B3E]" />
               SYNTHETIC DEMO DATA
@@ -82,7 +82,7 @@ export function OutcomeCorrelationChart() {
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 activeMetricId === series.id
                   ? 'bg-[#555934] text-white shadow-2xs'
-                  : 'bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]/80'
+                  : 'bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]/80'
               }`}
             >
               {series.metricName}
@@ -93,15 +93,15 @@ export function OutcomeCorrelationChart() {
         {/* Regression Fit Summary Pill Banner */}
         <div className="grid grid-cols-3 gap-2.5 mt-4 p-3 rounded-2xl bg-[#FAF6F0]/80 border border-[#BF9B7A]/25 text-xs font-mono">
           <div>
-            <span className="text-[10px] font-sans font-bold text-[#705849] block">R² Goodness of Fit</span>
+            <span className="text-[10px] font-sans font-bold text-muted-foreground block">R² Goodness of Fit</span>
             <span className="text-sm font-black text-[#2d1f17]">{selectedSeries.rSquared}</span>
           </div>
           <div>
-            <span className="text-[10px] font-sans font-bold text-[#705849] block">Regression Slope</span>
+            <span className="text-[10px] font-sans font-bold text-muted-foreground block">Regression Slope</span>
             <span className="text-sm font-black text-[#8C5B3E]">{selectedSeries.regressionSlope}% / level</span>
           </div>
           <div>
-            <span className="text-[10px] font-sans font-bold text-[#705849] block">Significance (p-value)</span>
+            <span className="text-[10px] font-sans font-bold text-muted-foreground block">Significance (p-value)</span>
             <span className="text-sm font-black text-emerald-700">p = {selectedSeries.pValue}</span>
           </div>
         </div>
@@ -110,7 +110,7 @@ export function OutcomeCorrelationChart() {
         <div className="mt-4 w-full overflow-x-auto">
           <svg
             viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-            className="w-full h-auto max-w-[560px] mx-auto overflow-visible select-none"
+            className="w-full h-auto max-w-140 mx-auto overflow-visible select-none"
           >
             {/* Grid lines */}
             {[5, 10, 15, 20].map((yVal) => (
@@ -250,7 +250,7 @@ export function OutcomeCorrelationChart() {
         </div>
 
         {/* Narrative Insight Footer */}
-        <p className="text-xs text-[#705849] italic bg-[#FAF6F0]/50 p-3 rounded-xl border border-[#BF9B7A]/20 mt-3">
+        <p className="text-xs text-muted-foreground italic bg-[#FAF6F0]/50 p-3 rounded-xl border border-[#BF9B7A]/20 mt-3">
           <Info className="h-3.5 w-3.5 inline mr-1 text-[#8C5B3E]" />
           {selectedSeries.narrativeInsight}
         </p>

@@ -136,7 +136,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
         <button
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#FAF6F0] border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0]/80 hover:text-[#2d1f17] transition-colors"
+          className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#FAF6F0] border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#FAF6F0]/80 hover:text-[#2d1f17] transition-colors"
         >
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </button>
@@ -166,7 +166,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
                 {activePersona.name}
               </p>
             </div>
-            <p className="text-[11px] font-medium text-[#705849] truncate mt-0.5">
+            <p className="text-[11px] font-medium text-muted-foreground truncate mt-0.5">
               {activePersona.designation}
             </p>
             <div className="flex items-center gap-1 mt-1">
@@ -194,7 +194,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
       {/* Role Navigation Items */}
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5">
         {!collapsed && (
-          <div className="px-3 pb-1 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#705849]">
+          <div className="px-3 pb-1 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             <span>{identity.subtitle}</span>
             <span className="text-[9px] font-mono text-[#8C5B3E] font-semibold">
               {navItems.length} Tools
@@ -218,7 +218,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
               } ${
                 active
                   ? 'bg-[#555934] text-white shadow-2xs font-bold'
-                  : 'text-[#593E2E] hover:bg-[#FAF6F0] hover:text-[#2d1f17]'
+                  : 'text-chart-5 hover:bg-[#FAF6F0] hover:text-[#2d1f17]'
               }`}
             >
               <Icon
@@ -237,7 +237,7 @@ export function Sidebar({ initialRole }: SidebarProps) {
                       ? 'bg-amber-500/15 text-amber-700 border border-amber-500/30'
                       : item.badgeType === 'accent'
                         ? 'bg-[#F8C858]/25 text-[#8C5B3E] border border-[#F8C858]/40'
-                        : 'bg-white/80 text-[#705849] border border-[#BF9B7A]/30'
+                        : 'bg-white/80 text-muted-foreground border border-[#BF9B7A]/30'
                   }`}
                 >
                   {item.badge}
@@ -277,14 +277,14 @@ export function Sidebar({ initialRole }: SidebarProps) {
               </button>
             )}
           </div>
-          <p className="text-[10px] text-[#705849] mt-0.5 truncate">
+          <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
             {synced
               ? role === 'admin'
                 ? '✓ Cabinet Protocol Synced with NSC Nodes!'
                 : '✓ 38 Forms Synced with MoSPI Central Node!'
               : footerData.subtitle}
           </p>
-          <div className="mt-2 pt-2 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[10px] font-medium text-[#705849]">
+          <div className="mt-2 pt-2 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[10px] font-medium text-muted-foreground">
             <span className="font-mono text-[#8C5B3E]">{footerData.badge}</span>
             <CheckCircle2 className="h-3 w-3 text-emerald-600" />
           </div>

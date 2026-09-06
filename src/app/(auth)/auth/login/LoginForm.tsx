@@ -166,7 +166,7 @@ export default function LoginForm() {
             <button
               type="button"
               onClick={handleGoBack}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#BF9B7A]/40 bg-white hover:bg-[#FAF6F0] text-xs font-semibold text-[#593E2E] shadow-2xs transition-all hover:scale-102 active:scale-98 group cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#BF9B7A]/40 bg-white hover:bg-[#FAF6F0] text-xs font-semibold text-chart-5 shadow-2xs transition-all hover:scale-102 active:scale-98 group cursor-pointer"
               title="Go back to previous page"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-[#555934] group-hover:-translate-x-0.5 transition-transform" />
@@ -174,21 +174,21 @@ export default function LoginForm() {
             </button>
             <Link
               href="/"
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#BF9B7A]/25 bg-white/70 hover:bg-white text-[11px] font-medium text-[#705849] hover:text-[#2d1f17] transition-all"
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#BF9B7A]/25 bg-white/70 hover:bg-white text-[11px] font-medium text-muted-foreground hover:text-[#2d1f17] transition-all"
               title="Go to Home"
             >
               <span>Home</span>
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#BF9B7A]/40 bg-white/80 backdrop-blur-xs text-[11px] font-semibold text-[#593E2E] shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#BF9B7A]/40 bg-white/80 backdrop-blur-xs text-[11px] font-semibold text-chart-5 shadow-2xs">
               <KarmayogiEmblemIcon className="h-4 w-4" />
               <span>MoSPI • NSSTA</span>
             </div>
             <button
               type="button"
               onClick={handleGoBack}
-              className="lg:hidden h-7 w-7 rounded-full bg-white border border-[#BF9B7A]/40 text-[#593E2E] flex items-center justify-center shadow-2xs hover:bg-[#FAF6F0] cursor-pointer"
+              className="lg:hidden h-7 w-7 rounded-full bg-white border border-[#BF9B7A]/40 text-chart-5 flex items-center justify-center shadow-2xs hover:bg-[#FAF6F0] cursor-pointer"
               title="Close and go back"
             >
               <X className="h-3.5 w-3.5" />
@@ -206,7 +206,7 @@ export default function LoginForm() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2d1f17] tracking-tight font-sans">
             Welcome back
           </h1>
-          <p className="text-xs text-[#705849] mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Sign in with government-approved credentials or Parichay SSO
           </p>
         </div>
@@ -222,7 +222,7 @@ export default function LoginForm() {
             className={`flex-1 py-1.5 text-xs font-semibold rounded-full transition-all text-center ${
               authMode === 'otp'
                 ? 'bg-white text-[#2d1f17] shadow-sm'
-                : 'text-[#705849] hover:text-[#2d1f17]'
+                : 'text-muted-foreground hover:text-[#2d1f17]'
             }`}
           >
             Login with OTP
@@ -237,7 +237,7 @@ export default function LoginForm() {
             className={`flex-1 py-1.5 text-xs font-semibold rounded-full transition-all text-center ${
               authMode === 'password'
                 ? 'bg-white text-[#2d1f17] shadow-sm'
-                : 'text-[#705849] hover:text-[#2d1f17]'
+                : 'text-muted-foreground hover:text-[#2d1f17]'
             }`}
           >
             Password & Captcha
@@ -260,7 +260,7 @@ export default function LoginForm() {
             {!otpSent ? (
               <form onSubmit={handleRequestOtp} className="space-y-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-[#593E2E] mb-1.5 ml-1">
+                  <label className="block text-xs font-semibold text-chart-5 mb-1.5 ml-1">
                     Email / Mobile number
                   </label>
                   <input
@@ -268,7 +268,7 @@ export default function LoginForm() {
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
                     placeholder="Mobile number or you@mospi.gov.in"
-                    className="w-full h-12 px-5 rounded-2xl bg-white border border-[#BF9B7A]/35 text-sm text-[#2d1f17] placeholder:text-[#705849]/50 focus:ring-2 focus:ring-[#555934] focus:outline-none transition shadow-xs"
+                    className="w-full h-12 px-5 rounded-2xl bg-white border border-[#BF9B7A]/35 text-sm text-[#2d1f17] placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-[#555934] focus:outline-none transition shadow-xs"
                     required
                   />
                 </div>
@@ -301,13 +301,13 @@ export default function LoginForm() {
                   <button
                     type="button"
                     onClick={() => setOtpSent(false)}
-                    className="text-[#705849] hover:text-[#2d1f17] text-[11px] underline"
+                    className="text-muted-foreground hover:text-[#2d1f17] text-[11px] underline"
                   >
                     Change
                   </button>
                 </div>
 
-                <p className="text-xs text-[#705849] leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {otpInfoMessage}
                 </p>
 
@@ -351,7 +351,7 @@ export default function LoginForm() {
         {authMode === 'password' && (
           <form onSubmit={handlePasswordLogin} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1.5 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1.5 ml-1">
                 Email / Government ID
               </label>
               <input
@@ -359,14 +359,14 @@ export default function LoginForm() {
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder="you@mospi.gov.in"
-                className="w-full h-12 px-5 rounded-2xl bg-white border border-[#BF9B7A]/35 text-sm text-[#2d1f17] placeholder:text-[#705849]/50 focus:ring-2 focus:ring-[#555934] focus:outline-none transition shadow-xs"
+                className="w-full h-12 px-5 rounded-2xl bg-white border border-[#BF9B7A]/35 text-sm text-[#2d1f17] placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-[#555934] focus:outline-none transition shadow-xs"
                 required
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5 ml-1">
-                <label className="text-xs font-semibold text-[#593E2E]">
+                <label className="text-xs font-semibold text-chart-5">
                   Password
                 </label>
                 <a href="#" className="text-[11px] text-[#555934] hover:underline">
@@ -378,14 +378,14 @@ export default function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full h-12 px-5 rounded-2xl bg-white border border-[#BF9B7A]/35 text-sm text-[#2d1f17] placeholder:text-[#705849]/50 focus:ring-2 focus:ring-[#555934] focus:outline-none transition shadow-xs"
+                className="w-full h-12 px-5 rounded-2xl bg-white border border-[#BF9B7A]/35 text-sm text-[#2d1f17] placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-[#555934] focus:outline-none transition shadow-xs"
                 required
               />
             </div>
 
             {/* Captcha */}
             <div className="pt-1">
-              <label className="block text-xs font-semibold text-[#593E2E] mb-1.5 ml-1">
+              <label className="block text-xs font-semibold text-chart-5 mb-1.5 ml-1">
                 Security Captcha
               </label>
               <div className="flex items-center gap-2">
@@ -395,7 +395,7 @@ export default function LoginForm() {
                 <button
                   type="button"
                   onClick={refreshCaptcha}
-                  className="h-11 w-11 border border-[#BF9B7A]/35 rounded-2xl flex items-center justify-center text-[#593E2E] hover:bg-[#F2E6D8]/50 transition-colors"
+                  className="h-11 w-11 border border-[#BF9B7A]/35 rounded-2xl flex items-center justify-center text-chart-5 hover:bg-[#F2E6D8]/50 transition-colors"
                   title="Refresh Captcha"
                 >
                   <RefreshCw className="h-4 w-4" />
@@ -428,7 +428,7 @@ export default function LoginForm() {
             <div className="w-full border-t border-[#BF9B7A]/25" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[#FAF6F0] px-3 text-[#705849] font-medium">or continue with</span>
+            <span className="bg-[#FAF6F0] px-3 text-muted-foreground font-medium">or continue with</span>
           </div>
         </div>
 
@@ -458,11 +458,11 @@ export default function LoginForm() {
         {/* SIH 26101 EVALUATOR 1-CLICK PERSONA CHIPS */}
         <div className="mt-6 pt-4 border-t border-dashed border-[#BF9B7A]/30">
           <div className="flex items-center justify-between mb-2.5">
-            <span className="text-[11px] font-bold text-[#593E2E] flex items-center gap-1.5">
+            <span className="text-[11px] font-bold text-chart-5 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5 text-[#555934]" />
               <span>SIH Evaluator Fast-Track:</span>
             </span>
-            <span className="text-[10px] text-[#705849]">1-click role test</span>
+            <span className="text-[10px] text-muted-foreground">1-click role test</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -476,7 +476,7 @@ export default function LoginForm() {
               <p className="text-[11px] font-bold text-[#2d1f17] mt-1 group-hover:text-[#555934] truncate">
                 Sunita Devi
               </p>
-              <p className="text-[9px] text-[#705849] truncate">NSSO (Hindi)</p>
+              <p className="text-[9px] text-muted-foreground truncate">NSSO (Hindi)</p>
             </a>
 
             <a
@@ -489,7 +489,7 @@ export default function LoginForm() {
               <p className="text-[11px] font-bold text-[#2d1f17] mt-1 group-hover:text-[#555934] truncate">
                 Amit Sharma
               </p>
-              <p className="text-[9px] text-[#705849] truncate">SSS JSO</p>
+              <p className="text-[9px] text-muted-foreground truncate">SSS JSO</p>
             </a>
 
             <a
@@ -502,27 +502,27 @@ export default function LoginForm() {
               <p className="text-[11px] font-bold text-[#2d1f17] mt-1 group-hover:text-[#555934] truncate">
                 Dr. Priya
               </p>
-              <p className="text-[9px] text-[#705849] truncate">NSSTA Faculty</p>
+              <p className="text-[9px] text-muted-foreground truncate">NSSTA Faculty</p>
             </a>
 
             <a
               href="/api/sso/demo-persona?email=rajesh.kumar%40mospi.gov.in&lang=en"
               className="p-2 rounded-xl bg-white border border-[#BF9B7A]/30 hover:border-[#555934] hover:bg-[#F2E6D8]/30 transition-all text-center group shadow-2xs"
             >
-              <div className="h-6 w-6 rounded-full bg-[#593E2E] text-white flex items-center justify-center mx-auto text-[9px] font-bold">
+              <div className="h-6 w-6 rounded-full bg-chart-5 text-white flex items-center justify-center mx-auto text-[9px] font-bold">
                 RK
               </div>
               <p className="text-[11px] font-bold text-[#2d1f17] mt-1 group-hover:text-[#555934] truncate">
                 Rajesh Kumar
               </p>
-              <p className="text-[9px] text-[#705849] truncate">Director</p>
+              <p className="text-[9px] text-muted-foreground truncate">Director</p>
             </a>
           </div>
         </div>
       </div>
 
       {/* Footer (Matching Reference Style) */}
-      <div className="mt-8 pt-4 border-t border-[#BF9B7A]/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[#705849]">
+      <div className="mt-8 pt-4 border-t border-[#BF9B7A]/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
         <p>
           Don&apos;t have an account?{' '}
           <Link href="/auth/signup" className="font-bold text-[#555934] hover:underline">
@@ -530,7 +530,7 @@ export default function LoginForm() {
           </Link>
         </p>
 
-        <a href="#help" onClick={(e) => { e.preventDefault(); alert("Ministry of Statistics & Programme Implementation (MoSPI) Helpline: 1800-111-555"); }} className="text-[11px] text-[#705849] hover:underline">
+        <a href="#help" onClick={(e) => { e.preventDefault(); alert("Ministry of Statistics & Programme Implementation (MoSPI) Helpline: 1800-111-555"); }} className="text-[11px] text-muted-foreground hover:underline">
           Nodal Helpdesk
         </a>
       </div>

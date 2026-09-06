@@ -76,21 +76,21 @@ export function ItemAnalysisModal({
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${dInfo.color}`}>
                 {dInfo.label} (D={item.discriminationIndex.toFixed(2)})
               </span>
-              <span className="text-[10px] font-mono text-[#705849]">
+              <span className="text-[10px] font-mono text-muted-foreground">
                 Facility p={item.facilityIndex.toFixed(2)}
               </span>
             </div>
             <h2 className="text-lg font-bold text-[#2d1f17] tracking-tight">
               Psychometric Item Analysis
             </h2>
-            <p className="text-xs text-[#705849]">
+            <p className="text-xs text-muted-foreground">
               Based on {item.totalResponses.toLocaleString()} trainee responses across NSSO Zonal Training Centres
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#F2E6D8] transition-colors"
+            className="p-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#F2E6D8] transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -119,7 +119,7 @@ export function ItemAnalysisModal({
           <div className="space-y-3">
             <div className="flex items-center justify-between text-xs">
               <p className="font-bold text-[#2d1f17]">Distractor Frequency & Selection Spread</p>
-              <span className="text-[10px] text-[#705849] font-mono">
+              <span className="text-[10px] text-muted-foreground font-mono">
                 Green = Correct Answer
               </span>
             </div>
@@ -136,7 +136,7 @@ export function ItemAnalysisModal({
                     className={`p-3 rounded-xl border text-xs transition-all space-y-2 ${
                       isCorrect
                         ? 'bg-emerald-500/10 border-emerald-500/30 text-[#2d1f17]'
-                        : 'bg-white border-[#BF9B7A]/25 text-[#705849]'
+                        : 'bg-white border-[#BF9B7A]/25 text-muted-foreground'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -145,7 +145,7 @@ export function ItemAnalysisModal({
                           className={`h-5 w-5 rounded-full flex items-center justify-center text-[10px] font-bold font-mono shrink-0 ${
                             isCorrect
                               ? 'bg-emerald-600 text-white'
-                              : 'bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/30'
+                              : 'bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/30'
                           }`}
                         >
                           {String.fromCharCode(65 + idx)}
@@ -173,7 +173,7 @@ export function ItemAnalysisModal({
                     <div className="w-full bg-[#EAE0D0] h-1.5 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-300 ${
-                          isCorrect ? 'bg-emerald-600' : pct > 20 ? 'bg-amber-500' : 'bg-[#705849]/50'
+                          isCorrect ? 'bg-emerald-600' : pct > 20 ? 'bg-amber-500' : 'bg-muted-foreground/50'
                         }`}
                         style={{ width: `${pct}%` }}
                       />
@@ -211,7 +211,7 @@ export function ItemAnalysisModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-xs font-bold text-[#705849] hover:bg-[#F2E6D8] transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-xs font-bold text-muted-foreground hover:bg-[#F2E6D8] transition-colors cursor-pointer"
           >
             Close
           </button>

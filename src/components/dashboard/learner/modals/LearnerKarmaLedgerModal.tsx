@@ -106,7 +106,7 @@ export function LearnerKarmaLedgerModal({
           {/* Top Score Bento */}
           <div className="rounded-2xl bg-white border border-[#BF9B7A]/30 p-5 shadow-xs flex items-center justify-between gap-4">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#705849]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                 {isHindi ? 'कुल संचित कर्म अंक' : 'Total Accumulated Karma Points'}
               </span>
               <div className="flex items-baseline gap-2 mt-1">
@@ -126,7 +126,7 @@ export function LearnerKarmaLedgerModal({
                 <Flame className="h-5 w-5 fill-amber-500 text-amber-600" />
               </div>
               <span className="text-sm font-black text-[#2d1f17]">4 Days</span>
-              <p className="text-[9px] font-bold text-[#705849] uppercase tracking-wider">
+              <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
                 {isHindi ? 'सक्रिय स्ट्रीक' : 'Active Streak'}
               </p>
             </div>
@@ -134,7 +134,7 @@ export function LearnerKarmaLedgerModal({
 
           {/* Badges Showcase */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#705849] mb-2.5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
               {isHindi ? 'अर्जित कैडर बैज' : 'Earned Cadre Badges'}
             </h3>
             <div className="grid grid-cols-3 gap-2.5">
@@ -151,7 +151,7 @@ export function LearnerKarmaLedgerModal({
                     <span className="text-[11px] font-bold text-[#2d1f17] leading-tight line-clamp-1">
                       {b.name}
                     </span>
-                    <span className="text-[9px] text-[#705849] line-clamp-1">{b.desc}</span>
+                    <span className="text-[9px] text-muted-foreground line-clamp-1">{b.desc}</span>
                   </div>
                 );
               })}
@@ -161,7 +161,7 @@ export function LearnerKarmaLedgerModal({
           {/* Activity Ledger History */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#705849]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 {isHindi ? 'हालिया अंक इतिहास' : 'Recent Points Ledger'}
               </h3>
               <span className="text-[10px] text-[#555934] font-bold">iGOT Synced</span>
@@ -174,7 +174,7 @@ export function LearnerKarmaLedgerModal({
                 >
                   <div className="min-w-0 flex-1 pr-3">
                     <p className="font-bold text-[#2d1f17] truncate">{act.title}</p>
-                    <p className="text-[10px] text-[#705849] mt-0.5">
+                    <p className="text-[10px] text-muted-foreground mt-0.5">
                       {act.category} • {act.date}
                     </p>
                   </div>
@@ -189,7 +189,7 @@ export function LearnerKarmaLedgerModal({
 
         {/* Footer */}
         <div className="px-6 py-4 bg-[#F2E6D8]/50 border-t border-[#BF9B7A]/25 flex items-center justify-between">
-          <span className="text-[11px] text-[#705849]">
+          <span className="text-[11px] text-muted-foreground">
             {isHindi
               ? 'अंक राष्ट्रीय सिविल सेवा पोर्टल पर सिंक किए जाते हैं'
               : 'Points sync to National Civil Service Profile (iGOT)'}

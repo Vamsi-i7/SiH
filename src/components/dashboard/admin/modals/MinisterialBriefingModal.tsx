@@ -122,7 +122,7 @@ National Statistical Commission Registry Node: NSC-DEL-2026-0907`;
             <p className="text-[11px] font-semibold text-[#8C5B3E]">
               National Statistical Commission (NSC) • Workforce Quality Triage Directorate
             </p>
-            <p className="text-[10px] text-[#705849] font-mono">
+            <p className="text-[10px] text-muted-foreground font-mono">
               Sardar Patel Bhawan, Sansad Marg, New Delhi — 110001
             </p>
           </div>
@@ -130,19 +130,19 @@ National Statistical Commission Registry Node: NSC-DEL-2026-0907`;
           {/* Memorandum Meta Table */}
           <div className="p-3.5 rounded-2xl bg-white border border-[#BF9B7A]/30 grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px]">
             <div>
-              <span className="text-[#705849] font-semibold block text-[10px]">Addressed To:</span>
+              <span className="text-muted-foreground font-semibold block text-[10px]">Addressed To:</span>
               <span className="font-bold text-[#2d1f17]">Secretary (MoSPI)</span>
             </div>
             <div>
-              <span className="text-[#705849] font-semibold block text-[10px]">Originating Officer:</span>
+              <span className="text-muted-foreground font-semibold block text-[10px]">Originating Officer:</span>
               <span className="font-bold text-[#2d1f17]">Rajesh Kumar, ADG</span>
             </div>
             <div>
-              <span className="text-[#705849] font-semibold block text-[10px]">Date of Audit:</span>
+              <span className="text-muted-foreground font-semibold block text-[10px]">Date of Audit:</span>
               <span className="font-bold font-mono text-[#2d1f17]">07 Sep 2026</span>
             </div>
             <div>
-              <span className="text-[#705849] font-semibold block text-[10px]">Security Clearance:</span>
+              <span className="text-muted-foreground font-semibold block text-[10px]">Security Clearance:</span>
               <span className="font-bold text-emerald-700">NSC Certified</span>
             </div>
           </div>
@@ -153,22 +153,22 @@ National Statistical Commission Registry Node: NSC-DEL-2026-0907`;
               <ShieldCheck className="h-4 w-4 text-[#555934]" />
               1. Executive Summary &amp; Empirical Findings
             </h3>
-            <p className="leading-relaxed text-[#705849] text-[11.5px]">
+            <p className="leading-relaxed text-muted-foreground text-[11.5px]">
               A rigorous econometric regression of the 4,850 active statistical workforce records against 
               subsequent NSS Schedule scrutiny returns validates the core hypothesis of the National Capacity Building Commission:
               <strong> higher verified competency levels systematically drive down field scrutiny error rates</strong>.
             </p>
             <div className="p-3 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 grid grid-cols-3 gap-2 font-mono text-center">
               <div>
-                <span className="text-[9px] text-[#705849] block">Regression Pearson r</span>
+                <span className="text-[9px] text-muted-foreground block">Regression Pearson r</span>
                 <span className="text-sm font-black text-[#8C5B3E]">-0.84</span>
               </div>
               <div>
-                <span className="text-[9px] text-[#705849] block">Coefficient of Det. (R²)</span>
+                <span className="text-[9px] text-muted-foreground block">Coefficient of Det. (R²)</span>
                 <span className="text-sm font-black text-[#2d1f17]">0.706</span>
               </div>
               <div>
-                <span className="text-[9px] text-[#705849] block">Statistical Significance</span>
+                <span className="text-[9px] text-muted-foreground block">Statistical Significance</span>
                 <span className="text-sm font-black text-emerald-700">p = 0.004</span>
               </div>
             </div>
@@ -182,7 +182,7 @@ National Statistical Commission Registry Node: NSC-DEL-2026-0907`;
             </h3>
             <div className="overflow-x-auto rounded-xl border border-[#BF9B7A]/30">
               <table className="w-full text-left text-[11px] bg-white">
-                <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/30 font-bold text-[#705849]">
+                <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/30 font-bold text-muted-foreground">
                   <tr>
                     <th className="p-2.5">Regional Office</th>
                     <th className="p-2.5">Headcount</th>
@@ -229,7 +229,7 @@ National Statistical Commission Registry Node: NSC-DEL-2026-0907`;
           <div className="p-3.5 rounded-2xl bg-white border border-[#BF9B7A]/30 flex items-center justify-between text-[11px]">
             <div>
               <p className="font-bold text-[#2d1f17]">Rajesh Kumar, ISS</p>
-              <p className="text-[#705849]">Additional Director General, MoSPI</p>
+              <p className="text-muted-foreground">Additional Director General, MoSPI</p>
               <p className="text-[10px] font-mono text-[#555934]">Digital Certificate Hash: SHA256:7f4a...91b8</p>
             </div>
             <div className="text-right">
@@ -246,7 +246,7 @@ National Statistical Commission Registry Node: NSC-DEL-2026-0907`;
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-white transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-xl border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-white transition-colors cursor-pointer"
           >
             Close Document
           </button>

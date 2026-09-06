@@ -94,7 +94,7 @@ export function CAPIConnectivityModal({
           <div className="rounded-2xl bg-white border border-[#BF9B7A]/30 p-5 shadow-xs">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#705849]">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                   {isHindi ? 'स्थानीय कैश्ड अनुसूचियां' : 'Local Form Cache'}
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
@@ -103,7 +103,7 @@ export function CAPIConnectivityModal({
                     {isHindi ? 'प्रपत्र सुरक्षित' : 'Forms Secured'}
                   </span>
                 </div>
-                <p className="text-[11px] text-[#705849] mt-1">
+                <p className="text-[11px] text-muted-foreground mt-1">
                   24 PLFS Schedules • 14 ASHE Enterprise returns
                 </p>
               </div>
@@ -171,7 +171,7 @@ export function CAPIConnectivityModal({
               <p className="text-xs font-bold text-[#2d1f17]">
                 {isHindi ? 'ग्रामीण फील्ड डिस्कनेक्ट सिमुलेशन' : 'Simulate Rural Network Disconnect'}
               </p>
-              <p className="text-[11px] text-[#705849] mt-0.5">
+              <p className="text-[11px] text-muted-foreground mt-0.5">
                 {isHindi
                   ? 'परीक्षण करें कि शून्य 4G/5G सिग्नल में कैपी कैसे काम करता है'
                   : 'Test CAPI behavior when network signal drops to zero in remote survey villages'}
@@ -196,19 +196,19 @@ export function CAPIConnectivityModal({
 
           {/* Security & Cryptographic Details */}
           <div className="space-y-2 text-xs">
-            <div className="flex items-center gap-2 text-[#705849]">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <HardDrive className="h-3.5 w-3.5 text-[#8C5B3E]" />
               <span>
                 <strong>Storage:</strong> W3C IndexedDB with SQLite Local Fallback
               </span>
             </div>
-            <div className="flex items-center gap-2 text-[#705849]">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
               <span>
                 <strong>Encryption:</strong> AES-256 GCM Hardware Keystore Protected
               </span>
             </div>
-            <div className="flex items-center gap-2 text-[#705849]">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <Database className="h-3.5 w-3.5 text-[#555934]" />
               <span>
                 <strong>Last Cloud Handshake:</strong> 14m ago (Server Node FOD-Patna-02)
@@ -239,7 +239,7 @@ export function CAPIConnectivityModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/40 text-xs font-bold text-[#705849] hover:bg-[#FAF6F0] transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/40 text-xs font-bold text-muted-foreground hover:bg-[#FAF6F0] transition-colors cursor-pointer"
           >
             {isHindi ? 'बंद करें' : 'Close'}
           </button>

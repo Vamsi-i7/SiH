@@ -113,7 +113,7 @@ export function CAPIFieldStationTab({ isHindi = false }: CAPIFieldStationTabProp
               </h2>
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
-            <p className="text-xs text-[#705849] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               {isHindi
                 ? 'स्थानीय एंड्रॉइड टैबलेट संग्रहण • 38 अनुसूचियां हार्डवेयर एन्क्रिप्टेड'
                 : 'Local hardware-backed storage • 38 schedules secured with AES-256 GCM'}
@@ -129,7 +129,7 @@ export function CAPIFieldStationTab({ isHindi = false }: CAPIFieldStationTabProp
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
               isOfflineMode
                 ? 'bg-amber-500/15 border-amber-500/30 text-amber-800'
-                : 'bg-[#FAF6F0] border-[#BF9B7A]/30 text-[#705849] hover:bg-[#F2E6D8]'
+                : 'bg-[#FAF6F0] border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#F2E6D8]'
             }`}
           >
             {isOfflineMode ? <WifiOff className="h-3.5 w-3.5" /> : <Wifi className="h-3.5 w-3.5" />}
@@ -192,7 +192,7 @@ export function CAPIFieldStationTab({ isHindi = false }: CAPIFieldStationTabProp
       )}
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 text-xs font-semibold text-[#705849]">
+      <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
         <button
           type="button"
           onClick={() => setFilter('all')}
@@ -243,7 +243,7 @@ export function CAPIFieldStationTab({ isHindi = false }: CAPIFieldStationTabProp
       <div className="rounded-3xl bg-white border border-[#BF9B7A]/30 p-5 shadow-xs overflow-x-auto">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-[#705849] uppercase tracking-wider">
+            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
               <th className="pb-3 pl-2">Schedule ID</th>
               <th className="pb-3">Type & Unit</th>
               <th className="pb-3 hidden md:table-cell">CEB / Location</th>
@@ -258,12 +258,12 @@ export function CAPIFieldStationTab({ isHindi = false }: CAPIFieldStationTabProp
                 <td className="py-3.5 pl-2 font-mono font-bold text-[#555934]">{item.id}</td>
                 <td className="py-3.5 pr-3">
                   <p className="font-bold text-[#2d1f17]">{item.scheduleType}</p>
-                  <p className="text-[11px] text-[#705849]">{item.sampleUnit}</p>
+                  <p className="text-[11px] text-muted-foreground">{item.sampleUnit}</p>
                 </td>
-                <td className="py-3.5 pr-3 hidden md:table-cell text-[#705849]">
+                <td className="py-3.5 pr-3 hidden md:table-cell text-muted-foreground">
                   {item.villageBlock}
                 </td>
-                <td className="py-3.5 pr-3 hidden sm:table-cell font-mono text-[11px] text-[#705849]">
+                <td className="py-3.5 pr-3 hidden sm:table-cell font-mono text-[11px] text-muted-foreground">
                   {item.gpsLock}
                 </td>
                 <td className="py-3.5 pr-3">

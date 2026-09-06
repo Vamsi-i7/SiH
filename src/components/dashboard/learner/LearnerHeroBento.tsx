@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import type { DashboardUserProps } from '../RoleDashboardRouter';
+import type { DashboardUserProps } from '@/components/dashboard/RoleDashboardRouter';
 import type { PersonaFRACProfile } from '@/data/fracCadres';
 import { ShieldCheck, Wifi, MapPin, Calendar, ArrowRight, CheckCircle, Clock } from 'lucide-react';
 
@@ -51,10 +51,10 @@ export function LearnerHeroBento({
               <ShieldCheck className="h-3.5 w-3.5" />
               {isHindi ? 'FRAC प्रमाणित सिविल सेवक' : 'FRAC Verified Official'}
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#BF9B7A]/20 text-[#593E2E]">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#BF9B7A]/20 text-chart-5">
               {profile.cadre}
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/30">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/30">
               ID: {profile.personaId.toUpperCase()}
             </span>
           </div>
@@ -84,7 +84,7 @@ export function LearnerHeroBento({
               <p className="text-sm font-semibold text-[#8C5B3E] mt-0.5">
                 {displayDesignation}
               </p>
-              <p className="text-xs text-[#705849] flex items-center gap-1 mt-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-[#8C5B3E]" />
                 {displayDepartment}
               </p>
@@ -107,7 +107,7 @@ export function LearnerHeroBento({
                     </span>
                     <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                   </div>
-                  <p className="text-[11px] text-[#705849]">
+                  <p className="text-[11px] text-muted-foreground">
                     {isHindi
                       ? 'अंतिम सिंक 14 मिनट पूर्व • 38 अनुसूचियां स्थानीय रूप से सुरक्षित'
                       : 'Last synced 14m ago • 38 field schedules encrypted in local IndexedDB'}
@@ -132,7 +132,7 @@ export function LearnerHeroBento({
                   <p className="text-xs font-bold text-[#2d1f17]">
                     {isHindi ? 'सांख्यिकी संवीक्षा प्रकोष्ठ' : 'Statistical Scrutiny & DQAD Registry'}
                   </p>
-                  <p className="text-[11px] text-[#705849]">
+                  <p className="text-[11px] text-muted-foreground">
                     {isHindi
                       ? 'पीएलएफएस और एनएसएसओ 80वें दौर के लिए अधिकृत संवीक्षक'
                       : 'Certified validator for PLFS & NSSO 80th Round survey returns'}
@@ -206,7 +206,7 @@ export function LearnerHeroBento({
                 </div>
                 <div className="h-2 w-full rounded-full bg-white/10 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#BF9B7A] to-[#F8C858] transition-all"
+                    className="h-full rounded-full bg-linear-to-r from-[#BF9B7A] to-[#F8C858] transition-all"
                     style={{ width: `${readinessIndex}%` }}
                   />
                 </div>

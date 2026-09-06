@@ -117,7 +117,7 @@ export function KarmayogiPathwaysTrack({ isHindi = false }: KarmayogiPathwaysTra
               4 Stages
             </span>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
               ? 'अन्वेषक से सांख्यिकी अधिकारी तक राष्ट्रीय क्षमता विकास का क्रमबद्ध मार्ग'
               : 'Sequential civil service competency ladder from Field Demarcation to National Accounts'}
@@ -130,7 +130,7 @@ export function KarmayogiPathwaysTrack({ isHindi = false }: KarmayogiPathwaysTra
             type="button"
             onClick={() => scroll('left')}
             aria-label="Scroll pathways left"
-            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-[#705849] hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
+            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-muted-foreground hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -138,7 +138,7 @@ export function KarmayogiPathwaysTrack({ isHindi = false }: KarmayogiPathwaysTra
             type="button"
             onClick={() => scroll('right')}
             aria-label="Scroll pathways right"
-            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-[#705849] hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
+            className="h-8 w-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/35 flex items-center justify-center text-muted-foreground hover:bg-[#F2E6D8] hover:text-[#2d1f17] transition-all cursor-pointer shadow-2xs active:scale-95"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -157,7 +157,7 @@ export function KarmayogiPathwaysTrack({ isHindi = false }: KarmayogiPathwaysTra
           return (
             <div
               key={m.id}
-              className={`min-w-[280px] sm:min-w-[320px] max-w-[320px] rounded-2xl border p-4 sm:p-5 flex flex-col justify-between snap-start shadow-2xs transition-all ${
+              className={`min-w-70 sm:min-w-[320px] max-w-[320px] rounded-2xl border p-4 sm:p-5 flex flex-col justify-between snap-start shadow-2xs transition-all ${
                 m.status === 'in-progress'
                   ? 'bg-white border-[#555934] ring-2 ring-[#555934]/15'
                   : m.status === 'completed'
@@ -190,7 +190,7 @@ export function KarmayogiPathwaysTrack({ isHindi = false }: KarmayogiPathwaysTra
                 <h3 className="text-sm font-black text-[#2d1f17] line-clamp-2 leading-snug">
                   {title}
                 </h3>
-                <p className="text-[11px] font-medium text-[#705849] mt-1 truncate">
+                <p className="text-[11px] font-medium text-muted-foreground mt-1 truncate">
                   {m.cadre}
                 </p>
 
@@ -207,7 +207,7 @@ export function KarmayogiPathwaysTrack({ isHindi = false }: KarmayogiPathwaysTra
                 {/* Progress Bar */}
                 <div className="mt-3 space-y-1">
                   <div className="flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-[#705849]">
+                    <span className="text-muted-foreground">
                       {m.competenciesCovered}/{m.totalCompetencies} {isHindi ? 'कौशल' : 'Skills'}
                     </span>
                     <span className="font-bold text-[#555934]">{m.progress}%</span>

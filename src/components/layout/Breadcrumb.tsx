@@ -64,7 +64,7 @@ export function Breadcrumb() {
   });
 
   return (
-    <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#705849] select-none">
+    <nav aria-label="Breadcrumb" className="flex items-center text-xs text-muted-foreground select-none">
       <ol className="flex items-center gap-1.5 flex-wrap">
         <li>
           <Link

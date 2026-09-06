@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { DashboardUserProps } from '../RoleDashboardRouter';
+import type { DashboardUserProps } from '@/components/dashboard/RoleDashboardRouter';
 import { getPersonaFRAC } from '@/data/fracCadres';
 import { LearnerKpiStrip } from './LearnerKpiStrip';
 import { LearnerHeroBento } from './LearnerHeroBento';
@@ -118,7 +118,7 @@ export default function LearnerDashboard({ user }: { user: DashboardUserProps })
               {isHindi ? 'अधिकारी क्षमता एवं प्रशिक्षण कार्यक्षेत्र' : 'Officer Competency & Learning Workspace'}
             </h1>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
               ? 'सांख्यिकी और कार्यक्रम कार्यान्वयन मंत्रालय • क्षमता विकास पोर्टल'
               : 'Ministry of Statistics & Programme Implementation • Capacity Building Ecosystem'}
@@ -179,7 +179,7 @@ export default function LearnerDashboard({ user }: { user: DashboardUserProps })
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 ${
                 isActive
                   ? 'bg-[#555934] text-white shadow-2xs font-black'
-                  : 'bg-white text-[#705849] hover:bg-[#FAF6F0] hover:text-[#2d1f17] border border-[#BF9B7A]/20'
+                  : 'bg-white text-muted-foreground hover:bg-[#FAF6F0] hover:text-[#2d1f17] border border-[#BF9B7A]/20'
               }`}
             >
               <Icon className={`h-4 w-4 ${isActive ? 'text-[#F8C858]' : 'text-[#8C5B3E]'}`} />
@@ -247,7 +247,7 @@ export default function LearnerDashboard({ user }: { user: DashboardUserProps })
             <h3 className="text-base font-bold text-[#2d1f17]">
               {isHindi ? 'डिजिटल मैनुअल खोज एवं वैधानिक संदर्भ' : 'Digital Manual Search & Statutory Repository'}
             </h3>
-            <p className="text-xs text-[#705849]">
+            <p className="text-xs text-muted-foreground">
               {isHindi
                 ? 'सभी मैनुअल एनएसएसटीए और राष्ट्रीय सांख्यिकी आयोग (NSC) द्वारा प्रमाणित हैं।'
                 : 'All statutory guidelines are certified by NSSTA and the National Statistical Commission (NSC).'}
@@ -262,7 +262,7 @@ export default function LearnerDashboard({ user }: { user: DashboardUserProps })
                   NSSO FOD
                 </span>
                 <p className="font-bold text-xs text-[#2d1f17]">PLFS Vol 1: Instructions</p>
-                <p className="text-[11px] text-[#705849] mt-1">184 Pages • Ver 2026.1</p>
+                <p className="text-[11px] text-muted-foreground mt-1">184 Pages • Ver 2026.1</p>
               </button>
               <button
                 type="button"
@@ -273,18 +273,18 @@ export default function LearnerDashboard({ user }: { user: DashboardUserProps })
                   SDRD
                 </span>
                 <p className="font-bold text-xs text-[#2d1f17]">Schedule 0.0 Demarcation</p>
-                <p className="text-[11px] text-[#705849] mt-1">96 Pages • Ver 2025.4</p>
+                <p className="text-[11px] text-muted-foreground mt-1">96 Pages • Ver 2025.4</p>
               </button>
               <button
                 type="button"
                 onClick={() => handleOpenManual('manual-capi-handbook')}
                 className="p-4 rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/30 text-left hover:border-[#555934] transition-all cursor-pointer shadow-2xs"
               >
-                <span className="text-[10px] font-bold text-[#593E2E] uppercase tracking-wider block mb-1">
+                <span className="text-[10px] font-bold text-chart-5 uppercase tracking-wider block mb-1">
                   DPD
                 </span>
                 <p className="font-bold text-xs text-[#2d1f17]">ASHE & CAPI Tablet Protocol</p>
-                <p className="text-[11px] text-[#705849] mt-1">64 Pages • Ver 2026.2</p>
+                <p className="text-[11px] text-muted-foreground mt-1">64 Pages • Ver 2026.2</p>
               </button>
             </div>
           </div>

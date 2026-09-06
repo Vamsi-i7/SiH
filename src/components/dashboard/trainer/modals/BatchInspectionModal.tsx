@@ -158,7 +158,7 @@ export function BatchInspectionModal({
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#8C5B3E]/15 text-[#8C5B3E] border border-[#8C5B3E]/30 font-mono">
                 {cohort.code}
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white text-[#705849] border border-[#BF9B7A]/30">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white text-muted-foreground border border-[#BF9B7A]/30">
                 {cohort.center}
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#555934]/15 text-[#555934]">
@@ -168,14 +168,14 @@ export function BatchInspectionModal({
             <h2 className="text-xl sm:text-2xl font-bold text-[#2d1f17] tracking-tight">
               {cohort.name}
             </h2>
-            <p className="text-xs text-[#705849]">
+            <p className="text-xs text-muted-foreground">
               {cohort.cadre} • Term: {cohort.startDate} to {cohort.endDate}
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#F2E6D8] transition-colors"
+            className="p-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#F2E6D8] transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -184,27 +184,27 @@ export function BatchInspectionModal({
         {/* Quick Cohort Stats Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-5 bg-[#FAF6F0]/40 border-b border-[#BF9B7A]/20">
           <div className="p-3 rounded-2xl bg-white border border-[#BF9B7A]/20">
-            <p className="text-[10px] font-bold uppercase text-[#705849]">Enrolled Cadre</p>
+            <p className="text-[10px] font-bold uppercase text-muted-foreground">Enrolled Cadre</p>
             <p className="text-xl font-extrabold text-[#2d1f17] font-mono mt-0.5">
-              {cohort.enrolled} <span className="text-xs font-normal text-[#705849]">Officers</span>
+              {cohort.enrolled} <span className="text-xs font-normal text-muted-foreground">Officers</span>
             </p>
           </div>
           <div className="p-3 rounded-2xl bg-white border border-[#BF9B7A]/20">
-            <p className="text-[10px] font-bold uppercase text-[#705849]">Cohort Mean Score</p>
+            <p className="text-[10px] font-bold uppercase text-muted-foreground">Cohort Mean Score</p>
             <p className="text-xl font-extrabold text-[#555934] font-mono mt-0.5">
-              {cohort.avgScore}% <span className="text-xs font-normal text-[#705849]">Pass Rate</span>
+              {cohort.avgScore}% <span className="text-xs font-normal text-muted-foreground">Pass Rate</span>
             </p>
           </div>
           <div className="p-3 rounded-2xl bg-white border border-[#BF9B7A]/20">
-            <p className="text-[10px] font-bold uppercase text-[#705849]">Syllabus Progress</p>
+            <p className="text-[10px] font-bold uppercase text-muted-foreground">Syllabus Progress</p>
             <p className="text-xl font-extrabold text-[#8C5B3E] font-mono mt-0.5">
-              {cohort.progress}% <span className="text-xs font-normal text-[#705849]">Completed</span>
+              {cohort.progress}% <span className="text-xs font-normal text-muted-foreground">Completed</span>
             </p>
           </div>
           <div className="p-3 rounded-2xl bg-white border border-[#BF9B7A]/20">
             <p className="text-[10px] font-bold uppercase text-red-700">At-Risk Deficit</p>
             <p className="text-xl font-extrabold text-red-600 font-mono mt-0.5">
-              {cohort.atRiskCount} <span className="text-xs font-normal text-[#705849]">Officers &lt;60%</span>
+              {cohort.atRiskCount} <span className="text-xs font-normal text-muted-foreground">Officers &lt;60%</span>
             </p>
           </div>
         </div>
@@ -218,7 +218,7 @@ export function BatchInspectionModal({
               className={`pb-3 text-xs font-bold transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'roster'
                   ? 'border-[#8C5B3E] text-[#8C5B3E]'
-                  : 'border-transparent text-[#705849] hover:text-[#2d1f17]'
+                  : 'border-transparent text-muted-foreground hover:text-[#2d1f17]'
               }`}
             >
               <Users className="h-4 w-4" />
@@ -230,7 +230,7 @@ export function BatchInspectionModal({
               className={`pb-3 text-xs font-bold transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'competencies'
                   ? 'border-[#8C5B3E] text-[#8C5B3E]'
-                  : 'border-transparent text-[#705849] hover:text-[#2d1f17]'
+                  : 'border-transparent text-muted-foreground hover:text-[#2d1f17]'
               }`}
             >
               <BarChart3 className="h-4 w-4" />
@@ -242,7 +242,7 @@ export function BatchInspectionModal({
               className={`pb-3 text-xs font-bold transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'timeline'
                   ? 'border-[#8C5B3E] text-[#8C5B3E]'
-                  : 'border-transparent text-[#705849] hover:text-[#2d1f17]'
+                  : 'border-transparent text-muted-foreground hover:text-[#2d1f17]'
               }`}
             >
               <Calendar className="h-4 w-4" />
@@ -276,7 +276,7 @@ export function BatchInspectionModal({
               {/* Search & Status Filters */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div className="relative w-full sm:w-72">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#705849]" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                   <input
                     type="text"
                     value={search}
@@ -295,7 +295,7 @@ export function BatchInspectionModal({
                       className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                         filterStatus === st
                           ? 'bg-[#8C5B3E] text-white'
-                          : 'bg-[#FAF6F0] text-[#705849] hover:bg-[#F2E6D8]'
+                          : 'bg-[#FAF6F0] text-muted-foreground hover:bg-[#F2E6D8]'
                       }`}
                     >
                       {st === 'ALL' ? 'All Trainees' : st}
@@ -307,7 +307,7 @@ export function BatchInspectionModal({
               {/* Trainee Table */}
               <div className="overflow-x-auto rounded-2xl border border-[#BF9B7A]/25">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-[#705849] font-bold uppercase tracking-wider text-[10px]">
+                  <thead className="bg-[#FAF6F0] border-b border-[#BF9B7A]/20 text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
                     <tr>
                       <th className="py-2.5 px-3">Officer</th>
                       <th className="py-2.5 px-3">Cadre & Center</th>
@@ -330,13 +330,13 @@ export function BatchInspectionModal({
                             </div>
                             <div>
                               <p className="font-bold text-[#2d1f17]">{trainee.name}</p>
-                              <p className="text-[10px] text-[#705849]">{trainee.designation}</p>
+                              <p className="text-[10px] text-muted-foreground">{trainee.designation}</p>
                             </div>
                           </div>
                         </td>
                         <td className="py-2.5 px-3">
                           <p className="text-[#2d1f17] font-medium">{trainee.cadre}</p>
-                          <p className="text-[10px] text-[#705849]">{trainee.center}</p>
+                          <p className="text-[10px] text-muted-foreground">{trainee.center}</p>
                         </td>
                         <td className="py-2.5 px-3">
                           <div className="flex items-center gap-2">
@@ -383,7 +383,7 @@ export function BatchInspectionModal({
 
           {activeTab === 'competencies' && (
             <div className="space-y-4">
-              <p className="text-xs text-[#705849]">
+              <p className="text-xs text-muted-foreground">
                 Aggregated mastery scores across mandatory MoSPI operational protocols for {cohort.name}:
               </p>
               <div className="space-y-3">
@@ -439,7 +439,7 @@ export function BatchInspectionModal({
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="font-mono font-bold text-sm text-[#2d1f17]">{c.score}%</span>
-                        <span className="text-[10px] text-[#705849]">(Target: {c.target}%)</span>
+                        <span className="text-[10px] text-muted-foreground">(Target: {c.target}%)</span>
                         <span
                           className={`font-mono text-[10px] font-bold px-1.5 py-0.2 rounded ${
                             c.critical ? 'bg-red-500/15 text-red-700' : 'bg-emerald-500/15 text-emerald-700'
@@ -498,9 +498,9 @@ export function BatchInspectionModal({
                         {item.week}
                       </span>
                       <p className="text-xs font-bold text-[#2d1f17] mt-0.5">{item.milestone}</p>
-                      <p className="text-[11px] text-[#705849] mt-0.5">{item.status}</p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">{item.status}</p>
                     </div>
-                    <span className="text-[10px] font-mono text-[#705849] bg-white px-2 py-1 rounded-lg border border-[#BF9B7A]/25">
+                    <span className="text-[10px] font-mono text-muted-foreground bg-white px-2 py-1 rounded-lg border border-[#BF9B7A]/25">
                       {item.date}
                     </span>
                   </div>
@@ -512,7 +512,7 @@ export function BatchInspectionModal({
 
         {/* Modal Footer Actions */}
         <div className="p-4 border-t border-[#BF9B7A]/20 bg-[#FAF6F0]/80 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-[#705849]">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <GraduationCap className="h-4 w-4 text-[#8C5B3E]" />
             <span>NSSTA Course Director Academic Governance</span>
           </div>
@@ -521,7 +521,7 @@ export function BatchInspectionModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-xs font-bold text-[#705849] hover:bg-[#F2E6D8] transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-white border border-[#BF9B7A]/30 text-xs font-bold text-muted-foreground hover:bg-[#F2E6D8] transition-colors cursor-pointer"
             >
               Close
             </button>

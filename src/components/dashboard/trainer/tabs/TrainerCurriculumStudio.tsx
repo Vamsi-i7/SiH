@@ -136,7 +136,7 @@ export function TrainerCurriculumStudio({
                 Curriculum Studio & Vector Knowledge Base
               </h2>
             </div>
-            <p className="text-xs text-[#705849] mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Manage ingested MoSPI statutory handbooks, chunk indexes, and verified question banks
             </p>
           </div>
@@ -170,15 +170,15 @@ export function TrainerCurriculumStudio({
         {/* Vector Engine KPI Strip */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-[#BF9B7A]/20 text-center">
           <div className="p-3 rounded-2xl bg-[#FAF6F0]/60 border border-[#BF9B7A]/20">
-            <p className="text-[10px] font-bold uppercase text-[#705849]">Manuals Ingested</p>
+            <p className="text-[10px] font-bold uppercase text-muted-foreground">Manuals Ingested</p>
             <p className="text-xl font-extrabold text-[#2d1f17] font-mono mt-0.5">6 Books</p>
           </div>
           <div className="p-3 rounded-2xl bg-[#FAF6F0]/60 border border-[#BF9B7A]/20">
-            <p className="text-[10px] font-bold uppercase text-[#705849]">Vector Chunks</p>
+            <p className="text-[10px] font-bold uppercase text-muted-foreground">Vector Chunks</p>
             <p className="text-xl font-extrabold text-[#555934] font-mono mt-0.5">1,276 Chunks</p>
           </div>
           <div className="p-3 rounded-2xl bg-[#FAF6F0]/60 border border-[#BF9B7A]/20">
-            <p className="text-[10px] font-bold uppercase text-[#705849]">Active Pool</p>
+            <p className="text-[10px] font-bold uppercase text-muted-foreground">Active Pool</p>
             <p className="text-xl font-extrabold text-[#8C5B3E] font-mono mt-0.5">342 MCQs</p>
           </div>
           <div className="p-3 rounded-2xl bg-[#FAF6F0]/60 border border-[#BF9B7A]/20">
@@ -193,7 +193,7 @@ export function TrainerCurriculumStudio({
         <div className="flex items-center justify-between pb-3 border-b border-[#BF9B7A]/20">
           <div>
             <h3 className="text-base font-bold text-[#2d1f17]">Ingested MoSPI Handbooks</h3>
-            <p className="text-xs text-[#705849]">
+            <p className="text-xs text-muted-foreground">
               Click on any manual to inspect official chapters and vector extracts
             </p>
           </div>
@@ -245,10 +245,10 @@ export function TrainerCurriculumStudio({
                 <h4 className="font-bold text-xs text-[#2d1f17] mt-2 line-clamp-2">
                   {m.title}
                 </h4>
-                <p className="text-[11px] text-[#705849] mt-0.5">{m.division}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">{m.division}</p>
               </div>
 
-              <div className="pt-2 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[10px] text-[#705849]">
+              <div className="pt-2 border-t border-[#BF9B7A]/20 flex items-center justify-between text-[10px] text-muted-foreground">
                 <span>{m.pages}</span>
                 <span className="font-bold text-[#555934]">Inspect Chapters →</span>
               </div>
@@ -264,7 +264,7 @@ export function TrainerCurriculumStudio({
             <h3 className="text-base font-bold text-[#2d1f17]">
               Curated Question Bank Explorer
             </h3>
-            <p className="text-xs text-[#705849]">
+            <p className="text-xs text-muted-foreground">
               Filter by competency, Bloom&apos;s level, or examine psychometric properties
             </p>
           </div>
@@ -281,7 +281,7 @@ export function TrainerCurriculumStudio({
         {/* Search & Competency Filters */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#705849]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <input
               type="text"
               value={search}
@@ -306,7 +306,7 @@ export function TrainerCurriculumStudio({
                 className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer shrink-0 ${
                   selectedCompetency === c.id
                     ? 'bg-[#555934] text-white'
-                    : 'bg-[#FAF6F0] text-[#705849] hover:bg-[#F2E6D8]'
+                    : 'bg-[#FAF6F0] text-muted-foreground hover:bg-[#F2E6D8]'
                 }`}
               >
                 {c.label}
@@ -330,7 +330,7 @@ export function TrainerCurriculumStudio({
                   <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-[#555934]/15 text-[#555934]">
                     {item.competencyTag}
                   </span>
-                  <span className="text-[10px] font-mono text-[#705849]">
+                  <span className="text-[10px] font-mono text-muted-foreground">
                     Discrimination D={item.discriminationIndex.toFixed(2)}
                   </span>
                 </div>
@@ -350,7 +350,7 @@ export function TrainerCurriculumStudio({
                 {item.stem}
               </p>
 
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-[#BF9B7A]/15 text-[11px] text-[#705849]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-[#BF9B7A]/15 text-[11px] text-muted-foreground">
                 <div className="flex items-center gap-1.5 font-serif truncate">
                   <BookOpen className="h-3.5 w-3.5 text-[#8C5B3E] shrink-0" />
                   <span className="truncate">{item.sourceDoc} ({item.section})</span>

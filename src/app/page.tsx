@@ -57,18 +57,18 @@ export default async function LandingPage() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-bold tracking-tight text-lg text-[#2d1f17] leading-none">StatVidya</span>
-                <span className="rounded-full bg-[#BF9B7A]/25 px-2.5 py-0.5 text-[10px] font-bold text-[#593E2E] uppercase tracking-wide">
+                <span className="rounded-full bg-[#BF9B7A]/25 px-2.5 py-0.5 text-[10px] font-bold text-chart-5 uppercase tracking-wide">
                   MoSPI · NSSTA
                 </span>
               </div>
-              <p className="text-[11px] text-[#705849] hidden sm:block mt-0.5">
+              <p className="text-[11px] text-muted-foreground hidden sm:block mt-0.5">
                 Ministry of Statistics & Programme Implementation · Government of India
               </p>
             </div>
           </div>
 
           {/* Nav */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-[#705849]">
+          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-muted-foreground">
             <a href="#capabilities" className="hover:text-[#2d1f17] transition-colors">
               {t('nav.capabilities')}
             </a>
@@ -88,7 +88,7 @@ export default async function LandingPage() {
             {activeUser ? (
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#555934] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-[#3e4225] transition-all hover:-translate-y-0.5 active:scale-95"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#555934] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-primary-dark transition-all hover:-translate-y-0.5 active:scale-95"
               >
                 <span>{t('nav.goToDashboard')}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -96,7 +96,7 @@ export default async function LandingPage() {
             ) : (
               <Link
                 href="/auth/login"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#555934] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-[#3e4225] transition-all hover:-translate-y-0.5 active:scale-95"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#555934] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-primary-dark transition-all hover:-translate-y-0.5 active:scale-95"
               >
                 <span>{t('nav.officialLogin')}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -169,7 +169,7 @@ export default async function LandingPage() {
                     <>
                       <Link
                         href="/dashboard"
-                        className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-[#555934] hover:bg-[#3e4225] text-white font-bold text-sm shadow-xl hover:-translate-y-0.5 transition-all"
+                        className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-[#555934] hover:bg-primary-dark text-white font-bold text-sm shadow-xl hover:-translate-y-0.5 transition-all"
                       >
                         {t('cta.continueAs', { name: activeUser.name })}
                         <ArrowRight className="h-4 w-4" />
@@ -186,7 +186,7 @@ export default async function LandingPage() {
                     <>
                       <Link
                         href="/auth/login"
-                        className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-[#555934] hover:bg-[#3e4225] text-white font-bold text-sm shadow-xl hover:-translate-y-0.5 transition-all"
+                        className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-[#555934] hover:bg-primary-dark text-white font-bold text-sm shadow-xl hover:-translate-y-0.5 transition-all"
                       >
                         {t('cta.enterPortal')}
                         <ArrowRight className="h-4 w-4" />
@@ -295,7 +295,7 @@ export default async function LandingPage() {
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#2d1f17]">
                 {t('pillars.title')}
               </h2>
-              <p className="text-sm sm:text-base text-[#705849] leading-relaxed">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                 {t('pillars.subtitle')}
               </p>
             </ScrollReveal>
@@ -352,7 +352,7 @@ export default async function LandingPage() {
                       <Icon className="h-6 w-6" />
                     </div>
                     <h3 className="text-base font-bold text-[#2d1f17]">{title}</h3>
-                    <p className="text-sm text-[#705849] leading-relaxed">{desc}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
                   </div>
                 </ScrollReveal>
               ))}
@@ -471,7 +471,7 @@ export default async function LandingPage() {
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#2d1f17]">
                 {t('cadres.title')}
               </h2>
-              <p className="text-sm sm:text-base text-[#705849] leading-relaxed">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                 {t('cadres.subtitle')}
               </p>
             </ScrollReveal>
@@ -525,7 +525,7 @@ export default async function LandingPage() {
                     </div>
                     <div className="p-5 space-y-2 bg-white">
                       <h3 className="text-sm font-bold text-[#2d1f17]">{title}</h3>
-                      <p className="text-xs text-[#705849] leading-relaxed">{desc}</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -558,7 +558,7 @@ export default async function LandingPage() {
 
                 {/* Body */}
                 <div className="p-8 space-y-8">
-                  <p className="text-sm sm:text-base text-[#705849] leading-relaxed">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {t('about.body')}
                   </p>
 
@@ -567,14 +567,14 @@ export default async function LandingPage() {
                       <span className="text-[11px] font-bold text-[#2d1f17] uppercase tracking-widest block">
                         {t('about.contactTitle')}
                       </span>
-                      <p className="text-sm text-[#705849] leading-relaxed">{t('about.contactAddress')}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{t('about.contactAddress')}</p>
                     </div>
                     <div className="space-y-2">
                       <span className="text-[11px] font-bold text-[#2d1f17] uppercase tracking-widest block">
                         Official Communication
                       </span>
                       <p className="font-mono text-sm text-[#555934] font-semibold">{t('about.contactEmail')}</p>
-                      <p className="text-xs text-[#705849]">Ministry of Statistics & Programme Implementation (MoSPI)</p>
+                      <p className="text-xs text-muted-foreground">Ministry of Statistics & Programme Implementation (MoSPI)</p>
                     </div>
                   </div>
 
@@ -590,7 +590,7 @@ export default async function LandingPage() {
                         href={href}
                         className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                           primary
-                            ? 'bg-[#555934] text-white hover:bg-[#3e4225] shadow-xs'
+                            ? 'bg-[#555934] text-white hover:bg-primary-dark shadow-xs'
                             : 'bg-[#F2E6D8]/60 text-[#2d1f17] hover:bg-[#F2E6D8]'
                         }`}
                       >

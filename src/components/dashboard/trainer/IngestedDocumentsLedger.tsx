@@ -89,7 +89,7 @@ export function IngestedDocumentsLedger({ onOpenManualReader }: IngestedDocument
               Ingested MoSPI Manuals & Chunks
             </h2>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             FR-CONTENT-1..5 • Semantic vector chunks and AI question generation lineage
           </p>
         </div>
@@ -108,7 +108,7 @@ export function IngestedDocumentsLedger({ onOpenManualReader }: IngestedDocument
       <div className="overflow-x-auto mt-4">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-[#705849] uppercase tracking-wider">
+            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
               <th className="pb-3 pl-2">Manual / SOP Title</th>
               <th className="pb-3 hidden md:table-cell">MoSPI Division</th>
               <th className="pb-3">Chunks</th>
@@ -128,7 +128,7 @@ export function IngestedDocumentsLedger({ onOpenManualReader }: IngestedDocument
                     </div>
                     <div className="min-w-0">
                       <p className="font-bold text-[#2d1f17] line-clamp-1">{doc.title}</p>
-                      <p className="text-[11px] text-[#705849] truncate mt-0.5">
+                      <p className="text-[11px] text-muted-foreground truncate mt-0.5">
                         {doc.pages} Pages • Updated {doc.updatedAt}
                       </p>
                     </div>
@@ -136,7 +136,7 @@ export function IngestedDocumentsLedger({ onOpenManualReader }: IngestedDocument
                 </td>
 
                 {/* Division */}
-                <td className="py-4 pr-4 hidden md:table-cell text-[#705849] font-medium">
+                <td className="py-4 pr-4 hidden md:table-cell text-muted-foreground font-medium">
                   {doc.division}
                 </td>
 
