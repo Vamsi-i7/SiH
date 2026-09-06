@@ -1,57 +1,49 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth, db } from '@/lib/firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { useTranslations } from 'next-intl';
 
 export default function SignupForm() {
-  const t = useTranslations('auth');
   const router = useRouter();
+  const t = useTranslations('auth');
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-
-    if (!email.endsWith('@mospi.gov.in') && !email.endsWith('@nssta.gov.in') && !email.endsWith('@gov.in')) {
-      setError('Please use your official government email address (@mospi.gov.in, @nssta.gov.in, @gov.in).');
-      setLoading(false);
-      return;
-    }
+    setError(null);
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-      await updateProfile(user, { displayName: name });
+      const data = await res.json();
 
-      // Save user profile in Firestore
-      await setDoc(doc(db, 'profiles', user.uid), {
-        uid: user.uid,
-        email,
+      if (!res.ok) {
+        setError(data.error || t('error'));
+        return;
+      }
+
+      // Automatically persist demo session in cookie for instant onboarding access
+      const persona = {
+        id: data.user?.id || 'demo-new-user',
         name,
+        email,
         role: 'learner',
         organization_id: 'org-mospi',
         preferred_language: 'en',
-        createdAt: new Date().toISOString(),
-      });
-
-      const userData = {
-        uid: user.uid,
-        email: user.email,
-        displayName: name,
-        role: 'learner',
-        organization_id: 'org-mospi',
       };
-      document.cookie = `firebase_user=${encodeURIComponent(JSON.stringify(userData))}; path=/; max-age=604800`;
+      document.cookie = `demo_user=${encodeURIComponent(JSON.stringify(persona))}; path=/; max-age=604800`;
+      document.cookie = `locale=en; path=/; max-age=31536000`;
 
       router.push('/onboarding');
     } catch {
@@ -73,7 +65,7 @@ export default function SignupForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition text-[16px]"
+          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition"
           placeholder="e.g. Rajesh Kumar"
         />
       </div>
@@ -88,7 +80,7 @@ export default function SignupForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition text-[16px]"
+          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition"
           placeholder="you@mospi.gov.in"
         />
         <p className="text-xs text-muted-foreground">Official government email address required</p>
@@ -105,7 +97,7 @@ export default function SignupForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
-          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition text-[16px]"
+          className="w-full h-11 rounded-md border border-border bg-card px-3.5 text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition"
           placeholder="Minimum 8 characters"
         />
       </div>
@@ -119,7 +111,7 @@ export default function SignupForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground text-sm font-semibold shadow-sm transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground text-sm font-semibold shadow-xs transition flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? (
           <span className="flex items-center gap-2">

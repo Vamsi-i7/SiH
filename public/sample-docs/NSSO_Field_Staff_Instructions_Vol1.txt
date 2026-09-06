@@ -1,0 +1,26 @@
+MINISTRY OF STATISTICS AND PROGRAMME IMPLEMENTATION (MoSPI)
+NATIONAL SAMPLE SURVEY OFFICE (FIELD OPERATIONS DIVISION)
+
+INSTRUCTIONS TO FIELD STAFF — VOLUME I
+SURVEY DESIGN, CONCEPTS, DEFINITIONS AND PROCEDURES
+(78TH ROUND / PLFS SURVEY GUIDELINES)
+
+CHAPTER 1: GENERAL DESCRIPTION AND COVERAGE
+1.1 The National Sample Survey (NSS), set up by the Government of India in 1950 to collect socio-economic data employing scientific sampling methods, conducts nationwide multi-subject household and enterprise surveys.
+1.2 The Field Operations Division (FOD) with its headquarters at New Delhi and Faridabad and a network of Zonal, Regional, and Sub-Regional offices across India is responsible for the collection of primary field data.
+
+CHAPTER 2: CONCEPTS, DEFINITIONS AND OPERATIONAL PROCEDURES
+2.1 First Stage Unit (FSU): In rural areas, the FSU is the 2011 Census village. In urban areas, it is the Urban Frame Survey (UFS) block.
+2.2 Hamlet-Group (hg) / Sub-Block (sb) Formation: When the approximate present population of a sample village or UFS block is 1,200 or more, it is divided into a suitable number of sub-divisions called hamlet-groups in rural areas and sub-blocks in urban areas.
+2.3 Rule of Equal Size: Hamlet-groups must be of approximately equal population size, demarcated using identifiable natural or permanent man-made boundaries (roads, canals, railway tracks).
+2.4 Household Definition: A group of persons normally living together and taking food from a common kitchen constitutes a household. Temporary visitors (staying < 6 months) are excluded from listing to avoid double-counting.
+
+CHAPTER 3: SCHEDULE 0.0 — LIST OF HOUSEHOLDS AND SAMPLING SELECTION
+3.1 Path of Listing: Enumeration must begin from the North-West corner of the FSU and proceed in a clockwise or continuous serpentine sweep to ensure complete coverage without omission or duplication.
+3.2 Second Stage Stratum (SSS): Listed households are categorized into relatively homogeneous socio-economic strata (SSS) based on household characteristics or consumption patterns before circular systematic sampling is executed.
+3.3 Non-Response Protocol: If a sample household is temporarily absent, at least three revisit attempts must be recorded before seeking supervisor authorization for substitution. Casual replacement without documented attempts is strictly prohibited under survey protocol.
+
+CHAPTER 4: CAPI TABLET FIELD PROTOCOLS
+4.1 Offline Ingestion: Completed interview forms are encrypted and cached in local SQLite storage. All coordinates must achieve a GPS accuracy threshold within ±10 metres with 4 active satellite locks.
+4.2 Soft Warning vs Hard Error: Soft warnings permit continuation with mandatory supervisory remarks; hard errors block questionnaire progression until inconsistencies are resolved.
+4.3 Data Integrity: SHA-256 cryptographic hashes are computed locally upon form completion and verified upon upload to the regional server.

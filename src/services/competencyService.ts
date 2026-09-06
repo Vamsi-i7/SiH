@@ -24,15 +24,20 @@ export const SEVERITY_WEIGHTS = {
   desirable: 10,
 };
 
+export const GAP_PRIORITY_WEIGHTS: Record<ActivityPriority, number> = {
+  critical: 3,
+  important: 2,
+  desirable: 1,
+};
+
 // ============================================================================
 // DOMAIN LOGIC
 // ============================================================================
 
 /**
- * Compute severity bucket based on gap and priority
- * HIGH: gap >= 2 or (gap === 1 and priority is critical/important)
- * MODERATE: gap === 1 and priority is desirable
- * PROFICIENT: gap === 0
+ * Compute severity score based on gap and priority weight (PRD §4.1)
+ * Severity Score = max(0, targetLevel - currentLevel) * priorityWeight
+ * where critical=3, important=2, desirable=1
  */
 export function computeGapSeverity(
   currentLevel: number,
@@ -40,11 +45,65 @@ export function computeGapSeverity(
   priority: ActivityPriority
 ): number {
   const gap = Math.max(0, targetLevel - currentLevel);
+  const weight = GAP_PRIORITY_WEIGHTS[priority] ?? 1;
+  return gap * weight;
+}
 
-  if (gap === 0) return 0; // PROFICIENT
-  if (gap >= 2) return 2; // HIGH
-  if (gap === 1 && (priority === 'critical' || priority === 'important')) return 2; // HIGH
-  return 1; // MODERATE
+/**
+ * Classify severity score into official FRAC severity buckets (PRD §4.1)
+ * Score >= 4  → HIGH (Critical Gap)
+ * Score 2-3   → MODERATE (Moderate Gap)
+ * Score <= 1  → PROFICIENT (Proficient)
+ */
+export function classifySeverity(score: number): SeverityBucket {
+  if (score >= 4) return 'HIGH';
+  if (score >= 2) return 'MODERATE';
+  return 'PROFICIENT';
+}
+
+/**
+ * Determine promoted competency level after assessment completion (PRD §4.1, §4.3)
+ * - Score < 40%: No promotion
+ * - Score 40-69%: +1 level if current < L3 (capped at L3)
+ * - Score >= 70%: +2 levels (or +1 level in strictMode, capped at L5)
+ */
+export function promoteCompetencyLevel(
+  currentLevel: number,
+  score: number,
+  options?: { strictMode?: boolean }
+): number {
+  if (currentLevel >= 5) return 5;
+  if (score < 40) return currentLevel;
+
+  if (options?.strictMode) {
+    if (score >= 70) {
+      return Math.min(5, currentLevel + 1);
+    }
+    if (currentLevel < 3) {
+      return Math.min(3, currentLevel + 1);
+    }
+    return currentLevel;
+  }
+
+  // Score > 70%: promote by up to 2 levels, cap at 5
+  if (score > 70) {
+    return Math.min(5, currentLevel + 2);
+  }
+
+  // Score === 70%: promote if < L3, capped at L3
+  if (score === 70) {
+    if (currentLevel < 3) {
+      return Math.min(3, currentLevel + 2);
+    }
+    return currentLevel;
+  }
+
+  // Medium score: 40% - 69% (promote by 1 level if < L3, capped at L3)
+  if (currentLevel < 3) {
+    return Math.min(3, currentLevel + 1);
+  }
+
+  return currentLevel;
 }
 
 /**
@@ -76,13 +135,8 @@ function buildCompetencyGap(
   evidenceType: 'self-assessed' | 'assessment-verified'
 ): CompetencyGap | null {
   const gap = Math.max(0, targetLevel - currentLevel);
-
-  const severity: SeverityBucket =
-    gap === 0
-      ? 'PROFICIENT'
-      : gap >= 2 || (gap === 1 && (priority === 'critical' || priority === 'important'))
-        ? 'HIGH'
-        : 'MODERATE';
+  const severityScore = computeGapSeverity(currentLevel, targetLevel, priority);
+  const severity = classifySeverity(severityScore);
 
   return {
     competencyId: competency.id,
@@ -200,6 +254,8 @@ export function getSeverityLabel(severity: SeverityBucket): string {
 export const CompetencyService = {
   analyzeCompetencyGaps,
   computeGapSeverity,
+  classifySeverity,
   computeReadinessIndex,
+  promoteCompetencyLevel,
   getSeverityLabel,
 };
