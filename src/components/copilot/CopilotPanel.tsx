@@ -332,20 +332,6 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
             />
           ))}
 
-          {/* Typing indicator */}
-          {isLoading && messages[messages.length - 1]?.content === '' && (
-            <div className="flex items-center gap-2 px-1">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#555934]">
-                <Sparkles className="h-3.5 w-3.5 text-white" />
-              </div>
-              <div className="flex gap-1">
-                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="h-2 w-2 rounded-full bg-[#555934] animate-bounce" style={{ animationDelay: '300ms' }} />
-              </div>
-            </div>
-          )}
-
           <div ref={messagesEndRef} />
         </div>
 
