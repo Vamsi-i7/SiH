@@ -182,7 +182,7 @@ function MCQGeneratorInner() {
         }
       }
     } catch (err) {
-      console.error('Failed to generate with Groq AI:', err);
+      console.error('Failed to generate questions:', err);
     } finally {
       setIsGenerating(false);
     }
@@ -234,7 +234,7 @@ function MCQGeneratorInner() {
             Document Practice & MCQ Station
           </h1>
           <p className="text-sm text-stone-600">
-            Generate authentic self-paced questions from your uploaded manuals and official MoSPI guidelines powered by Groq AI.
+            Generate authentic self-paced questions grounded in your uploaded manuals and official MoSPI guidelines.
           </p>
         </div>
         <ProvenanceBadge provenance="PROPOSED_METHODOLOGY" />
@@ -360,7 +360,7 @@ function MCQGeneratorInner() {
           <div className="pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-3">
             <span className="text-xs text-[#705849] flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5 text-amber-600" />
-              Engine: <strong>Groq AI (gpt-oss-20b)</strong> • Sub-second contextual inference
+              Engine: <strong>MoSPI Cognitive Engine</strong> • Verified contextual inference
             </span>
             <button
               onClick={handleGenerate}
@@ -370,7 +370,7 @@ function MCQGeneratorInner() {
               {isGenerating ? (
                 <>
                   <RefreshCw className="h-4 w-4 animate-spin" />
-                  Generating {questionCount} Items with Groq AI...
+                  Generating {questionCount} Items...
                 </>
               ) : (
                 <>
