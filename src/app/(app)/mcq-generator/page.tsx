@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -15,7 +15,17 @@ interface IngestedDoc {
   competencyId: string;
   competencyName: string;
   citation: string;
+  chunks?: Array<{ text: string; metadata?: { section?: string; pageNumber?: number; wordCount?: number } }>;
 }
+
+const COMPETENCY_NAME_MAP: Record<string, string> = {
+  'comp-capi': 'CAPI Tablet Operation',
+  'comp-nsso': 'NSSO Protocol Mastery',
+  'comp-survey': 'Survey Sampling & Design',
+  'comp-data': 'Data Entry & Scrutiny Rules',
+  'comp-demarcation': 'Block Demarcation & Urban Frame Survey',
+  'comp-scrutiny': 'Field Scrutiny & Validation Rules',
+};
 
 const INGESTED_DOCS: IngestedDoc[] = [
   {
@@ -57,6 +67,25 @@ function MCQGeneratorInner() {
   const initialComp = searchParams.get('competency');
   const matchedDoc = initialComp ? INGESTED_DOCS.find((d) => d.competencyId === initialComp)?.id : null;
   const initialDocId = searchParams.get('docId') || matchedDoc || 'doc-plfs-2024';
+  const initialDocTitle = searchParams.get('docTitle');
+
+  // Build initial list including URL passed custom doc if not already present
+  const [docList, setDocList] = useState<IngestedDoc[]>(() => {
+    if (initialDocId && initialDocTitle && !INGESTED_DOCS.some((d) => d.id === initialDocId)) {
+      return [
+        {
+          id: initialDocId,
+          title: decodeURIComponent(initialDocTitle),
+          cadre: 'My Uploaded Document',
+          competencyId: initialComp || 'comp-capi',
+          competencyName: COMPETENCY_NAME_MAP[initialComp || ''] || 'Statistical Competency',
+          citation: `${decodeURIComponent(initialDocTitle)}, Section 1`,
+        },
+        ...INGESTED_DOCS,
+      ];
+    }
+    return INGESTED_DOCS;
+  });
 
   const [selectedDocId, setSelectedDocId] = useState(initialDocId);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
@@ -65,7 +94,53 @@ function MCQGeneratorInner() {
   const [activeTab, setActiveTab] = useState<'en' | 'hi'>('en');
   const [stagedToQueue, setStagedToQueue] = useState(false);
 
-  const activeDoc = INGESTED_DOCS.find((d) => d.id === selectedDocId) || INGESTED_DOCS[0];
+  // Fetch live documents from backend Firestore
+  useEffect(() => {
+    let active = true;
+    fetch('/api/documents')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!active || !data?.documents) return;
+        interface ApiDoc {
+          id: string;
+          title: string;
+          filename?: string;
+          userId?: string;
+          targetCompetencies?: string[];
+          chunks?: Array<{ text: string; metadata?: { section?: string; pageNumber?: number; wordCount?: number } }>;
+        }
+        const mapped: IngestedDoc[] = data.documents.map((d: ApiDoc) => {
+          const compId = d.targetCompetencies?.[0] || 'comp-capi';
+          const compName = COMPETENCY_NAME_MAP[compId] || 'Statistical Competency';
+          const isUserUpload = d.userId && d.userId !== 'public' && d.userId !== 'system';
+          return {
+            id: d.id,
+            title: d.title,
+            cadre: isUserUpload ? 'My Upload' : 'Official MoSPI Guide',
+            competencyId: compId,
+            competencyName: compName,
+            citation: `${d.title} (${d.filename || 'manual'})`,
+            chunks: d.chunks,
+          };
+        });
+
+        const existingIds = new Set(mapped.map((m) => m.id));
+        const nonDupDefaults = INGESTED_DOCS.filter((d) => !existingIds.has(d.id));
+        const combined = [...mapped, ...nonDupDefaults];
+        setDocList(combined);
+
+        if (initialDocId && combined.some((d) => d.id === initialDocId)) {
+          setSelectedDocId(initialDocId);
+        }
+      })
+      .catch((err) => console.warn('Could not fetch documents for MCQ generator:', err));
+
+    return () => {
+      active = false;
+    };
+  }, [initialDocId]);
+
+  const activeDoc = docList.find((d) => d.id === selectedDocId) || docList[0] || INGESTED_DOCS[0];
   const competencyId = activeDoc.competencyId;
 
   const handleGenerate = async () => {
@@ -81,6 +156,8 @@ function MCQGeneratorInner() {
           difficulty,
           topicPrompt: activeDoc.title,
           citationSource: activeDoc.citation,
+          docTitle: activeDoc.title,
+          docText: activeDoc.chunks?.[0]?.text || activeDoc.title,
         }),
       });
 
@@ -171,9 +248,9 @@ function MCQGeneratorInner() {
                 onChange={(e) => setSelectedDocId(e.target.value)}
                 className="w-full text-xs sm:text-sm border border-stone-300 rounded-lg p-2.5 bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#8b9a6e]"
               >
-                {INGESTED_DOCS.map((doc) => (
+                {docList.map((doc) => (
                   <option key={doc.id} value={doc.id}>
-                    [{doc.cadre}] {doc.title}
+                    {doc.cadre === 'My Upload' ? `📁 [My Upload] ${doc.title}` : `[${doc.cadre}] ${doc.title}`}
                   </option>
                 ))}
               </select>
