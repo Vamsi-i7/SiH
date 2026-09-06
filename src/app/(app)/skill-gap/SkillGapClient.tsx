@@ -13,7 +13,7 @@ const RadarChart = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-64 w-64 items-center justify-center">
-        <div className="h-48 w-48 rounded-full bg-[#E8DACB]/40 animate-pulse" />
+        <div className="h-48 w-48 rounded-full bg-muted/40 animate-pulse" />
       </div>
     ),
   }
@@ -31,7 +31,7 @@ interface GapCardProps {
 function GapCard({ gap }: GapCardProps) {
   const severityPillColors = {
     HIGH: 'text-[#8C5B3E] bg-[#8C5B3E]/12',
-    MODERATE: 'text-[#593E2E] bg-[#BF9B7A]/20',
+    MODERATE: 'text-chart-5 bg-[#BF9B7A]/20',
     PROFICIENT: 'text-[#555934] bg-[#555934]/12',
   };
 
@@ -45,7 +45,7 @@ function GapCard({ gap }: GapCardProps) {
             </h3>
             <ProvenanceBadge provenance={gap.competency.provenance} showLabel={false} size="sm" />
           </div>
-          <p className="text-sm text-[#705849] mb-2">
+          <p className="text-sm text-muted-foreground mb-2">
             Activity: {gap.activity.name}
           </p>
         </div>
@@ -60,21 +60,21 @@ function GapCard({ gap }: GapCardProps) {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-sm bg-[#F2E6D8]/30 p-4 rounded-xl">
         <div>
-          <p className="text-xs text-[#705849] uppercase mb-1">Current</p>
+          <p className="text-xs text-muted-foreground uppercase mb-1">Current</p>
           <p className="font-bold text-[#2d1f17]">L{gap.currentLevel}</p>
         </div>
         <div>
-          <p className="text-xs text-[#705849] uppercase mb-1">Target</p>
+          <p className="text-xs text-muted-foreground uppercase mb-1">Target</p>
           <p className="font-bold text-[#2d1f17]">L{gap.targetLevel}</p>
         </div>
         <div>
-          <p className="text-xs text-[#705849] uppercase mb-1">Priority</p>
+          <p className="text-xs text-muted-foreground uppercase mb-1">Priority</p>
           <p className="font-semibold text-[#2d1f17] capitalize">
             {gap.priority.charAt(0).toUpperCase() + gap.priority.slice(1)}
           </p>
         </div>
         <div>
-          <p className="text-xs text-[#705849] uppercase mb-1">Gap Severity</p>
+          <p className="text-xs text-muted-foreground uppercase mb-1">Gap Severity</p>
           <p className="font-mono font-bold text-[#2d1f17]">
             {CompetencyService.computeGapSeverity(gap.currentLevel, gap.targetLevel, gap.priority)}
           </p>
@@ -83,14 +83,14 @@ function GapCard({ gap }: GapCardProps) {
 
       <div className="space-y-2">
         <h4 className="text-sm font-medium text-[#2d1f17]">Why This Matters</h4>
-        <p className="text-sm text-[#705849] leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           {gap.evidenceType === 'assessment-verified'
             ? `Your ${gap.activity.name} performance assessment showed ${gap.currentLevel}, requiring Level ${gap.targetLevel} for optimal ${gap.activity.name} effectiveness.`
             : `Based on self-assessment, you need to develop ${gap.competency.name} to meet ${gap.activity.name} requirements at Level ${gap.targetLevel}.`
           }
         </p>
         <div className="flex items-center justify-between mt-3 pt-2">
-          <div className="flex items-center gap-2 text-xs text-[#705849]">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="px-2.5 py-1 rounded-full bg-[#F2E6D8] text-[#2d1f17]">
               Category: {gap.competency.category}
             </span>
@@ -99,7 +99,7 @@ function GapCard({ gap }: GapCardProps) {
                 Verified
               </span>
             ) : (
-              <span className="px-2.5 py-1 rounded-full bg-[#BF9B7A]/20 text-[#593E2E] font-medium">
+              <span className="px-2.5 py-1 rounded-full bg-[#BF9B7A]/20 text-chart-5 font-medium">
                 Self-Assessed
               </span>
             )}
@@ -107,7 +107,7 @@ function GapCard({ gap }: GapCardProps) {
           <Link
             href={`/assessment/${gap.competencyId}`}
             prefetch={true}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs text-white bg-[#555934] hover:bg-[#3e4225] font-semibold rounded-xl transition-all shadow-2xs active:scale-[0.98]"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs text-white bg-[#555934] hover:bg-primary-dark font-semibold rounded-xl transition-all shadow-2xs active:scale-[0.98]"
           >
             <PlayCircle className="h-3.5 w-3.5" />
             Take Assessment
@@ -196,7 +196,7 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
         <h1 className="text-3xl font-bold text-[#2d1f17]">
           {t('skillGap.title')}
         </h1>
-        <p className="text-[#705849]">
+        <p className="text-muted-foreground">
           {t('skillGap.subtitle')}
         </p>
       </div>
@@ -214,7 +214,7 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
       {/* Filter Bar */}
       <div className="rounded-2xl bg-white p-4 shadow-card">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-medium text-[#705849]">
+          <span className="text-sm font-medium text-muted-foreground">
             Filter by severity:
           </span>
           <button
@@ -242,7 +242,7 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
               filter === 'MODERATE'
                 ? 'bg-[#BF9B7A] text-[#2d1f17] shadow-2xs font-semibold'
-                : 'bg-[#BF9B7A]/15 text-[#593E2E] hover:bg-[#BF9B7A]/25'
+                : 'bg-[#BF9B7A]/15 text-chart-5 hover:bg-[#BF9B7A]/25'
             }`}
           >
             🟡 Moderate ({severityCounts.MODERATE})
@@ -274,7 +274,7 @@ export default function SkillGapClient({ user }: { user?: AppUser | null }) {
           <h3 className="text-lg font-medium text-[#2d1f17] mb-2">
             No gaps in this category
           </h3>
-          <p className="text-[#705849]">
+          <p className="text-muted-foreground">
             All competencies are at or above target level for this filter.
           </p>
         </div>

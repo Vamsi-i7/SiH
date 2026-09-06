@@ -102,7 +102,7 @@ export function HorizontalPolicyDirectivesCarousel({
               5 Active Directives
             </span>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             Statutory framework reforms, gazette notifications, and compliance schedules from the Cabinet Secretariat.
           </p>
         </div>
@@ -113,7 +113,7 @@ export function HorizontalPolicyDirectivesCarousel({
             type="button"
             onClick={scrollLeft}
             aria-label="Previous circulars"
-            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0] hover:text-[#2d1f17] transition-all shadow-2xs cursor-pointer active:scale-95"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#FAF6F0] hover:text-[#2d1f17] transition-all shadow-2xs cursor-pointer active:scale-95"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -121,7 +121,7 @@ export function HorizontalPolicyDirectivesCarousel({
             type="button"
             onClick={scrollRight}
             aria-label="Next circulars"
-            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white border border-[#BF9B7A]/30 text-[#705849] hover:bg-[#FAF6F0] hover:text-[#2d1f17] transition-all shadow-2xs cursor-pointer active:scale-95"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white border border-[#BF9B7A]/30 text-muted-foreground hover:bg-[#FAF6F0] hover:text-[#2d1f17] transition-all shadow-2xs cursor-pointer active:scale-95"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -137,7 +137,7 @@ export function HorizontalPolicyDirectivesCarousel({
         {POLICY_DIRECTIVES_DATA.map((item) => (
           <div
             key={item.id}
-            className="min-w-[320px] max-w-[340px] shrink-0 snap-start rounded-2xl p-4.5 bg-white border border-[#BF9B7A]/30 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between"
+            className="min-w-[320px] max-w-85 shrink-0 snap-start rounded-2xl p-4.5 bg-white border border-[#BF9B7A]/30 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between"
           >
             <div className="space-y-3">
               {/* Circular Reference & Status Pill */}
@@ -172,20 +172,20 @@ export function HorizontalPolicyDirectivesCarousel({
                 <h3 className="font-bold text-sm text-[#2d1f17] leading-snug line-clamp-2">
                   {item.title}
                 </h3>
-                <p className="text-[10.5px] font-semibold text-[#705849] mt-0.5 truncate">
+                <p className="text-[10.5px] font-semibold text-muted-foreground mt-0.5 truncate">
                   {item.authority}
                 </p>
               </div>
 
               {/* Mandate Summary */}
-              <p className="text-[11px] text-[#705849] leading-relaxed line-clamp-3 bg-[#FAF6F0]/60 p-2.5 rounded-xl border border-[#BF9B7A]/20">
+              <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-3 bg-[#FAF6F0]/60 p-2.5 rounded-xl border border-[#BF9B7A]/20">
                 {item.mandateSummary}
               </p>
 
               {/* Compliance & Deadline */}
               <div className="space-y-1 pt-1">
                 <div className="flex items-center justify-between text-[10.5px]">
-                  <span className="text-[#705849] flex items-center gap-1">
+                  <span className="text-muted-foreground flex items-center gap-1">
                     <Calendar className="h-3 w-3 text-[#8C5B3E]" />
                     Deadline: <strong>{item.complianceDeadline}</strong>
                   </span>

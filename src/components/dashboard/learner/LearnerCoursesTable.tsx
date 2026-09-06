@@ -28,18 +28,18 @@ export function LearnerCoursesTable({ isHindi = false }: LearnerCoursesTableProp
               {isHindi ? 'नामांकित एवं अनुशंसित मॉड्यूल' : 'Enrolled & Recommended Modules'}
             </h2>
           </div>
-          <p className="text-xs text-[#705849] mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
               ? 'iGOT कर्मयोगी और एनएसएसटीए आधिकारिक पाठ्यक्रम'
               : 'Direct integration with iGOT Karmayogi & NSSTA Faculty Modules'}
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-semibold text-[#705849]">
+        <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
           <span className="px-3 py-1 rounded-full bg-[#555934]/10 text-[#555934]">
             {isHindi ? 'सभी (5)' : 'All (5)'}
           </span>
-          <span className="px-3 py-1 rounded-full bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/30">
+          <span className="px-3 py-1 rounded-full bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/30">
             {isHindi ? 'सक्रिय (2)' : 'In Progress (2)'}
           </span>
         </div>
@@ -48,7 +48,7 @@ export function LearnerCoursesTable({ isHindi = false }: LearnerCoursesTableProp
       <div className="overflow-x-auto mt-4">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-[#705849] uppercase tracking-wider">
+            <tr className="border-b border-[#BF9B7A]/20 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
               <th className="pb-3 pl-2">{isHindi ? 'पाठ्यक्रम' : 'Course Module'}</th>
               <th className="pb-3 hidden md:table-cell">{isHindi ? 'चरण' : 'Stage'}</th>
               <th className="pb-3">{isHindi ? 'प्रगति' : 'Progress'}</th>
@@ -72,7 +72,7 @@ export function LearnerCoursesTable({ isHindi = false }: LearnerCoursesTableProp
                       </div>
                       <div className="min-w-0">
                         <p className="font-bold text-[#2d1f17] line-clamp-1">{courseTitle}</p>
-                        <p className="text-[11px] text-[#705849] truncate mt-0.5">{course.provider}</p>
+                        <p className="text-[11px] text-muted-foreground truncate mt-0.5">{course.provider}</p>
                       </div>
                     </div>
                   </td>
@@ -91,10 +91,10 @@ export function LearnerCoursesTable({ isHindi = false }: LearnerCoursesTableProp
                   </td>
 
                   {/* Progress bar */}
-                  <td className="py-4 pr-4 min-w-[130px]">
+                  <td className="py-4 pr-4 min-w-32.5">
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px] font-mono">
-                        <span className="text-[#705849]">
+                        <span className="text-muted-foreground">
                           {progress.completedLessons}/{progress.totalLessons}
                         </span>
                         <span className="font-bold text-[#2d1f17]">{percent}%</span>

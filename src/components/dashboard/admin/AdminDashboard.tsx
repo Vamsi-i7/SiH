@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { DashboardUserProps } from '../RoleDashboardRouter';
+import type { DashboardUserProps } from '@/components/dashboard/RoleDashboardRouter';
 import { AdminKpiStrip } from './AdminKpiStrip';
 import { AdminAiNarrativeBox } from './AdminAiNarrativeBox';
 import { OutcomeCorrelationChart } from './OutcomeCorrelationChart';
@@ -130,7 +130,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
                   <ShieldCheck className="h-3.5 w-3.5" />
                   National Executive Command
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAF6F0] text-[#705849] border border-[#BF9B7A]/30">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAF6F0] text-muted-foreground border border-[#BF9B7A]/30">
                   {adminCadre}
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#F8C858]/20 text-[#8C5B3E] border border-[#F8C858]/35">
@@ -143,7 +143,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
               <p className="text-xs sm:text-sm font-semibold text-[#8C5B3E] mt-0.5">
                 {adminDesignation} • Workforce Strategy &amp; Statistical Governance
               </p>
-              <p className="text-xs text-[#705849] flex items-center gap-1 mt-1">
+              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-[#8C5B3E]" />
                 Ministry of Statistics &amp; Programme Implementation, Sardar Patel Bhawan, New Delhi
               </p>
@@ -173,7 +173,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
             </div>
 
             <div className="p-2.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 text-right hidden sm:block">
-              <span className="text-[10px] font-bold text-[#705849] block">Statistical Authority</span>
+              <span className="text-[10px] font-bold text-muted-foreground block">Statistical Authority</span>
               <span className="text-xs font-black text-[#555934]">National Sample Survey (NSS)</span>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
           className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
             activeTab === 'overview'
               ? 'bg-[#555934] text-white shadow-xs'
-              : 'bg-white text-[#705849] border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
+              : 'bg-white text-muted-foreground border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
           }`}
         >
           <LayoutGrid className="h-3.5 w-3.5" />
@@ -208,7 +208,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
           className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
             activeTab === 'zonal_ro'
               ? 'bg-[#555934] text-white shadow-xs'
-              : 'bg-white text-[#705849] border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
+              : 'bg-white text-muted-foreground border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
           }`}
         >
           <Map className="h-3.5 w-3.5" />
@@ -223,7 +223,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
           className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
             activeTab === 'scrutiny_correlation'
               ? 'bg-[#555934] text-white shadow-xs'
-              : 'bg-white text-[#705849] border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
+              : 'bg-white text-muted-foreground border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
           }`}
         >
           <TrendingDown className="h-3.5 w-3.5" />
@@ -238,7 +238,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
           className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
             activeTab === 'policy_circulars'
               ? 'bg-[#555934] text-white shadow-xs'
-              : 'bg-white text-[#705849] border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
+              : 'bg-white text-muted-foreground border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
           }`}
         >
           <FileText className="h-3.5 w-3.5" />
@@ -253,7 +253,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
           className={`inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
             activeTab === 'governance_orders'
               ? 'bg-[#555934] text-white shadow-xs'
-              : 'bg-white text-[#705849] border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
+              : 'bg-white text-muted-foreground border border-[#BF9B7A]/30 hover:bg-[#FAF6F0]'
           }`}
         >
           <Send className="h-3.5 w-3.5" />
@@ -331,22 +331,22 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
                 National Data Governance &amp; Cadre Compliance Overview
               </h3>
             </div>
-            <p className="text-xs text-[#705849] leading-relaxed">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               All 5 statutory policy circulars are issued under the joint authority of the Cabinet Secretariat, 
               Ministry of Statistics &amp; Programme Implementation, and National Statistical Commission (NSC).
               Mandated compliance milestones are audited bi-weekly through the automated CAPI scrutiny pipeline.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
               <div className="p-3 rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/20 text-center">
-                <span className="text-[10px] text-[#705849] block">Mandated Surveys</span>
+                <span className="text-[10px] text-muted-foreground block">Mandated Surveys</span>
                 <span className="text-lg font-black font-mono text-[#555934]">PLFS, ASHE, HCES</span>
               </div>
               <div className="p-3 rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/20 text-center">
-                <span className="text-[10px] text-[#705849] block">Average Compliance</span>
+                <span className="text-[10px] text-muted-foreground block">Average Compliance</span>
                 <span className="text-lg font-black font-mono text-emerald-700">71.5%</span>
               </div>
               <div className="p-3 rounded-2xl bg-[#FAF6F0] border border-[#BF9B7A]/20 text-center">
-                <span className="text-[10px] text-[#705849] block">Next Enforcement Audit</span>
+                <span className="text-[10px] text-muted-foreground block">Next Enforcement Audit</span>
                 <span className="text-lg font-black font-mono text-[#8C5B3E]">15 Oct 2026</span>
               </div>
             </div>
@@ -370,7 +370,7 @@ export default function AdminDashboard({ user }: { user: DashboardUserProps }) {
                 <h3 className="font-bold text-sm text-[#2d1f17]">
                   Statutory Ministerial Instruments
                 </h3>
-                <p className="text-xs text-[#705849] leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   Generate executive legal briefing instruments and deploy nationwide assessment sweeps 
                   for the National Statistical Systems Training Academy (NSSTA).
                 </p>

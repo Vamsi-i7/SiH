@@ -212,13 +212,13 @@ export function ManualReaderModal({
         {/* Search & Actions Bar */}
         <div className="px-6 py-2.5 bg-white border-b border-[#BF9B7A]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shrink-0">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#705849]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={isHindi ? 'अध्याय या नियम खोजें...' : 'Search handbook sections or rules...'}
-              className="w-full h-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/25 pl-8 pr-3 text-xs text-[#2d1f17] placeholder:text-[#705849] focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#555934]"
+              className="w-full h-8 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/25 pl-8 pr-3 text-xs text-[#2d1f17] placeholder:text-muted-foreground focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#555934]"
             />
           </div>
 
@@ -226,7 +226,7 @@ export function ManualReaderModal({
             <button
               type="button"
               onClick={handleCopyCitation}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 font-semibold text-[#705849] hover:text-[#2d1f17] hover:bg-[#F2E6D8] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF6F0] border border-[#BF9B7A]/30 font-semibold text-muted-foreground hover:text-[#2d1f17] hover:bg-[#F2E6D8] transition-colors cursor-pointer"
             >
               <Copy className="h-3 w-3" />
               <span>{copied ? (isHindi ? 'कॉपी हो गया!' : 'Copied!') : (isHindi ? 'उद्धरण कॉपी करें' : 'Copy Citation')}</span>
@@ -247,7 +247,7 @@ export function ManualReaderModal({
         <div className="flex-1 flex overflow-hidden">
           {/* Left Column: Chapter Navigation (hidden on mobile, visible sm+) */}
           <div className="w-64 border-r border-[#BF9B7A]/25 bg-[#FAF6F0]/60 overflow-y-auto p-3 space-y-1.5 shrink-0 hidden sm:block">
-            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[#705849]">
+            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               {isHindi ? 'अध्याय सूची' : 'Table of Contents'}
             </div>
             {chapters.map((ch, idx) => {
@@ -268,7 +268,7 @@ export function ManualReaderModal({
                 >
                   <span
                     className={`h-5 w-5 rounded-md flex items-center justify-center font-mono text-[10px] shrink-0 font-bold ${
-                      isSelected ? 'bg-white/20 text-white' : 'bg-[#BF9B7A]/20 text-[#593E2E]'
+                      isSelected ? 'bg-white/20 text-white' : 'bg-[#BF9B7A]/20 text-chart-5'
                     }`}
                   >
                     {ch.number}
@@ -295,7 +295,7 @@ export function ManualReaderModal({
                 <span className="px-2.5 py-0.5 rounded-md bg-[#555934]/15 text-[#555934] text-[10px] font-bold uppercase tracking-wider">
                   {isHindi ? `अध्याय ${currentChapter.number}` : `Chapter ${currentChapter.number}`}
                 </span>
-                <span className="text-[11px] text-[#705849] font-mono">{manual.pages}</span>
+                <span className="text-[11px] text-muted-foreground font-mono">{manual.pages}</span>
               </div>
               <h3 className="text-xl font-black text-[#2d1f17] tracking-tight">
                 {isHindi ? currentChapter.title_hi : currentChapter.title}
@@ -343,7 +343,7 @@ export function ManualReaderModal({
                 </span>
               </button>
 
-              <span className="text-[11px] text-[#705849]">
+              <span className="text-[11px] text-muted-foreground">
                 MoSPI Civil Cadre Repository
               </span>
             </div>
