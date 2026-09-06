@@ -14,8 +14,18 @@ const nextConfig: NextConfig = {
   turbopack: {},
   compress: true,
   poweredByHeader: false,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: [
+      'lucide-react',
+      'recharts',
+      'date-fns',
+      'clsx',
+      'tailwind-merge',
+      'unpdf',
+    ],
   },
 };
 
