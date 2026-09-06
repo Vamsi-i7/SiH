@@ -608,6 +608,7 @@ export const ASSESSMENT_MAP: Record<string, Assessment> = Object.fromEntries(
 
 /** Returns metadata only (no questions) — safe to send to client for listing. */
 export function getAssessmentMetas(): AssessmentMeta[] {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return ASSESSMENTS.map(({ questions: _questions, ...meta }) => meta);
 }
 

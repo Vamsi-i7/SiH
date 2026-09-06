@@ -21,7 +21,14 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  let user: any = null;
+  interface MiddlewareUser {
+    id: string;
+    email: string;
+    app_metadata: { role: string };
+    user_metadata: Record<string, string | undefined>;
+  }
+
+  let user: MiddlewareUser | null = null;
 
   // 1. Check demo_user cookie FIRST for instant local dev authentication
   const demoCookie = request.cookies.get('demo_user')?.value;

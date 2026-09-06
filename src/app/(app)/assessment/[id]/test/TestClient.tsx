@@ -50,8 +50,7 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
 
   // Interval ref — store here so it's never recreated on re-render
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  // Track whether the timer expired (for the review panel notice)
-  const timedOutRef = useRef(false);
+  // Whether the timer expired (derived from state — no need for separate state)
 
   // ── Mount / Unmount ────────────────────────────────────────────────────
   useEffect(() => {
@@ -85,12 +84,8 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
     };
   }, [state.phase]);
 
-  // Detect timer-triggered auto-end (remainingSeconds hit 0 → phase moved to REVIEW)
-  useEffect(() => {
-    if (state.phase === 'REVIEW' && state.remainingSeconds === 0) {
-      timedOutRef.current = true;
-    }
-  }, [state.phase, state.remainingSeconds]);
+  // Derived: detect timer-triggered auto-end
+  const timedOut = state.phase === 'REVIEW' && state.remainingSeconds === 0;
 
   // ── beforeunload warning ───────────────────────────────────────────────
   useEffect(() => {
@@ -163,7 +158,7 @@ export default function TestClient({ assessment, userId }: TestClientProps) {
         />
         <ReviewPanel
           state={state}
-          timedOut={timedOutRef.current}
+          timedOut={timedOut}
           onContinueTest={() => dispatch({ type: 'RESUME_FROM_REVIEW' })}
           onSubmit={handleSubmit}
         />

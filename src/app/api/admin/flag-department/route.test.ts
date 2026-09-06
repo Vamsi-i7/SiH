@@ -10,6 +10,7 @@ import { getAuthenticatedUser } from '@/lib/auth';
 
 describe('POST /api/admin/flag-department', () => {
   it('returns 401 if user is unauthenticated', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(getAuthenticatedUser).mockResolvedValue(null as any);
 
     const req = new NextRequest('http://localhost:3000/api/admin/flag-department', {

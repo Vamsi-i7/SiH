@@ -41,10 +41,21 @@ const QUICK_ACTIONS = [
 // ============================================================================
 
 export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  // Initialize messages with welcome greeting
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const greeting = userContext?.name
+      ? `🙏 **Namaste, ${userContext.name}!** I'm your StatVidya Copilot.\n\nI can help you with FRAC competency tracking, iGOT learning pathways, assessment prep, and platform navigation.\n\nWhat would you like to explore?`
+      : `🙏 **Namaste!** I'm your StatVidya Copilot.\n\nI can help you with FRAC competency tracking, iGOT learning pathways, and platform navigation.\n\nWhat would you like to explore?`;
+    return [{
+      id: 'welcome',
+      role: 'assistant' as const,
+      content: greeting,
+      timestamp: new Date(),
+    }];
+  });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(() => typeof navigator !== 'undefined' ? !navigator.onLine : false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -80,7 +91,6 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
   useEffect(() => {
     const goOnline = () => setIsOffline(false);
     const goOffline = () => setIsOffline(true);
-    setIsOffline(!navigator.onLine);
     window.addEventListener('online', goOnline);
     window.addEventListener('offline', goOffline);
     return () => {
@@ -89,36 +99,19 @@ export function CopilotPanel({ isOpen, onClose, userContext }: CopilotPanelProps
     };
   }, []);
 
-  // Welcome message on first open
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      const greeting = userContext?.name
-        ? `🙏 Namaste, **${userContext.name}**! I'm your StatVidya Copilot.\n\nAs a **${userContext.designation || userContext.role || 'learner'}** in ${userContext.cadre || 'the Official Statistical System'}, I can help you navigate the platform, understand your competency gaps, and find relevant iGOT courses.\n\nWhat would you like to explore?`
-        : `🙏 **Namaste!** I'm your StatVidya Copilot.\n\nI can help you with FRAC competency tracking, iGOT learning pathways, and platform navigation.\n\nWhat would you like to explore?`;
-
-      setMessages([
-        {
-          id: 'welcome',
-          role: 'assistant',
-          content: greeting,
-          timestamp: new Date(),
-        },
-      ]);
-    }
-  }, [isOpen, messages.length, userContext]);
-
   // ─── Send Message ───
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
 
+    const msgId = crypto.randomUUID();
     const userMsg: Message = {
-      id: `user-${Date.now()}`,
+      id: `user-${msgId}`,
       role: 'user',
       content: text.trim(),
       timestamp: new Date(),
     };
 
-    const assistantId = `assistant-${Date.now()}`;
+    const assistantId = `assistant-${msgId}`;
     const assistantMsg: Message = {
       id: assistantId,
       role: 'assistant',

@@ -33,7 +33,8 @@ import {
 // CONSTANTS
 // ============================================================================
 
-const EDGE_FN_PATH = '/functions/v1/evaluate-assessment';
+// TODO: Enable when edge function sync is implemented
+// const EDGE_FN_PATH = '/functions/v1/evaluate-assessment';
 const MAX_RETRIES = 5;
 const BASE_BACKOFF_MS = 1_000; // 1 second
 const MAX_BACKOFF_MS = 60_000; // 60 seconds

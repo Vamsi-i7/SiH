@@ -36,29 +36,8 @@ export default async function AssessmentPage({ params }: PageProps) {
   };
 
   // Fetch competency details
-  let competencyName = DEMO_COMPETENCIES[competencyId]?.name || 'Statistical Competency';
-  let competencyNameHi = DEMO_COMPETENCIES[competencyId]?.name_hi || 'सांख्यिकीय योग्यता';
-
-  // Helper for fast-timeout database query to prevent slow page loads
-  const fastQuery = async <T,>(promise: PromiseLike<T>, timeoutMs = 250): Promise<T | null> => {
-    return Promise.race([
-      Promise.resolve(promise),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs)),
-    ]);
-  };
-
-  interface CompetencyRecord {
-    name: string;
-    name_hi?: string;
-  }
-
-  interface QuestionRecord {
-    id: string;
-    stem: string;
-    stem_hi?: string;
-    options?: { en?: string[]; hi?: string[] };
-    difficulty: 'easy' | 'medium' | 'hard';
-  }
+  const competencyName = DEMO_COMPETENCIES[competencyId]?.name || 'Statistical Competency';
+  const competencyNameHi = DEMO_COMPETENCIES[competencyId]?.name_hi || 'सांख्यिकीय योग्यता';
 
   let firstQuestion = null;
 

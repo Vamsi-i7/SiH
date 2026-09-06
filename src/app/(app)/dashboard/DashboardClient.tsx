@@ -51,18 +51,11 @@ export default function DashboardPage({ user }: DashboardProps) {
   const [topGaps, setTopGaps] = useState<CompetencyGapCard[]>([]);
   const [radarData, setRadarData] = useState<RadarDataPoint[]>([]);
   const [loading, setLoading] = useState(false);
-  const [userRole, setUserRole] = useState<string>(fallbackRole);
+  const [userRole] = useState<string>(fallbackRole);
 
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-        const fastQuery = async <T,>(promise: Promise<T>, timeoutMs = 150): Promise<T | null> => {
-          return Promise.race([
-            promise,
-            new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs)),
-          ]);
-        };
-
         // Role resolved from user metadata or fallback
 
         // Build readiness and gap data from demo competencies
