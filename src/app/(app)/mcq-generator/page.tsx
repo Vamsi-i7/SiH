@@ -5,8 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
 import { type GeneratedQuestion } from '@/services/mcqService';
-import { Sparkles, RefreshCw, BookOpen, Bot, FileText, SlidersHorizontal } from 'lucide-react';
-import { DocumentPracticeCard } from '@/components/mcq/DocumentPracticeCard';
+import { Sparkles, RefreshCw, BookOpen, Bot, FileText, SlidersHorizontal, Hash } from 'lucide-react';
+import { DocumentPracticeCard, type AnswerRecord } from '@/components/mcq/DocumentPracticeCard';
 
 interface IngestedDoc {
   id: string;
@@ -90,8 +90,12 @@ function MCQGeneratorInner() {
   const [selectedDocId, setSelectedDocId] = useState(initialDocId);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const [questionFocus, setQuestionFocus] = useState<'protocols' | 'thresholds' | 'scrutiny'>('protocols');
+  const [questionCount, setQuestionCount] = useState<number>(5);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedQuestion, setGeneratedQuestion] = useState<GeneratedQuestion | null>(null);
+  const [questionList, setQuestionList] = useState<GeneratedQuestion[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [sessionAnswers, setSessionAnswers] = useState<Record<number, AnswerRecord>>({});
   const [stagedToQueue, setStagedToQueue] = useState(false);
   const [viewMode, setViewMode] = useState<'practice' | 'inspector'>('practice');
 
@@ -147,6 +151,7 @@ function MCQGeneratorInner() {
   const handleGenerate = async () => {
     setIsGenerating(true);
     setStagedToQueue(false);
+    setSessionAnswers({});
 
     try {
       const res = await fetch('/api/mcq/generate', {
@@ -160,14 +165,21 @@ function MCQGeneratorInner() {
           docTitle: activeDoc.title,
           docText: activeDoc.chunks?.[0]?.text || activeDoc.title,
           questionFocus,
+          count: questionCount,
         }),
       });
 
       const data = await res.json();
-      if (data.success && data.question) {
-        const q = data.question;
-        q.citation = activeDoc.citation;
-        setGeneratedQuestion(q);
+      if (data.success) {
+        const questions: GeneratedQuestion[] = data.questions || (data.question ? [data.question] : []);
+        if (questions.length > 0) {
+          questions.forEach((q) => {
+            q.citation = activeDoc.citation;
+          });
+          setQuestionList(questions);
+          setGeneratedQuestion(questions[0]);
+          setCurrentIndex(0);
+        }
       }
     } catch (err) {
       console.error('Failed to generate with Groq AI:', err);
@@ -240,7 +252,7 @@ function MCQGeneratorInner() {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-5 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Document Grounding Selector */}
             <div>
               <label className="block text-xs font-semibold text-stone-700 mb-1.5">
@@ -301,6 +313,48 @@ function MCQGeneratorInner() {
                 Targeted cognitive framing
               </p>
             </div>
+
+            {/* Question Volume Slider (1 to 25) */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-semibold text-stone-700 flex items-center gap-1">
+                  <Hash className="h-3.5 w-3.5 text-[#555934]" />
+                  Question Volume
+                </label>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#555934]/10 text-[#555934] border border-[#555934]/20">
+                  {questionCount} {questionCount === 1 ? 'Item' : 'Items'}
+                </span>
+              </div>
+
+              {/* Slider between 1 and 25 */}
+              <input
+                type="range"
+                min={1}
+                max={25}
+                step={1}
+                value={questionCount}
+                onChange={(e) => setQuestionCount(Number(e.target.value))}
+                className="w-full accent-[#555934] cursor-pointer h-2 bg-stone-200 rounded-lg"
+              />
+
+              {/* Preset selection chips */}
+              <div className="flex items-center justify-between gap-1 mt-2">
+                {[1, 5, 10, 25].map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setQuestionCount(preset)}
+                    className={`text-[11px] font-bold px-2 py-0.5 rounded transition ${
+                      questionCount === preset
+                        ? 'bg-[#555934] text-white shadow-xs'
+                        : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                    }`}
+                  >
+                    {preset} Q{preset > 1 ? 's' : ''}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -316,12 +370,12 @@ function MCQGeneratorInner() {
               {isGenerating ? (
                 <>
                   <RefreshCw className="h-4 w-4 animate-spin" />
-                  Generating with Groq AI...
+                  Generating {questionCount} Items with Groq AI...
                 </>
               ) : (
                 <>
                   <Sparkles className="h-4 w-4" />
-                  Generate Question
+                  Generate {questionCount} {questionCount === 1 ? 'Question' : 'Questions'}
                 </>
               )}
             </button>
@@ -335,7 +389,7 @@ function MCQGeneratorInner() {
           {/* Mode Switcher */}
           <div className="flex items-center justify-between px-1">
             <div className="text-xs font-semibold text-stone-500">
-              Active Question ID: <code className="text-stone-700">{generatedQuestion.id}</code>
+              Active Session: <strong>{questionList.length || 1} Questions Generated</strong>
             </div>
             <div className="flex rounded-lg bg-stone-100 p-1 border border-stone-200">
               <button
@@ -363,11 +417,23 @@ function MCQGeneratorInner() {
 
           {viewMode === 'practice' ? (
             <DocumentPracticeCard
-              key={generatedQuestion.id}
-              question={generatedQuestion}
+              key={`${(questionList[currentIndex] || generatedQuestion).id}-${currentIndex}`}
+              question={questionList[currentIndex] || generatedQuestion}
               docTitle={activeDoc.title}
               difficulty={difficulty}
-              onNextQuestion={handleGenerate}
+              currentIndex={currentIndex}
+              totalCount={questionList.length || 1}
+              sessionAnswers={sessionAnswers}
+              onRecordAnswer={(qIdx, optIdx, isChecked) => {
+                setSessionAnswers((prev) => ({
+                  ...prev,
+                  [qIdx]: { selectedIndex: optIdx, isChecked },
+                }));
+              }}
+              onNextQuestion={() => setCurrentIndex((prev) => Math.min(questionList.length - 1, prev + 1))}
+              onPreviousQuestion={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
+              onJumpToQuestion={(idx) => setCurrentIndex(idx)}
+              onResetSession={handleGenerate}
               isGeneratingNext={isGenerating}
               onStageToQueue={handlePushToReview}
               stagedToQueue={stagedToQueue}
