@@ -39,14 +39,15 @@
 
 1. **Server Enforces, Client Suggests**:
    - Zero trust in client-submitted scores, competency levels, or role promotions.
-   - The client may compute optimistic UI updates (e.g., predicted gap closure), but all official mutations to `competency_records`, `assessment_results`, and `audit_log` are executed atomically by Supabase Edge Functions or database triggers.
+   - All official mutations to `competencies`, `assessment_submissions`, and `audit_logs` are executed atomically with Firebase Auth token validation and Security Rules.
 2. **Offline is a First-Class Capability, Not a Network Failure**:
    - Designed primarily around the constraints of the **Field Investigator (NSSO FOD)** on low-cost Android tablets in rural, disconnected regions.
-   - Reads leverage `@serwist/next` Service Worker caching. Writes leverage a client-side IndexedDB queue with deterministic local UUIDs (`local_id`) ensuring idempotent, duplicate-safe sync upon reconnect.
-3. **Multi-Provider Cloud Optimization (Zero Egress, High Reliability)**:
-   - **Vercel**: Edge-rendered Next.js UI, SSR/SSG, and BFF (Backend-for-Frontend) route handlers.
-   - **Supabase**: PostgreSQL with strict Row-Level Security (RLS), Supabase Auth (OIDC/JWT), Edge Functions (Deno), and Realtime WebSocket updates.
-   - **Cloudflare**: R2 object storage with **$0 egress fees** for large PDF manuals (>50MB), Workers for presigned URL issuance, and Cloudflare AI Gateway for multi-provider AI resilience.
+   - Reads leverage `@serwist/next` Service Worker caching and Firestore offline persistence. Writes leverage a client-side IndexedDB queue with deterministic local UUIDs (`local_id`) ensuring idempotent, duplicate-safe sync upon reconnect.
+3. **Unified Firebase Platform Topology**:
+   - **Next.js App Router**: SSR/SSG rendering, client UI, and API route handlers.
+   - **Firebase Authentication**: Email/Password, Google OAuth, and secure session management.
+   - **Cloud Firestore**: Real-time document database with role-based `firestore.rules`.
+   - **Firebase Storage**: Object storage for PDF survey manuals and training schedules governed by `storage.rules`.
 4. **Structural Data Provenance**:
    - Every domain record (competencies, roles, activities, courses, questions) carries a mandatory `provenance` field (`VERIFIED_OFFICIAL`, `PROPOSED_FRAMEWORK`, `PROPOSED_METHODOLOGY`, `SYNTHETIC_DEMO_DATA`).
    - Enforced at the TypeScript type level and validated in PostgreSQL check constraints.

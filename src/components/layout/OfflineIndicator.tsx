@@ -91,24 +91,24 @@ export function OfflineIndicator() {
 
   const styles: Record<Variant, { bar: string; icon: string; text: string }> = {
     offline: {
-      bar: 'bg-amber-50 border-amber-200',
-      icon: 'text-amber-600',
-      text: 'text-amber-800',
+      bar: 'bg-[--color-severity-moderate]/10 border-[--color-severity-moderate]/20',
+      icon: 'text-[--color-severity-moderate]',
+      text: 'text-[--color-severity-moderate]',
     },
     syncing: {
-      bar: 'bg-blue-50 border-blue-200',
-      icon: 'text-blue-600',
-      text: 'text-blue-800',
+      bar: 'bg-[--color-primary]/10 border-[--color-primary]/20',
+      icon: 'text-[--color-primary]',
+      text: 'text-[--color-primary]',
     },
     synced: {
-      bar: 'bg-emerald-50 border-emerald-200',
-      icon: 'text-emerald-600',
-      text: 'text-emerald-800',
+      bar: 'bg-[--color-primary]/10 border-[--color-primary]/20',
+      icon: 'text-[--color-primary]',
+      text: 'text-[--color-primary]',
     },
     failed: {
-      bar: 'bg-red-50 border-red-200',
-      icon: 'text-red-600',
-      text: 'text-red-800',
+      bar: 'bg-[--color-destructive]/10 border-[--color-destructive]/20',
+      icon: 'text-[--color-destructive]',
+      text: 'text-[--color-destructive]',
     },
   };
 
@@ -132,7 +132,7 @@ export function OfflineIndicator() {
             <WifiOff className={`h-4 w-4 shrink-0 ${s.icon}`} aria-hidden="true" />
             <span className={`font-medium ${s.text}`}>Offline</span>
             {pendingCount > 0 && (
-              <span className="text-amber-700">
+              <span className="text-[--color-severity-moderate]">
                 · {pendingCount} assessment{pendingCount !== 1 ? 's' : ''} pending
               </span>
             )}
@@ -162,7 +162,7 @@ export function OfflineIndicator() {
               {failedCount} failed to sync
             </span>
             {lastError && (
-              <span className="text-red-600 truncate max-w-xs hidden sm:inline" title={lastError}>
+              <span className="text-[--color-destructive] truncate max-w-xs hidden sm:inline" title={lastError}>
                 · {lastError}
               </span>
             )}
@@ -176,9 +176,9 @@ export function OfflineIndicator() {
           onClick={handleRetry}
           className="
             flex items-center gap-1.5 px-3 py-1 text-xs font-semibold
-            bg-red-100 text-red-700 rounded-full border border-red-200
-            hover:bg-red-200 transition-colors focus-visible:outline-none
-            focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1
+            bg-[--color-destructive]/10 text-[--color-destructive] rounded-full border border-[--color-destructive]/20
+            hover:bg-[--color-destructive]/20 transition-colors focus-visible:outline-none
+            focus-visible:ring-2 focus-visible:ring-[--color-destructive] focus-visible:ring-offset-1
           "
           aria-label="Retry syncing failed assessments"
         >
@@ -192,7 +192,7 @@ export function OfflineIndicator() {
         <span
           className="
             flex items-center justify-center px-2 py-0.5 text-xs font-bold
-            bg-amber-200 text-amber-800 rounded-full min-w-[1.5rem]
+            bg-[--color-severity-moderate]/20 text-[--color-severity-moderate] rounded-full min-w-[1.5rem]
           "
           aria-label={`${pendingCount} assessments will sync when online`}
         >

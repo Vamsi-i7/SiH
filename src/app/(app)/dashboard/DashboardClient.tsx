@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
 import { ProgressRing } from '@/components/ProgressRing';
 import { RadarChart, type RadarDataPoint } from '@/components/RadarChart';
 import { ProvenanceBadge } from '@/components/ProvenanceBadge';
@@ -41,7 +40,6 @@ interface CompetencyGapCard {
 
 export default function DashboardPage({ user }: DashboardProps) {
   const t = useTranslations();
-  const supabase = getSupabaseBrowserClient();
 
   const fallbackRole =
     user.user_metadata?.designation ||
@@ -65,22 +63,7 @@ export default function DashboardPage({ user }: DashboardProps) {
           ]);
         };
 
-        // Fetch user's role assignment if exists in database
-        try {
-          const res = await fastQuery<{ data: { role?: { name?: string } | null } | null }>(
-            supabase
-              .from('users')
-              .select('role_id, role:roles(id, name, name_hi)')
-              .eq('id', user.id)
-              .maybeSingle()
-          );
-
-          if (res?.data?.role?.name) {
-            setUserRole(res.data.role.name);
-          }
-        } catch {
-          // Keep fallback
-        }
+        // Role resolved from user metadata or fallback
 
         // Build readiness and gap data from demo competencies
         // In production: fetch from activity_competencies joined with role requirements
@@ -140,7 +123,7 @@ export default function DashboardPage({ user }: DashboardProps) {
     };
 
     loadDashboard();
-  }, [user.id, user.user_metadata?.organization_id, supabase]);
+  }, [user.id, user.user_metadata?.organization_id]);
 
   const severityColors = {
     HIGH: 'text-[#c0574a] bg-[#c0574a]/10 border-[#c0574a]/25',

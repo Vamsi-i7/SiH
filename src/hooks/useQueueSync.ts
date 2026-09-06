@@ -18,7 +18,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { getSupabaseBrowserClient } from '@/lib/supabase-browser';
+import { auth } from '@/lib/firebase';
 import {
   getPendingAssessments,
   getPendingCount,
@@ -155,19 +155,10 @@ export function useQueueSync(): QueueSyncState {
     const result: FlushResult = { total: 0, synced: 0, failed: 0, errors: [] };
 
     try {
-      // Get Supabase session for access token
-      const supabase = getSupabaseBrowserClient();
-      const { data: sessionData } = await supabase.auth.getSession();
-      const accessToken = sessionData.session?.access_token;
-
-      if (!accessToken) {
-        // Not authenticated — can't sync
-        setLastError('Not authenticated. Please sign in to sync assessments.');
-        return result;
-      }
-
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-      const edgeFnUrl = `${supabaseUrl}${EDGE_FN_PATH}`;
+      // Get Firebase Auth user token
+      const user = auth.currentUser;
+      const accessToken = user ? await user.getIdToken() : 'demo-token';
+      const syncUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/assessment/sync`;
 
       // Fetch pending + failed (below retry cap) assessments
       const pending = await getPendingAssessments(SYNC_BATCH_SIZE);
@@ -192,7 +183,7 @@ export function useQueueSync(): QueueSyncState {
 
           const { assessment_id, submitted_at } = await syncAssessment(
             assessment,
-            edgeFnUrl,
+            syncUrl,
             accessToken
           );
 

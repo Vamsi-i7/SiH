@@ -1,5 +1,4 @@
-// Generated TypeScript types for StatVidya database schema
-// Run: supabase gen types typescript > src/lib/types.ts
+// Data models and TypeScript interfaces for Firebase Cloud Firestore schema
 
 export type ProvenanceType = 'VERIFIED_OFFICIAL' | 'PROPOSED_FRAMEWORK' | 'PROPOSED_METHODOLOGY' | 'SYNTHETIC_DEMO_DATA';
 export type UserRole = 'learner' | 'trainer' | 'admin';

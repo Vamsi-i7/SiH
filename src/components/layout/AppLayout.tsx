@@ -17,7 +17,7 @@ interface AppLayoutProps {
 function AppLayoutInner({ children }: AppLayoutProps) {
   const { isAssessmentActive } = useAssessmentMode();
 
-  // Default demo context — will be replaced with live user data from Supabase
+  // Default demo context — will be replaced with live user data from Firebase
   const userContext = {
     name: 'Amit Sharma',
     role: 'learner',

@@ -50,6 +50,7 @@
 
   --color-severity-high: #c0574a;     /* muted brick red */
   --color-severity-moderate: #c9963a; /* muted ochre */
+  --color-severity-moderate-hover: #a87830; /* muted ochre hover */
   --color-severity-proficient: #8b9a6e; /* sage green = primary */
 
   --color-chart-1: #8b9a6e;           /* sage — primary / proficient */

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthenticatedUser } from '@/lib/auth';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { db } from '@/lib/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,62 +25,31 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Department name is required' }, { status: 400 });
     }
 
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              );
-            } catch {
-              // Handled by Next.js Server Components
-            }
-          },
-        },
-      }
-    );
-
-    // Tenant isolation: organization_id strictly derived from session
     const orgId = user.user_metadata?.organization_id || 'org-mospi';
-    const { data, error } = await supabase
-      .from('training_priorities')
-      .insert({
-        organization_id: orgId,
-        department,
-        role_id: roleId || null,
-        reason: reason || 'Flagged for urgent workforce capability intervention',
-        flagged_by: user.id,
-      })
-      .select()
-      .single();
+    const flagData = {
+      organization_id: orgId,
+      department,
+      role_id: roleId || null,
+      reason: reason || 'Flagged for urgent workforce capability intervention',
+      flagged_by: user.id,
+      flagged_at: new Date().toISOString(),
+      resolved: false,
+    };
 
-    if (error) {
-      // Fallback for demo when table is unpopulated or in mock session
+    try {
+      const docRef = await addDoc(collection(db, 'department_flags'), flagData);
+      return NextResponse.json({ success: true, priority: { id: docRef.id, ...flagData } }, { status: 201 });
+    } catch {
+      // Fallback for local demo
       const fallbackPriority = {
         id: `tp-${Date.now()}`,
-        organization_id: orgId,
-        department,
-        role_id: roleId || null,
-        reason: reason || 'Flagged for urgent workforce capability intervention',
-        flagged_by: user.id,
-        flagged_at: new Date().toISOString(),
-        resolved: false,
+        ...flagData,
       };
-
       return NextResponse.json(
         { success: true, priority: fallbackPriority, warning: 'Persisted in local session' },
         { status: 201 }
       );
     }
-
-    return NextResponse.json({ success: true, priority: data }, { status: 201 });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Internal Server Error';
     return NextResponse.json({ error: message }, { status: 500 });

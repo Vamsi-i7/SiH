@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers';
-import { getSupabaseServerClient } from './supabase';
 import { DEMO_PERSONAS } from './demoPersonas';
 
 export interface AppUser {
@@ -22,7 +21,6 @@ export async function getAuthenticatedUser(): Promise<AppUser> {
   const cookieStore = await cookies();
 
   // 1. Check demo_user cookie FIRST to ensure instant loading during local development
-  //    This avoids blocking on Supabase timeout if the DB is offline or URL is invalid.
   const demoCookie = cookieStore.get('demo_user')?.value;
   if (demoCookie) {
     try {
@@ -48,24 +46,31 @@ export async function getAuthenticatedUser(): Promise<AppUser> {
     }
   }
 
-  // 2. Check if real Supabase auth succeeds
-  try {
-    const supabase = await getSupabaseServerClient();
-    // Using a fast timeout abort controller just in case it hangs
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user && user.email) {
-      return {
-        id: user.id,
-        email: user.email,
-        user_metadata: user.user_metadata,
-        app_metadata: user.app_metadata,
-      };
+  // 2. Check firebase_session cookie
+  const firebaseCookie = cookieStore.get('firebase_user')?.value;
+  if (firebaseCookie) {
+    try {
+      const parsed = JSON.parse(decodeURIComponent(firebaseCookie));
+      if (parsed && parsed.email) {
+        return {
+          id: parsed.uid || parsed.id,
+          email: parsed.email,
+          user_metadata: {
+            name: parsed.displayName || parsed.name,
+            organization_id: parsed.organization_id || 'org-mospi',
+            preferred_language: parsed.preferred_language || 'en',
+          },
+          app_metadata: {
+            role: parsed.role || 'learner',
+          },
+        };
+      }
+    } catch {
+      // Parse error
     }
-  } catch {
-    // Supabase unreachable or mock mode
   }
 
-  // 3. Sensible default demo persona (Amit Sharma) to ensure no blank screens / redirects
+  // 3. Default demo persona (Amit Sharma) to ensure no blank screens
   const defaultPersona = DEMO_PERSONAS[0];
   return {
     id: defaultPersona.id,

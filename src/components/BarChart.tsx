@@ -14,10 +14,10 @@ export function BarChart({ label, value, max = 100, highlightThreshold = 50 }: B
 
   const barColor =
     value >= 70
-      ? 'bg-emerald-500'
+      ? 'bg-[--color-primary]'
       : value >= highlightThreshold
-        ? 'bg-amber-500'
-        : 'bg-rose-500';
+        ? 'bg-[--color-severity-moderate]'
+        : 'bg-[--color-destructive]';
 
   return (
     <div className="w-full space-y-1">

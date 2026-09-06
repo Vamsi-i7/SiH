@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **ARCHITECTURE v2.0 ALIGNMENT NOTICE**:
-> This document contains historical context and foundational feature mappings from earlier project iterations. The authoritative, active engineering blueprint for StatVidya is codified in **[PRD.md v2.0](file:///Users/vamsikrishna/Dev%20Projects/i%20proj/SiH/PRD.md)**, **[Architecture.md v2.0](file:///Users/vamsikrishna/Dev%20Projects/i%20proj/SiH/Architecture.md)**, and **[Phases.md v2.0](file:///Users/vamsikrishna/Dev%20Projects/i%20proj/SiH/Phases.md)** based on the 3-provider cloud topology: **Next.js 15 App Router + Supabase (PostgreSQL 16, RLS, Auth, Edge Functions) + Cloudflare (R2, Workers, AI Gateway) + Parichay SSO + Serwist PWA**.
+> This document contains historical context and foundational feature mappings from earlier project iterations. The authoritative, active engineering blueprint for StatVidya is codified in **[PRD.md v2.0](file:///Users/vamsikrishna/Dev%20Projects/i%20proj/SiH/PRD.md)**, **[Architecture.md v2.0](file:///Users/vamsikrishna/Dev%20Projects/i%20proj/SiH/Architecture.md)**, and **[Phases.md v2.0](file:///Users/vamsikrishna/Dev%20Projects/i%20proj/SiH/Phases.md)** based on the Firebase unified cloud topology: **Next.js 15 App Router + Firebase (Firebase Auth, Cloud Firestore, Firebase Storage) + Parichay SSO + Serwist PWA**.
 
 **EduWrap → Workforce Competency Intelligence Platform**
 

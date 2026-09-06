@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Phase | **Phase 6 (Final MVP Phase)** |
-| Architecture Base | **Active v2.0 (Next.js 15 App Router + Supabase PostgreSQL + Cloudflare R2)** |
+| Architecture Base | **Active v2.0 (Next.js 15 App Router + Firebase Auth + Cloud Firestore + Firebase Storage)** |
 | Target Milestone | SIH 26101 Hackathon Demo |
 | Date | 2026-09-06 |
 | Status | **Approved Design (v2.1 Refined)** |
@@ -12,13 +12,13 @@
 
 ## 1. Scope & Architectural Foundation
 
-Phase 6 completes the StatVidya MVP by implementing the **Admin Workforce Intelligence** subsystem (PRD FR-ADMIN-1 through FR-ADMIN-5), **MoSPI Field Outcome Correlation** (Strategic Lever 2), **write-back priority training flags** with Supabase Realtime broadcasts, and full **bilingual polish**.
+Phase 6 completes the StatVidya MVP by implementing the **Admin Workforce Intelligence** subsystem (PRD FR-ADMIN-1 through FR-ADMIN-5), **MoSPI Field Outcome Correlation** (Strategic Lever 2), **write-back priority training flags** with Cloud Firestore realtime listeners, and full **bilingual polish**.
 
 ### Architectural Alignment
-- **Stack**: Next.js 15 App Router + React 19 + TypeScript + Supabase PostgreSQL + Cloudflare R2 (3-Provider Topology per Architecture.md v2.0 ADR-001, ADR-002, ADR-003).
-- **Multi-Tenancy & Authorization**: Database-enforced Row Level Security (`supabase/migrations/002_rls_policies.sql`) ensuring strict `organization_id` isolation.
-- **Audit Logging**: Automatic PostgreSQL database triggers (`audit_training_priorities` in `003_triggers_and_audit.sql`) automatically recording all administrative write-backs to `audit_log`.
-- **Realtime Replication**: `training_priorities` is an active table in the `supabase_realtime` publication (`001_initial_schema.sql:364`).
+- **Stack**: Next.js 15 App Router + React 19 + TypeScript + Firebase Auth + Cloud Firestore + Firebase Storage.
+- **Multi-Tenancy & Authorization**: Firestore Security Rules (`firestore.rules`) ensuring strict `organizationId` isolation.
+- **Audit Logging**: Automatic Cloud Firestore audit trail recording all administrative write-backs to `auditLogs`.
+- **Realtime Replication**: `trainingPriorities` real-time listeners via Cloud Firestore `onSnapshot`.
 
 ---
 
@@ -26,8 +26,8 @@ Phase 6 completes the StatVidya MVP by implementing the **Admin Workforce Intell
 
 - **FR-ADMIN-1**: Organization overview: total officials, average readiness, trend direction (computed from seeded database records).
 - **FR-ADMIN-2**: AI-generated narrative summary of the macro gap trend.
-- **FR-ADMIN-3**: Role/department breakdown table with drill-down to individual profiles (subject to RLS org scoping).
-- **FR-ADMIN-4**: Admin write-back action: flag department/role for priority training (persists in `training_priorities`, broadcasted via Supabase Realtime).
+- **FR-ADMIN-3**: Role/department breakdown table with drill-down to individual profiles.
+- **FR-ADMIN-4**: Admin write-back action: flag department/role for priority training (persists in `trainingPriorities`, broadcasted via Cloud Firestore real-time listeners).
 - **FR-ADMIN-5**: Training → outcome correlation view: competency level vs. simulated survey-quality metric, tagged `SYNTHETIC_DEMO_DATA` with prominent "Simulated" watermark and methodology disclosure.
 - **FR-I18N-1–3**: 100% bilingual dictionary coverage (`en.json` / `hi.json`) with seamless language toggle and automated CI guardrails.
 
@@ -147,7 +147,7 @@ export function calculateLinearRegression(
 ### 3.3 Write-Back API: `POST /api/admin/flag-department`
 
 - **Endpoint**: `/api/admin/flag-department`
-- **Request Headers**: Supabase session cookie / Bearer token
+- **Request Headers**: Firebase Auth ID token / Session cookie
 - **Request Body**:
   ```json
   {
@@ -159,10 +159,10 @@ export function calculateLinearRegression(
 - **Security Validations**:
   1. Authenticated session check (`getAuthenticatedUser()`).
   2. Role verification: `role === 'admin'` (returns 403 Forbidden for learner/trainer).
-  3. Tenant isolation: `organization_id` is extracted strictly from the authenticated user's session claims, never accepted from the request body.
+  3. Tenant isolation: `organizationId` is extracted strictly from the authenticated user's session claims, never accepted from the request body.
 - **Database Operations**:
-  - `INSERT INTO training_priorities (organization_id, department, role_id, reason, flagged_by)`
-  - PostgreSQL trigger `audit_training_priorities` automatically fires and writes the audit trail.
+  - `addDoc(collection(db, 'trainingPriorities'), ...)`
+  - Firestore audit trail automatically records the action.
 - **Response**: `201 Created` with `{ success: true, priority: TrainingPriority }`.
 
 ---
@@ -173,7 +173,7 @@ export function calculateLinearRegression(
 - **Top Bar**: Summary KPI Cards with trend indicators (Total Officials, Avg Readiness, Critical Gaps, Active Priority Flags).
 - **Main Section**:
   - Left/Center: **Department Breakdown Table** with horizontal `<BarChart />` micro-visualizations, critical gap counts, and "Flag for Priority Training" quick-action button.
-  - Right: **Active Training Priorities Feed** — subscribed to Supabase Realtime channel for live updates when an admin flags any department.
+  - Right: **Active Training Priorities Feed** — subscribed to Cloud Firestore real-time listener for live updates when an admin flags any department.
 - **Header Actions**: Direct link button `[ 📊 View Outcome Correlation Engine → ]` leading to `/admin/analytics/correlation`.
 
 ### Route 2: `/admin/analytics/departments/[dept]` (Department Drilldown)
